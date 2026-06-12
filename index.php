@@ -1,11 +1,11 @@
 <?php
-require_once 'includes/config.php';
-require_once 'includes/seo_helper.php';
+$pageTitle = "NexGen Marketplace | High-Tech MLM Ecosystem";
+require_once 'includes/header.php';
 
 // Search and Filter Logic
 $search = $_GET['search'] ?? '';
 $locality = $_GET['locality'] ?? '';
-$category = $_GET['category'] ?? '';
+$category_filter = $_GET['category'] ?? '';
 
 $query = "SELECT p.*, s.locality, s.category FROM products p JOIN shops s ON p.shop_id = s.id WHERE 1=1";
 $params = [];
@@ -19,9 +19,9 @@ if ($locality) {
     $query .= " AND s.locality = ?";
     $params[] = $locality;
 }
-if ($category) {
+if ($category_filter) {
     $query .= " AND s.category = ?";
-    $params[] = $category;
+    $params[] = $category_filter;
 }
 
 $query .= " ORDER BY p.is_featured DESC, p.created_at DESC LIMIT 20";
@@ -29,109 +29,124 @@ $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $products = $stmt->fetchAll();
 
-// Get unique localities and categories for filters
-$localities = $pdo->query("SELECT DISTINCT locality FROM shops WHERE locality IS NOT NULL")->fetchAll(PDO::FETCH_COLUMN);
-$categories = $pdo->query("SELECT DISTINCT category FROM shops WHERE category IS NOT NULL")->fetchAll(PDO::FETCH_COLUMN);
+// Get unique categories for the circle icons
+$categories = $pdo->query("SELECT DISTINCT category FROM shops WHERE category IS NOT NULL AND category != ''")->fetchAll(PDO::FETCH_COLUMN);
+if (empty($categories)) {
+    $categories = ['Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys'];
+}
 
-// Mock fallback if DB is empty
+// Mock fallback for products
 if (empty($products)) {
     $products = [
-        [
-            'id' => 1,
-            'name' => 'CyberPulse Smartwatch',
-            'description' => 'Experience the future with AI-driven health tracking.',
-            'price' => 12500.00,
-            'image' => 'https://images.unsplash.com/photo-1544117519-31a4b719223d?auto=format&fit=crop&q=80&w=400',
-            'is_featured' => 1
-        ],
-        [
-            'id' => 2,
-            'name' => 'Neon Drift Headphones',
-            'description' => 'Sonic precision meets cyberpunk aesthetics.',
-            'price' => 8900.00,
-            'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=400',
-            'is_featured' => 0
-        ]
+        ['id' => 1, 'name' => 'CyberPulse Smartwatch', 'price' => 12500, 'image' => 'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400', 'is_featured' => 1, 'description' => 'AI health tracking.'],
+        ['id' => 2, 'name' => 'Neon Drift Headphones', 'price' => 8900, 'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400', 'is_featured' => 0, 'description' => 'Cyberpunk aesthetics.'],
+        ['id' => 3, 'name' => 'Quantum VR Headset', 'price' => 45000, 'image' => 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=400', 'is_featured' => 1, 'description' => 'Next-gen immersion.'],
+        ['id' => 4, 'name' => 'AeroDrone X Pro', 'price' => 72000, 'image' => 'https://images.unsplash.com/photo-1473968512647-3e44a224fe8f?w=400', 'is_featured' => 0, 'description' => '4K stability.']
     ];
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexGen Marketplace | Premium Integrated MLM</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <?php
-    echo renderMetaTags("NexGen Marketplace", "Modern MLM-based high-tech marketplace.", "", BASE_URL, "mlm, e-commerce, tech");
-    // Static Shop JSON-LD for the marketplace homepage
-    echo renderShopJSONLD([
-        'id' => 1,
-        'name' => 'NexGen Marketplace',
-        'logo' => BASE_URL . '/assets/img/logo.png',
-        'description' => 'The leading integrated MLM-based high-tech marketplace.',
-        'locality' => 'Global Digital Hub'
-    ]);
-    ?>
-</head>
-<body>
-    <nav class="navbar glass-card">
-        <div class="logo neon-text">NEXGEN</div>
-        <div class="nav-links">
-            <a href="index.php">Marketplace</a>
-            <?php if (is_logged_in()): ?>
-                <a href="shop_portal.php">Merchant Portal</a>
-                <a href="checkout.php">Activate MLM</a>
-                <span class="user-greeting">Welcome, <?php echo e($_SESSION['username']); ?></span>
-            <?php else: ?>
-                <a href="login.php">Login</a>
-                <a href="register.php" class="neon-button">Join Now</a>
-            <?php endif; ?>
-        </div>
-    </nav>
 
-    <div class="container">
-        <header class="hero">
-            <h1 class="neon-text">The Future of Commerce is <span class="neon-cyan">Connected</span></h1>
-            <p>Shop top-tier tech and earn through our 10-level referral ecosystem.</p>
-
-            <div class="search-box glass-card" style="margin-top: 30px; padding: 20px;">
-                <form action="index.php" method="GET" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <input type="text" name="search" placeholder="Search products..." value="<?php echo e($search); ?>" class="glass-input" style="flex: 2; min-width: 200px;">
-                    <select name="locality" class="glass-input" style="flex: 1; min-width: 150px;">
-                        <option value="">All Localities</option>
-                        <?php foreach($localities as $loc): ?>
-                            <option value="<?php echo e($loc); ?>" <?php echo $locality == $loc ? 'selected' : ''; ?>><?php echo e($loc); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <select name="category" class="glass-input" style="flex: 1; min-width: 150px;">
-                        <option value="">All Categories</option>
-                        <?php foreach($categories as $cat): ?>
-                            <option value="<?php echo e($cat); ?>" <?php echo $category == $cat ? 'selected' : ''; ?>><?php echo e($cat); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <button type="submit" class="neon-button">SEARCH</button>
-                </form>
+<main class="container mt-4">
+    <!-- Hero Section / Promotional Banner -->
+    <section class="hero-banner mb-5">
+        <div class="glass-card p-0 overflow-hidden position-relative" style="height: 400px;">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" alt="Hero" class="w-100 h-100 object-fit-cover opacity-50">
+            <div class="position-absolute top-50 start-0 translate-middle-y px-5">
+                <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-cyan">50% OFF</span></h1>
+                <h2 class="h3 mb-4">On Next-Gen Hardware & Peripherals</h2>
+                <a href="#" class="btn btn-lg btn-primary rounded-pill px-5 shadow-lg">SHOP NOW</a>
             </div>
-        </header>
+        </div>
+    </section>
 
-        <section class="marketplace-grid">
-            <?php foreach ($products as $product): ?>
-            <div class="product-card glass-card <?php echo $product['is_featured'] ? 'featured' : ''; ?>">
-                <div class="product-img">
-                    <img src="<?php echo e($product['image']); ?>" alt="<?php echo e($product['name']); ?>">
+    <!-- Category Circles -->
+    <section class="categories-section mb-5">
+        <h4 class="section-title">Shop by Category</h4>
+        <div class="category-scroll d-flex justify-content-between">
+            <?php
+            $icons = ['Electronics' => 'fas fa-plug', 'Fashion' => 'fas fa-tshirt', 'Home' => 'fas fa-home', 'Beauty' => 'fas fa-magic', 'Sports' => 'fas fa-running', 'Toys' => 'fas fa-gamepad'];
+            foreach ($categories as $cat):
+                $icon = $icons[$cat] ?? 'fas fa-th-large';
+            ?>
+            <div class="category-item" onclick="window.location.href='index.php?category=<?php echo urlencode($cat); ?>'">
+                <div class="category-circle">
+                    <i class="<?php echo $icon; ?>"></i>
                 </div>
-                <h3><?php echo e($product['name']); ?></h3>
-                <p><?php echo e(substr($product['description'], 0, 80)); ?>...</p>
-                <div class="price-tag neon-text">Rs. <?php echo number_format($product['price'], 2); ?></div>
-                <a href="product_detail.php?id=<?php echo $product['id']; ?>" class="glass-button">VIEW DETAILS</a>
+                <div class="category-name text-uppercase"><?php echo e($cat); ?></div>
             </div>
             <?php endforeach; ?>
-        </section>
-    </div>
+        </div>
+    </section>
 
-    <footer class="glass-card">
-        <p>&copy; 2023 NexGen Integrated Marketplace & MLM. Built with Precision.</p>
-    </footer>
-</body>
-</html>
+    <!-- Filter & Search Summary (Mobile/Active Filters) -->
+    <?php if ($search || $category_filter || $locality): ?>
+    <div class="d-flex gap-2 mb-4">
+        <?php if($search): ?><span class="badge rounded-pill glass-card border-info">Search: <?php echo e($search); ?> <a href="index.php" class="text-white ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
+        <?php if($category_filter): ?><span class="badge rounded-pill glass-card border-info">Category: <?php echo e($category_filter); ?> <a href="index.php" class="text-white ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
+    </div>
+    <?php endif; ?>
+
+    <!-- Product Showcase -->
+    <section class="products-section">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h4 class="section-title mb-0">Deals of the Day</h4>
+            <a href="#" class="text-info text-decoration-none small">View All <i class="fas fa-chevron-right ms-1"></i></a>
+        </div>
+
+        <div class="row g-4">
+            <?php foreach ($products as $product): ?>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="glass-card product-card p-3">
+                    <div class="product-img-wrapper">
+                        <?php if($product['is_featured']): ?>
+                            <span class="badge bg-info position-absolute top-0 start-0 m-2 z-3 shadow">FEATURED</span>
+                        <?php endif; ?>
+                        <button class="wishlist-btn" data-id="<?php echo $product['id']; ?>"><i class="far fa-heart"></i></button>
+                        <img src="<?php echo e($product['image']); ?>" alt="<?php echo e($product['name']); ?>">
+                    </div>
+                    <div class="product-info mt-2">
+                        <a href="product_detail.php?id=<?php echo $product['id']; ?>" class="text-white text-decoration-none">
+                            <h5 class="product-title"><?php echo e($product['name']); ?></h5>
+                        </a>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="product-price">₹<?php echo number_format($product['price'], 2); ?></span>
+                            <button class="btn btn-sm btn-outline-info rounded-circle add-to-cart-btn" data-id="<?php echo $product['id']; ?>"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+    <!-- MLM Benefits Promo -->
+    <section class="mlm-promo mt-5 py-5">
+        <div class="glass-card p-5 text-center border-info">
+            <h2 class="neon-text mb-4">EARN WHILE YOU SHOP</h2>
+            <p class="lead mb-4 mx-auto" style="max-width: 800px;">Join our 10-level referral ecosystem and unlock massive commissions. Transform your marketplace experience into a wealth-building journey.</p>
+            <div class="row g-4 mt-2">
+                <div class="col-md-4">
+                    <div class="p-3 border-end border-secondary border-opacity-25">
+                        <h1 class="neon-cyan">10</h1>
+                        <p class="text-uppercase small fw-bold">Benefit Levels</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border-end border-secondary border-opacity-25">
+                        <h1 class="neon-cyan">₹3,000</h1>
+                        <p class="text-uppercase small fw-bold">One-Time Activation</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <h1 class="neon-cyan">∞</h1>
+                        <p class="text-uppercase small fw-bold">Rebirth Potential</p>
+                    </div>
+                </div>
+            </div>
+            <a href="register.php" class="btn btn-primary btn-lg rounded-pill px-5 mt-5">GET STARTED NOW</a>
+        </div>
+    </section>
+</main>
+
+<?php require_once 'includes/footer.php'; ?>

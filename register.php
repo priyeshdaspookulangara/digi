@@ -48,47 +48,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register | NexGen Marketplace</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    <div class="container">
-        <div class="glass-card" style="max-width: 400px; margin: 50px auto; padding: 40px;">
-            <h2 class="neon-text">Join the Network</h2>
-            <?php if ($error): ?><div class="alert error"><?php echo e($error); ?></div><?php endif; ?>
-            <?php if ($success): ?><div class="alert success"><?php echo e($success); ?></div><?php endif; ?>
+<?php
+$pageTitle = "Register | NexGen Marketplace";
+include 'includes/header.php';
+?>
+
+    <div class="container my-5">
+        <div class="glass-card p-5 mx-auto" style="max-width: 500px;">
+            <div class="text-center mb-4">
+                <h2 class="neon-text h3">Join the Network</h2>
+                <p class="small opacity-50">Create your account and start earning</p>
+            </div>
+
+            <?php if ($error): ?>
+                <div class="alert alert-danger bg-danger-subtle text-danger border-0 small mb-4">
+                    <?php echo e($error); ?>
+                </div>
+            <?php endif; ?>
+            <?php if ($success): ?>
+                <div class="alert alert-success bg-success-subtle text-success border-0 small mb-4">
+                    <?php echo e($success); ?> <a href="login.php" class="alert-link">Login now</a>
+                </div>
+            <?php endif; ?>
+
             <form method="POST">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="username" class="glass-input" required>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label small opacity-75">Username</label>
+                        <input type="text" name="username" class="glass-input" placeholder="johndoe" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small opacity-75">Email Address</label>
+                        <input type="email" name="email" class="glass-input" placeholder="john@example.com" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small opacity-75">Password</label>
+                        <input type="password" name="password" class="glass-input" placeholder="••••••••" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small opacity-75">Account Type</label>
+                        <select name="role" class="glass-input">
+                            <option value="member">Member</option>
+                            <option value="shop_owner">Shop Owner</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small opacity-75">Referrer (Optional)</label>
+                        <input type="text" name="referrer" class="glass-input" placeholder="Username" value="<?php echo e($_GET['ref'] ?? ''); ?>">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" class="glass-input" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" class="glass-input" required>
-                </div>
-                <div class="form-group">
-                    <label>Role</label>
-                    <select name="role" class="glass-input">
-                        <option value="member">Member</option>
-                        <option value="shop_owner">Shop Owner</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Referrer Username (Optional)</label>
-                    <input type="text" name="referrer" class="glass-input" value="<?php echo e($_GET['ref'] ?? ''); ?>">
-                </div>
-                <button type="submit" class="neon-button" style="width: 100%;">REGISTER</button>
+
+                <button type="submit" class="neon-button w-100 py-3 mt-4">CREATE ACCOUNT</button>
             </form>
-            <p style="margin-top:20px;">Already have an account? <a href="login.php" style="color:var(--neon-cyan);">Login here</a></p>
+
+            <p class="text-center small mt-4 mb-0">
+                Already have an account? <a href="login.php" class="neon-cyan text-decoration-none fw-bold">Login here</a>
+            </p>
         </div>
     </div>
-</body>
-</html>
+
+<?php include 'includes/footer.php'; ?>

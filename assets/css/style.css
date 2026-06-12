@@ -1,195 +1,320 @@
 :root {
-    --neon-blue: #00f3ff;
+    --neon-cyan: #00f3ff;
     --neon-purple: #bc13fe;
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    --dark-bg: #0b0e14;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-hover: rgba(255, 255, 255, 0.08);
 }
 
 body {
-    background: radial-gradient(circle at top left, #1a1a2e, #16213e, #0f3460);
-    color: #fff;
+    background-color: var(--dark-bg);
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(188, 19, 254, 0.05) 0%, transparent 40%);
+    color: #e0e0e0;
     font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    margin: 0;
+    overflow-x: hidden;
 }
 
+h1, h2, h3, h4, h5, .navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+/* Glassmorphism Core */
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    transition: transform 0.3s ease;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
+    border-color: rgba(0, 243, 255, 0.3);
+    background: var(--glass-hover);
     transform: translateY(-5px);
-    border-color: var(--neon-blue);
 }
 
-.neon-text {
-    text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
-}
-
-.neon-btn {
-    background: transparent;
-    border: 1px solid var(--neon-blue);
-    color: var(--neon-blue);
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.neon-btn:hover {
-    background: var(--neon-blue);
-    color: #000;
-    box-shadow: 0 0 20px var(--neon-blue);
-}
-
-.marketplace-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 25px;
-    padding: 40px;
-}
-
-.product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    background: rgba(255,255,255,0.05);
-}
-
-.product-card {
-    position: relative;
-}
-
-.featured-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--neon-blue);
-    color: #000;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    box-shadow: 0 0 10px var(--neon-blue);
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.neon-button, .neon-btn {
-    background: transparent;
-    border: 1px solid var(--neon-blue);
-    color: var(--neon-blue);
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: 0.3s;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.neon-button:hover, .neon-btn:hover {
-    background: var(--neon-blue);
-    color: #000;
-    box-shadow: 0 0 20px var(--neon-blue);
-}
-
-.glass-input {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    width: 100%;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-}
-
-.glass-input:focus {
-    outline: none;
-    border-color: var(--neon-blue);
-}
-
-.neon-line {
-    border: 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--neon-blue), transparent);
-    margin: 20px 0;
-}
-
-/* Admin Dashboard Specific Styles */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.stat-item h3 {
-    margin-top: 0;
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-.stat-item .neon-text {
-    font-size: 1.8rem;
-    margin: 10px 0 0 0;
-}
-
-.admin-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 30px;
-}
-
-.glass-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.glass-table th, .glass-table td {
-    padding: 12px;
-    text-align: left;
+/* Navbar & Bars */
+.top-bar {
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 0.85rem;
     border-bottom: 1px solid var(--glass-border);
 }
 
-.glass-table th {
-    font-weight: bold;
-    color: var(--neon-blue);
+.top-bar a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.main-nav {
+    background: rgba(11, 14, 20, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 0;
+}
+
+.neon-text {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    letter-spacing: 2px;
+}
+
+.neon-cyan { color: var(--neon-cyan); }
+
+/* Search Container */
+.search-container {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.search-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 30px !important;
+    color: #fff !important;
+    padding: 0.6rem 1.5rem !important;
+    padding-right: 3.5rem !important;
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: #fff !important;
+    padding: 0.8rem 1rem !important;
+    border-radius: 12px !important;
+    transition: 0.3s;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--neon-cyan) !important;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2) !important;
+    outline: none;
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--neon-cyan);
+    border: none;
+    background: none;
+    font-size: 1.1rem;
+}
+
+/* Buttons */
+.neon-button {
+    background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+    border: none;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+.neon-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(188, 19, 254, 0.5);
+    color: #fff;
+}
+
+.neon-button-sm {
+    background: transparent;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    border-radius: 25px;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.neon-button-sm:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-cyan);
+}
+
+.glass-btn-circle {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.glass-btn-circle:hover {
+    background: var(--neon-purple);
+    border-color: var(--neon-purple);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* Categories UI */
+.category-scroll {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 20px 0;
+    scrollbar-width: none;
+}
+
+.category-item {
+    flex: 0 0 auto;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+.category-circle {
+    width: 80px;
+    height: 80px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.category-item:hover .category-circle {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.category-name {
     font-size: 0.8rem;
+    font-weight: 600;
 }
 
-.glass-table tr:hover {
+/* Product Cards */
+.product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-img-wrapper {
+    height: 200px;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.product-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.1);
+}
+
+.wishlist-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+.product-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-price {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--neon-cyan);
+}
+
+/* Footer & Other */
+.neon-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+    border: none;
+}
+
+.footer-links a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    line-height: 2;
+}
+
+.footer-links a:hover {
+    color: var(--neon-cyan);
+    padding-left: 5px;
+}
+
+.glass-input-group .form-control {
     background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: #fff;
 }
 
-@media (max-width: 768px) {
-    .admin-content {
-        grid-template-columns: 1fr;
-    }
+.input-group-text.glass-input {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-right: none !important;
+}
+
+/* Utilities */
+.section-title {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
 }

@@ -39,86 +39,187 @@ $offers = $stmt->fetchAll();
 
 $csrf_token = get_csrf_token();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Portal | <?php echo htmlspecialchars($shop['name']); ?></title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1 class="neon-text">Shop Management Dashboard</h1>
+<?php
+$pageTitle = "Shop Portal | " . htmlspecialchars($shop['name']);
+include 'includes/header.php';
+?>
 
-        <div class="dashboard-grid">
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="neon-text">Shop Management</h1>
+            <div class="badge bg-info text-dark p-2"><?php echo e($shop['name']); ?></div>
+        </div>
+
+        <div class="row g-4">
+        <div class="row g-4 mb-5">
+            <!-- Shop Configuration -->
+            <div class="col-12">
+                <div class="glass-card p-4">
+                    <h2 class="h4 mb-4"><i class="fas fa-store me-2 neon-cyan"></i>Shop Identity & Branding</h2>
+                    <form action="process_shop.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                        <input type="hidden" name="existing_logo" value="<?php echo e($shop['logo']); ?>">
+                        <input type="hidden" name="existing_wallpaper" value="<?php echo e($shop['wallpaper']); ?>">
+
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label small opacity-75">Shop Name</label>
+                                <input type="text" name="name" class="glass-input" value="<?php echo e($shop['name']); ?>" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small opacity-75">Category</label>
+                                <input type="text" name="category" class="glass-input" value="<?php echo e($shop['category']); ?>" placeholder="Electronics, Fashion, etc.">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small opacity-75">Locality</label>
+                                <input type="text" name="locality" class="glass-input" value="<?php echo e($shop['locality']); ?>" placeholder="City, State">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small opacity-75">Shop Logo</label>
+                                <input type="file" name="shop_logo" class="glass-input">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small opacity-75">Shop Wallpaper/Cover</label>
+                                <input type="file" name="shop_wallpaper" class="glass-input">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small opacity-75">Shop Description</label>
+                                <textarea name="description" class="glass-input" rows="2"><?php echo e($shop['description']); ?></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <h3 class="h6 mt-3 neon-text small text-uppercase fw-bold">Shop SEO & Social Preview</h3>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <input type="text" name="meta_keywords" placeholder="Keywords" class="glass-input" value="<?php echo e($shop['meta_keywords']); ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="og_title" placeholder="OG Title" class="glass-input" value="<?php echo e($shop['og_title']); ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="og_description" placeholder="OG Description" class="glass-input" value="<?php echo e($shop['og_description']); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="neon-button mt-4">Update Shop Settings</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
             <!-- Product Management -->
-            <section class="glass-card">
-                <h2>Add/Edit Product</h2>
-                <form action="process_product.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Product Name" class="glass-input" required>
-                        <input type="number" name="price" placeholder="Price (Rs.)" class="glass-input" required>
-                    </div>
-                    <textarea name="description" placeholder="Description" class="glass-input" required></textarea>
+            <div class="col-lg-8">
+                <div class="glass-card p-4">
+                    <h2 class="h4 mb-4"><i class="fas fa-plus-circle me-2 neon-cyan"></i>Add New Product</h2>
+                    <form action="process_product.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-8">
+                                <label class="form-label opacity-75 small">Product Name</label>
+                                <input type="text" name="name" class="glass-input" placeholder="e.g. CyberPulse Smartwatch" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label opacity-75 small">Price (Rs.)</label>
+                                <input type="number" name="price" class="glass-input" placeholder="0.00" required>
+                            </div>
+                        </div>
 
-                    <hr class="neon-line">
-                    <h3>SEO & Social Marketing</h3>
-                    <input type="text" name="meta_keywords" placeholder="Keywords (comma separated)" class="glass-input">
-                    <input type="text" name="og_title" placeholder="OG Title (Social Preview)" class="glass-input">
-                    <textarea name="og_description" placeholder="OG Description" class="glass-input"></textarea>
+                        <div class="mb-3">
+                            <label class="form-label opacity-75 small">Description</label>
+                            <textarea name="description" class="glass-input" rows="3" placeholder="Describe your product highlights..." required></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Product Image <input type="file" name="product_image" class="glass-input"></label>
-                        <label>Product Video <input type="file" name="product_video" class="glass-input"></label>
-                    </div>
+                        <div class="mb-4">
+                            <h3 class="h5 mb-3 neon-text small text-uppercase fw-bold">SEO & Social Marketing</h3>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <input type="text" name="meta_keywords" placeholder="Keywords (comma separated)" class="glass-input">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" name="og_title" placeholder="OG Title (Social Preview)" class="glass-input">
+                                </div>
+                                <div class="col-md-6">
+                                    <textarea name="og_description" placeholder="OG Description" class="glass-input" rows="1"></textarea>
+                                </div>
+                            </div>
+                        </div>
 
-                    <label><input type="checkbox" name="is_featured"> Featured Product</label>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label opacity-75 small">Product Image</label>
+                                <input type="file" name="product_image" class="glass-input">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label opacity-75 small">Product Video</label>
+                                <input type="file" name="product_video" class="glass-input">
+                            </div>
+                        </div>
 
-                    <button type="submit" class="neon-button">SAVE PRODUCT</button>
-                </form>
-            </section>
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="is_featured" id="featuredSwitch">
+                                <label class="form-check-label" for="featuredSwitch">Mark as Featured Product</label>
+                            </div>
+                        </div>
 
-            <!-- Offer Management -->
-            <section class="glass-card">
-                <h2>Manage Active Offers</h2>
-                <form method="POST">
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                    <input type="hidden" name="add_offer" value="1">
-                    <input type="text" name="offer_title" placeholder="Offer Title" class="glass-input" required>
-                    <textarea name="offer_desc" placeholder="Offer Description" class="glass-input"></textarea>
-                    <input type="number" name="discount" placeholder="Discount %" class="glass-input">
-                    <button type="submit" class="neon-button">CREATE OFFER</button>
-                </form>
-                <div class="offer-list" style="margin-top: 20px;">
-                    <?php foreach($offers as $offer): ?>
-                    <div class="enquiry-item glass-card" style="margin-bottom: 10px;">
-                        <p><strong><?php echo e($offer['title']); ?></strong> (<?php echo e($offer['discount_percent']); ?>%)</p>
-                        <p><?php echo e($offer['description']); ?></p>
-                    </div>
-                    <?php endforeach; ?>
+                        <button type="submit" class="neon-button w-100">SAVE PRODUCT</button>
+                    </form>
                 </div>
-            </section>
+            </div>
 
-            <!-- Enquiry System -->
-            <section class="glass-card">
-                <h2>Customer Enquiries</h2>
-                <div class="enquiry-list">
-                    <?php if(empty($enquiries)): ?>
-                        <p>No enquiries yet.</p>
-                    <?php endif; ?>
-                    <?php foreach($enquiries as $enq): ?>
-                    <div class="enquiry-item glass-card">
-                        <p><strong>From:</strong> <?php echo e($enq['customer_name']); ?> (<?php echo e($enq['customer_email']); ?>)</p>
-                        <p><strong>Product:</strong> <?php echo e($enq['product_name'] ?? 'General'); ?></p>
-                        <p>"<?php echo e($enq['message']); ?>"</p>
-                        <button class="glass-button">Reply</button>
+            <div class="col-lg-4">
+                <!-- Offer Management -->
+                <div class="glass-card p-4 mb-4">
+                    <h2 class="h4 mb-4"><i class="fas fa-tag me-2 neon-purple"></i>Manage Offers</h2>
+                    <form method="POST">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                        <input type="hidden" name="add_offer" value="1">
+                        <div class="mb-3">
+                            <input type="text" name="offer_title" placeholder="Offer Title" class="glass-input" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea name="offer_desc" placeholder="Offer Description" class="glass-input" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" name="discount" placeholder="Discount %" class="glass-input">
+                        </div>
+                        <button type="submit" class="neon-button w-100 py-2">CREATE OFFER</button>
+                    </form>
+
+                    <div class="mt-4 pt-3 border-top border-secondary">
+                        <h4 class="small text-uppercase opacity-50 mb-3">Active Offers</h4>
+                        <?php foreach($offers as $offer): ?>
+                        <div class="glass-card p-2 mb-2 small border-0 bg-white-10">
+                            <div class="d-flex justify-content-between">
+                                <strong><?php echo e($offer['title']); ?></strong>
+                                <span class="badge bg-success"><?php echo e($offer['discount_percent']); ?>% OFF</span>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
                     </div>
-                    <?php endforeach; ?>
                 </div>
-            </section>
+
+                <!-- Enquiry System -->
+                <div class="glass-card p-4">
+                    <h2 class="h4 mb-4"><i class="fas fa-envelope me-2 neon-cyan"></i>Customer Enquiries</h2>
+                    <div class="enquiry-list" style="max-height: 400px; overflow-y: auto;">
+                        <?php if(empty($enquiries)): ?>
+                            <p class="text-center opacity-50 my-5">No enquiries yet.</p>
+                        <?php endif; ?>
+                        <?php foreach($enquiries as $enq): ?>
+                        <div class="enquiry-item p-3 mb-3 glass-card border-0 bg-white-10">
+                            <p class="mb-1 small"><strong>From:</strong> <?php echo e($enq['customer_name']); ?></p>
+                            <p class="mb-2 small"><strong>Product:</strong> <span class="neon-cyan"><?php echo e($enq['product_name'] ?? 'General'); ?></span></p>
+                            <p class="mb-3 small italic">"<?php echo e($enq['message']); ?>"</p>
+                            <button class="btn btn-sm neon-button-sm w-100">Reply</button>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+
+<?php include 'includes/footer.php'; ?>
