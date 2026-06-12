@@ -8,13 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     require_role('admin');
 
-    // Create settings table if not exists (lazy migration)
-    $pdo->exec("CREATE TABLE IF NOT EXISTS site_settings (key TEXT PRIMARY KEY, value TEXT)");
-
     foreach ($_POST as $key => $value) {
         if ($key === 'csrf_token') continue;
 
-        $stmt = $pdo->prepare("INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)");
+        // Handle MySQL and SQLite UPSERT
+        $stmt = $pdo->prepare("INSERT INTO site_settings (key_name, key_value) VALUES (?, ?) ON CONFLICT(key_name) DO UPDATE SET key_value = excluded.key_value");
         $stmt->execute([$key, $value]);
     }
 

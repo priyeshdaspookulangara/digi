@@ -20,7 +20,9 @@ if (!$shop) {
 
 // Handle Offer Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_offer'])) {
-    validate_csrf($_POST['csrf_token'] ?? '');
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     $stmt = $pdo->prepare("INSERT INTO offers (shop_id, title, description, discount_percent) VALUES (?, ?, ?, ?)");
     $stmt->execute([$shop['id'], $_POST['offer_title'], $_POST['offer_desc'], $_POST['discount']]);
 }

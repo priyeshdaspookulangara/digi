@@ -9,7 +9,9 @@ $product = $stmt->fetch();
 
 // Handle Enquiry Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
-    validate_csrf($_POST['csrf_token'] ?? '');
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     $stmt = $pdo->prepare("INSERT INTO enquiries (shop_id, product_id, customer_name, customer_email, message) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([$product['shop_id'], $product['id'], $_POST['name'], $_POST['email'], $_POST['message']]);
     echo "<script>alert('Enquiry sent successfully!');</script>";
