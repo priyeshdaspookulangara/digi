@@ -38,10 +38,10 @@ if (empty($categories)) {
 // Mock fallback for products
 if (empty($products)) {
     $products = [
-        ['id' => 1, 'name' => 'CyberPulse Smartwatch', 'price' => 12500, 'image' => 'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400', 'is_featured' => 1, 'description' => 'AI health tracking.'],
-        ['id' => 2, 'name' => 'Neon Drift Headphones', 'price' => 8900, 'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400', 'is_featured' => 0, 'description' => 'Cyberpunk aesthetics.'],
-        ['id' => 3, 'name' => 'Quantum VR Headset', 'price' => 45000, 'image' => 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=400', 'is_featured' => 1, 'description' => 'Next-gen immersion.'],
-        ['id' => 4, 'name' => 'AeroDrone X Pro', 'price' => 72000, 'image' => 'https://images.unsplash.com/photo-1473968512647-3e44a224fe8f?w=400', 'is_featured' => 0, 'description' => '4K stability.']
+        ['id' => 1, 'name' => 'CyberPulse Smartwatch', 'price' => 12500, 'image' => 'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=600', 'is_featured' => 1, 'description' => 'AI health tracking.'],
+        ['id' => 2, 'name' => 'Neon Drift Headphones', 'price' => 8900, 'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600', 'is_featured' => 0, 'description' => 'Cyberpunk aesthetics.'],
+        ['id' => 3, 'name' => 'Quantum VR Headset', 'price' => 45000, 'image' => 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600', 'is_featured' => 1, 'description' => 'Next-gen immersion.'],
+        ['id' => 4, 'name' => 'AeroDrone X Pro', 'price' => 72000, 'image' => 'https://images.unsplash.com/photo-1473968512647-3e44a224fe8f?w=600', 'is_featured' => 0, 'description' => '4K stability.']
     ];
 }
 ?>
