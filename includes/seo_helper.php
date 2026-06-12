@@ -57,21 +57,25 @@ function renderShopJSONLD($shop) {
 function renderMetaTags($title, $description, $image, $url, $keywords = "") {
     $html = "";
     if ($keywords) {
-        $html .= '<meta name="keywords" content="' . htmlspecialchars($keywords) . '">' . "\n";
+        $html .= '    <meta name="keywords" content="' . htmlspecialchars($keywords) . '">' . "\n";
     }
 
     // Open Graph
-    $html .= '<meta property="og:title" content="' . htmlspecialchars($title) . '">' . "\n";
-    $html .= '<meta property="og:description" content="' . htmlspecialchars($description) . '">' . "\n";
-    $html .= '<meta property="og:image" content="' . htmlspecialchars($image) . '">' . "\n";
-    $html .= '<meta property="og:url" content="' . htmlspecialchars($url) . '">' . "\n";
-    $html .= '<meta property="og:type" content="website">' . "\n";
+    $html .= '    <meta property="og:title" content="' . htmlspecialchars($title) . '">' . "\n";
+    $html .= '    <meta property="og:description" content="' . htmlspecialchars($description) . '">' . "\n";
+    if ($image) {
+        $html .= '    <meta property="og:image" content="' . htmlspecialchars($image) . '">' . "\n";
+    }
+    $html .= '    <meta property="og:url" content="' . htmlspecialchars($url) . '">' . "\n";
+    $html .= '    <meta property="og:type" content="website">' . "\n";
 
     // Twitter Cards
-    $html .= '<meta name="twitter:card" content="summary_large_image">' . "\n";
-    $html .= '<meta name="twitter:title" content="' . htmlspecialchars($title) . '">' . "\n";
-    $html .= '<meta name="twitter:description" content="' . htmlspecialchars($description) . '">' . "\n";
-    $html .= '<meta name="twitter:image" content="' . htmlspecialchars($image) . '">' . "\n";
+    $html .= '    <meta name="twitter:card" content="summary_large_image">' . "\n";
+    $html .= '    <meta name="twitter:title" content="' . htmlspecialchars($title) . '">' . "\n";
+    $html .= '    <meta name="twitter:description" content="' . htmlspecialchars($description) . '">' . "\n";
+    if ($image) {
+        $html .= '    <meta name="twitter:image" content="' . htmlspecialchars($image) . '">' . "\n";
+    }
 
     return $html;
 }

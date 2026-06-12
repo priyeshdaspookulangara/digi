@@ -39,8 +39,18 @@ $offers = $stmt->fetchAll();
 
 $csrf_token = get_csrf_token();
 ?>
+<!-- Structured Data -->
+<?php echo renderShopJSONLD($shop); ?>
+
 <?php
 $pageTitle = "Shop Portal | " . htmlspecialchars($shop['name']);
+$seoTags = [
+    'title' => $shop['og_title'] ?: $shop['name'] . " | NexGen Shop",
+    'description' => $shop['og_description'] ?: substr(strip_tags($shop['description']), 0, 160),
+    'image' => $shop['logo'],
+    'url' => BASE_URL . "/shop_portal.php", // Should ideally have an ID if public
+    'keywords' => $shop['meta_keywords']
+];
 include 'includes/header.php';
 ?>
 

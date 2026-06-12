@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/config.php';
-require_once 'includes/seo_helper.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/seo_helper.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

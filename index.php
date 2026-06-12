@@ -49,30 +49,32 @@ if (empty($products)) {
 <main class="container mt-4">
     <!-- Hero Section / Promotional Banner -->
     <section class="hero-banner mb-5">
-        <div class="glass-card p-0 overflow-hidden position-relative" style="height: 400px;">
-            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" alt="Hero" class="w-100 h-100 object-fit-cover opacity-50">
-            <div class="position-absolute top-50 start-0 translate-middle-y px-5">
-                <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-cyan">50% OFF</span></h1>
-                <h2 class="h3 mb-4">On Next-Gen Hardware & Peripherals</h2>
-                <a href="#" class="btn btn-lg btn-primary rounded-pill px-5 shadow-lg">SHOP NOW</a>
+        <div class="glass-card p-0 overflow-hidden position-relative" style="height: 450px;">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" alt="Hero" class="w-100 h-100 object-fit-cover">
+            <div class="position-absolute top-0 start-0 w-100 h-100 hero-overlay d-flex align-items-center">
+                <div class="container px-5">
+                    <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-cyan">50% OFF</span></h1>
+                    <p class="h3 mb-4 fw-light opacity-75">On Next-Gen Hardware & Peripherals</p>
+                    <a href="#" class="btn btn-lg neon-button px-5">SHOP NOW</a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Category Circles -->
     <section class="categories-section mb-5">
-        <h4 class="section-title">Shop by Category</h4>
-        <div class="category-scroll d-flex justify-content-between">
+        <h4 class="section-title">Browse Categories</h4>
+        <div class="category-scroll d-flex flex-wrap">
             <?php
             $icons = ['Electronics' => 'fas fa-plug', 'Fashion' => 'fas fa-tshirt', 'Home' => 'fas fa-home', 'Beauty' => 'fas fa-magic', 'Sports' => 'fas fa-running', 'Toys' => 'fas fa-gamepad'];
             foreach ($categories as $cat):
                 $icon = $icons[$cat] ?? 'fas fa-th-large';
             ?>
-            <div class="category-item" onclick="window.location.href='index.php?category=<?php echo urlencode($cat); ?>'">
+            <div class="category-item text-center" style="width: 120px;" onclick="window.location.href='index.php?category=<?php echo urlencode($cat); ?>'">
                 <div class="category-circle">
                     <i class="<?php echo $icon; ?>"></i>
                 </div>
-                <div class="category-name text-uppercase"><?php echo e($cat); ?></div>
+                <div class="category-name"><?php echo e($cat); ?></div>
             </div>
             <?php endforeach; ?>
         </div>
