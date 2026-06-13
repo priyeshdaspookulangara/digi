@@ -119,3 +119,27 @@ INSERT OR IGNORE INTO users (username, password, email, role) VALUES ('admin', '
 INSERT OR IGNORE INTO site_settings (key_name, key_value) VALUES ('entry_fee', '3000.00');
 INSERT OR IGNORE INTO site_settings (key_name, key_value) VALUES ('level_commission', '100.00');
 INSERT OR IGNORE INTO site_settings (key_name, key_value) VALUES ('rebirth_milestone', '10'); -- Rebirth every 10 referrals for example
+
+CREATE TABLE IF NOT EXISTS banners (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    image_url TEXT NOT NULL,
+    target_url TEXT,
+    title TEXT,
+    description TEXT,
+    is_active INTEGER DEFAULT 1,
+    display_order INTEGER DEFAULT 0,
+    views INTEGER DEFAULT 0,
+    clicks INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    image_url TEXT NOT NULL,
+    target_url TEXT,
+    position TEXT, -- e.g., 'below_hero_left', 'below_hero_right'
+    is_active INTEGER DEFAULT 1,
+    views INTEGER DEFAULT 0,
+    clicks INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

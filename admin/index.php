@@ -42,6 +42,18 @@ include '../includes/header.php';
             </div>
         </div>
 
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="glass-card p-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="h5 m-0 neon-text">Marketing & Analytics</h3>
+                        <p class="small opacity-50 mb-0">Manage sliders, banners, and track campaign performance.</p>
+                    </div>
+                    <a href="marketing.php" class="neon-button">Manage Marketing</a>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4">
             <div class="col-lg-4">
                 <section class="glass-card p-4">

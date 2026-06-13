@@ -35,6 +35,23 @@ if (empty($categories)) {
     $categories = ['Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys'];
 }
 
+// Fetch Banners
+$banners = $pdo->query("SELECT * FROM banners WHERE is_active = 1 ORDER BY display_order ASC")->fetchAll();
+// Record Banner Views
+foreach ($banners as $b) {
+    $pdo->prepare("UPDATE banners SET views = views + 1 WHERE id = ?")->execute([$b['id']]);
+}
+
+// Fetch Ads
+$ads = $pdo->query("SELECT * FROM ads WHERE is_active = 1")->fetchAll();
+// Organize ads by position
+$ads_by_pos = [];
+foreach ($ads as $a) {
+    $ads_by_pos[$a['position']] = $a;
+    // Record Ad Views
+    $pdo->prepare("UPDATE ads SET views = views + 1 WHERE id = ?")->execute([$a['id']]);
+}
+
 // Mock fallback for products
 if (empty($products)) {
     $products = [
@@ -47,19 +64,75 @@ if (empty($products)) {
 ?>
 
 <main class="container mt-4">
-    <!-- Hero Section / Promotional Banner -->
-    <section class="hero-banner mb-5">
-        <div class="glass-card p-0 overflow-hidden position-relative" style="height: 450px;">
-            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" alt="Hero" class="w-100 h-100 object-fit-cover">
-            <div class="position-absolute top-0 start-0 w-100 h-100 hero-overlay d-flex align-items-center">
-                <div class="container px-5">
-                    <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-cyan">50% OFF</span></h1>
-                    <p class="h3 mb-4 fw-light opacity-75">On Next-Gen Hardware & Peripherals</p>
-                    <a href="#" class="btn btn-lg neon-button px-5">SHOP NOW</a>
+    <!-- Hero Section / Dynamic Slider -->
+    <section class="hero-banner mb-4">
+        <?php if (!empty($banners)): ?>
+            <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <?php foreach($banners as $index => $b): ?>
+                        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<?php echo $index; ?>" class="<?php echo $index === 0 ? 'active' : ''; ?>"></button>
+                    <?php endforeach; ?>
+                </div>
+                <div class="carousel-inner glass-card p-0 overflow-hidden" style="height: 450px; border-radius: 20px;">
+                    <?php foreach($banners as $index => $b): ?>
+                    <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?> h-100">
+                        <a href="track.php?type=banner&id=<?php echo $b['id']; ?>">
+                            <img src="<?php echo BASE_URL . '/' . $b['image_url']; ?>" class="d-block w-100 h-100 object-fit-cover" alt="<?php echo e($b['title']); ?>">
+                            <div class="carousel-caption d-none d-md-block text-start" style="left: 10%; bottom: 20%;">
+                                <h1 class="display-3 fw-bold neon-text mb-3"><?php echo e($b['title']); ?></h1>
+                                <p class="h4 mb-4 fw-light opacity-75"><?php echo e($b['description']); ?></p>
+                                <span class="btn btn-lg neon-button px-5">SHOP NOW</span>
+                            </div>
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        <?php else: ?>
+            <div class="glass-card p-0 overflow-hidden position-relative" style="height: 450px;">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" alt="Hero" class="w-100 h-100 object-fit-cover">
+                <div class="position-absolute top-0 start-0 w-100 h-100 hero-overlay d-flex align-items-center">
+                    <div class="container px-5">
+                        <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-cyan">50% OFF</span></h1>
+                        <p class="h3 mb-4 fw-light opacity-75">On Next-Gen Hardware & Peripherals</p>
+                        <a href="#" class="btn btn-lg neon-button px-5">SHOP NOW</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
     </section>
+
+    <!-- Ad Spaces Underneath -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <?php if(isset($ads_by_pos['below_hero_left'])): ?>
+                <a href="track.php?type=ad&id=<?php echo $ads_by_pos['below_hero_left']['id']; ?>" class="d-block glass-card p-0 overflow-hidden" style="height: 180px;">
+                    <img src="<?php echo BASE_URL . '/' . $ads_by_pos['below_hero_left']['image_url']; ?>" class="w-100 h-100 object-fit-cover ad-hover-effect">
+                </a>
+            <?php else: ?>
+                <div class="glass-card d-flex align-items-center justify-content-center opacity-25" style="height: 180px; border-style: dashed;">
+                    <span class="small">AD SPACE (LEFT)</span>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="col-md-6">
+            <?php if(isset($ads_by_pos['below_hero_right'])): ?>
+                <a href="track.php?type=ad&id=<?php echo $ads_by_pos['below_hero_right']['id']; ?>" class="d-block glass-card p-0 overflow-hidden" style="height: 180px;">
+                    <img src="<?php echo BASE_URL . '/' . $ads_by_pos['below_hero_right']['image_url']; ?>" class="w-100 h-100 object-fit-cover ad-hover-effect">
+                </a>
+            <?php else: ?>
+                <div class="glass-card d-flex align-items-center justify-content-center opacity-25" style="height: 180px; border-style: dashed;">
+                    <span class="small">AD SPACE (RIGHT)</span>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 
     <!-- Category Circles -->
     <section class="categories-section mb-5">

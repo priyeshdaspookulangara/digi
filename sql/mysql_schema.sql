@@ -99,3 +99,27 @@ INSERT IGNORE INTO users (username, password, email, role) VALUES ('admin', '$2y
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('entry_fee', '3000.00');
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('level_commission', '100.00');
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('rebirth_milestone', '10');
+
+CREATE TABLE IF NOT EXISTS banners (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image_url VARCHAR(255) NOT NULL,
+    target_url VARCHAR(255),
+    title VARCHAR(255),
+    description TEXT,
+    is_active TINYINT(1) DEFAULT 1,
+    display_order INT DEFAULT 0,
+    views INT DEFAULT 0,
+    clicks INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS ads (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image_url VARCHAR(255) NOT NULL,
+    target_url VARCHAR(255),
+    position VARCHAR(50),
+    is_active TINYINT(1) DEFAULT 1,
+    views INT DEFAULT 0,
+    clicks INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;

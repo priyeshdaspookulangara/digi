@@ -1,1 +1,139 @@
-[Fri Jun 12 15:07:41 2026] Failed to listen on localhost:8000 (reason: Address already in use)
+[Sat Jun 13 04:02:48 2026] PHP 8.3.6 Development Server (http://0.0.0.0:8000) started
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50952 Accepted
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50952 [200]: GET /login.php
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50952 Closing
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50958 Accepted
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50974 Accepted
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50958 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50974 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50974 Closing
+[Sat Jun 13 04:03:59 2026] 127.0.0.1:50958 Closing
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50990 Accepted
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50990 [200]: POST /cart_handler.php
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50990 Closing
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50996 Accepted
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50996 [200]: GET /login.php?
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50996 Closing
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50998 Accepted
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:51012 Accepted
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50998 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:50998 Closing
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:51012 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:51012 Closing
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:51014 Accepted
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:51014 [200]: POST /cart_handler.php
+[Sat Jun 13 04:04:00 2026] 127.0.0.1:51014 Closing
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51022 Accepted
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51022 [302]: GET /admin/marketing.php
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51022 Closing
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51028 Accepted
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51028 [200]: GET /login.php
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51028 Closing
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51040 Accepted
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51042 Accepted
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51040 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51042 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51042 Closing
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51040 Closing
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51058 Accepted
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51058 [200]: POST /cart_handler.php
+[Sat Jun 13 04:04:01 2026] 127.0.0.1:51058 Closing
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37310 Accepted
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37310 [200]: GET /login.php
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37310 Closing
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37320 Accepted
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37330 Accepted
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37320 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37330 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37320 Closing
+[Sat Jun 13 04:06:42 2026] 127.0.0.1:37330 Closing
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49058 Accepted
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49058 [200]: POST /cart_handler.php
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49058 Closing
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49074 Accepted
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49074 [200]: GET /login.php?
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49074 Closing
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49084 Accepted
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49092 Accepted
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49084 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49092 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49084 Closing
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49092 Closing
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49096 Accepted
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49096 [200]: POST /cart_handler.php
+[Sat Jun 13 04:06:43 2026] 127.0.0.1:49096 Closing
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49108 Accepted
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49108 [302]: GET /admin/marketing.php
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49108 Closing
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49122 Accepted
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49122 [200]: GET /login.php
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49122 Closing
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49130 Accepted
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49146 Accepted
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49130 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49130 Closing
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49146 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49146 Closing
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49152 Accepted
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49152 [200]: POST /cart_handler.php
+[Sat Jun 13 04:06:44 2026] 127.0.0.1:49152 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51150 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51150 [200]: GET /login.php
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51150 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51156 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51162 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51156 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51156 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51162 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51162 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51170 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51170 [200]: POST /cart_handler.php
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51170 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51182 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51182 [200]: GET /login.php?
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51182 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51186 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51202 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51186 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51202 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51202 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51186 Closing
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51212 Accepted
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51212 [200]: POST /cart_handler.php
+[Sat Jun 13 04:09:33 2026] 127.0.0.1:51212 Closing
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51224 Accepted
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51224 [302]: GET /admin/marketing.php
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51224 Closing
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51226 Accepted
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51226 [200]: GET /login.php
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51226 Closing
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51228 Accepted
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51238 Accepted
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51228 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51238 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51228 Closing
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51238 Closing
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51244 Accepted
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51244 [200]: POST /cart_handler.php
+[Sat Jun 13 04:09:34 2026] 127.0.0.1:51244 Closing
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51574 Accepted
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51574 [200]: GET /index.php
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51574 Closing
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51588 Accepted
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51594 Accepted
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51588 [200]: GET /assets/css/style.css
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51594 [404]: GET /https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200 - No such file or directory
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51594 Closing
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51588 Closing
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51608 Accepted
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51608 [200]: GET /assets/js/main.js
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51608 Closing
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51610 Accepted
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51610 [200]: POST /cart_handler.php
+[Sat Jun 13 04:11:57 2026] 127.0.0.1:51610 Closing
+[Sat Jun 13 04:13:51 2026] 127.0.0.1:50608 Accepted
+[Sat Jun 13 04:13:51 2026] 127.0.0.1:50608 [200]: GET /index.php
+[Sat Jun 13 04:13:51 2026] 127.0.0.1:50608 Closing
+[Sat Jun 13 04:13:51 2026] 127.0.0.1:50612 Accepted
+[Sat Jun 13 04:13:51 2026] 127.0.0.1:50612 [302]: GET /track.php?type=banner&id=1
+[Sat Jun 13 04:13:51 2026] 127.0.0.1:50612 Closing
