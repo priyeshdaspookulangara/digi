@@ -5,8 +5,14 @@ require_role('admin');
 // Handle Category Addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     if (!verify_csrf_token($_POST['csrf_token'])) die("CSRF failed");
-    $stmt = $pdo->prepare("INSERT OR IGNORE INTO shop_categories (name) VALUES (?)");
+
+    // Cross-DB compatible check then insert
+    $stmt = $pdo->prepare("SELECT id FROM shop_categories WHERE name = ?");
     $stmt->execute([$_POST['cat_name']]);
+    if (!$stmt->fetch()) {
+        $stmt = $pdo->prepare("INSERT INTO shop_categories (name) VALUES (?)");
+        $stmt->execute([$_POST['cat_name']]);
+    }
 }
 
 // Handle Shop Type/Category Update
