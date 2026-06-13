@@ -13,6 +13,11 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (referrer_id) REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS shop_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS shops (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     owner_id INTEGER NOT NULL,
@@ -25,6 +30,7 @@ CREATE TABLE IF NOT EXISTS shops (
     og_description TEXT,
     locality TEXT,
     category TEXT,
+    type TEXT CHECK(type IN ('privilege', 'classic', 'free_listing')) DEFAULT 'free_listing',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (owner_id) REFERENCES users(id)
 );
@@ -35,6 +41,7 @@ CREATE TABLE IF NOT EXISTS products (
     name TEXT NOT NULL,
     description TEXT,
     price REAL NOT NULL,
+    discount_entry TEXT,
     image TEXT,
     video TEXT,
     is_featured INTEGER DEFAULT 0,
@@ -115,6 +122,8 @@ CREATE TABLE IF NOT EXISTS wishlist (
 
 -- Seed Initial Data
 INSERT OR IGNORE INTO users (username, password, email, role) VALUES ('admin', '$2y$10$V9h4PcIocyO/Q5xl1FX//u/ka7bxSHo1SpKlF3RjOG4oVmp4z6gXC', 'admin@example.com', 'admin');
+
+INSERT OR IGNORE INTO shop_categories (name) VALUES ('Electronics'), ('Fashion'), ('Home'), ('Beauty'), ('Sports'), ('Grocery'), ('Automobile');
 
 INSERT OR IGNORE INTO site_settings (key_name, key_value) VALUES ('entry_fee', '3000.00');
 INSERT OR IGNORE INTO site_settings (key_name, key_value) VALUES ('level_commission', '100.00');

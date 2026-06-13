@@ -52,6 +52,15 @@ include '../includes/header.php';
                     <a href="marketing.php" class="neon-button">Manage Marketing</a>
                 </div>
             </div>
+            <div class="col-12 mt-4">
+                <div class="glass-card p-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="h5 m-0 neon-text">Shop & Category Control</h3>
+                        <p class="small opacity-50 mb-0">Define shop types (Privilege/Classic/Free) and manage marketplace categories.</p>
+                    </div>
+                    <a href="manage_shops.php" class="neon-button purple">Manage Shops</a>
+                </div>
+            </div>
         </div>
 
         <div class="row g-4">

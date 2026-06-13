@@ -78,25 +78,34 @@ include 'includes/header.php';
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small opacity-75">Category</label>
-                                <input type="text" name="category" class="glass-input" value="<?php echo e($shop['category']); ?>" placeholder="Electronics, Fashion, etc.">
+                                <select name="category" class="glass-input">
+                                    <?php
+                                    $all_categories = $pdo->query("SELECT name FROM shop_categories ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
+                                    foreach($all_categories as $cat): ?>
+                                        <option value="<?php echo e($cat); ?>" <?php echo $shop['category'] === $cat ? 'selected' : ''; ?>><?php echo e($cat); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small opacity-75">Locality</label>
                                 <input type="text" name="locality" class="glass-input" value="<?php echo e($shop['locality']); ?>" placeholder="City, State">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-<?php echo $shop['type'] === 'free_listing' ? '12' : '6'; ?>">
                                 <label class="form-label small opacity-75">Shop Logo</label>
                                 <input type="file" name="shop_logo" class="glass-input">
                             </div>
+                            <?php if($shop['type'] !== 'free_listing'): ?>
                             <div class="col-md-6">
                                 <label class="form-label small opacity-75">Shop Wallpaper/Cover</label>
                                 <input type="file" name="shop_wallpaper" class="glass-input">
                             </div>
+                            <?php endif; ?>
                             <div class="col-12">
                                 <label class="form-label small opacity-75">Shop Description</label>
                                 <textarea name="description" class="glass-input" rows="2"><?php echo e($shop['description']); ?></textarea>
                             </div>
 
+                            <?php if($shop['type'] !== 'free_listing'): ?>
                             <div class="col-12">
                                 <h3 class="h6 mt-3 neon-text small text-uppercase fw-bold">Shop SEO & Social Preview</h3>
                                 <div class="row g-3">
@@ -111,6 +120,7 @@ include 'includes/header.php';
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
                         <button type="submit" class="neon-button mt-4">Update Shop Settings</button>
                     </form>
@@ -130,10 +140,16 @@ include 'includes/header.php';
                                 <label class="form-label opacity-75 small">Product Name</label>
                                 <input type="text" name="name" class="glass-input" placeholder="e.g. CyberPulse Smartwatch" required>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-<?php echo $shop['type'] === 'privilege' ? '2' : '4'; ?>">
                                 <label class="form-label opacity-75 small">Price (Rs.)</label>
                                 <input type="number" name="price" class="glass-input" placeholder="0.00" required>
                             </div>
+                            <?php if($shop['type'] === 'privilege'): ?>
+                            <div class="col-md-2">
+                                <label class="form-label opacity-75 small">Discount (Rs/%)</label>
+                                <input type="text" name="discount_entry" class="glass-input" placeholder="e.g. 10% OFF">
+                            </div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="mb-3">
@@ -156,6 +172,7 @@ include 'includes/header.php';
                             </div>
                         </div>
 
+                        <?php if($shop['type'] !== 'free_listing'): ?>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label opacity-75 small">Product Image</label>
@@ -166,6 +183,7 @@ include 'includes/header.php';
                                 <input type="file" name="product_video" class="glass-input">
                             </div>
                         </div>
+                        <?php endif; ?>
 
                         <div class="mb-4">
                             <div class="form-check form-switch">

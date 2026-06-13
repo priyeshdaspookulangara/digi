@@ -2,7 +2,7 @@
 // Configuration settings
 define('BASE_URL', 'http://localhost:8000');
 define('CSRF_SECRET', 'a_very_secret_token_12345');
-define('DB_PATH', __DIR__ . '/../database.sqlite');
+define('DB_PATH', __DIR__ . '/../db/database.sqlite');
 
 // Database Connection
 try {

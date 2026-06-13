@@ -13,6 +13,11 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (referrer_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS shop_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS shops (
     id INT AUTO_INCREMENT PRIMARY KEY,
     owner_id INT NOT NULL,
@@ -25,6 +30,7 @@ CREATE TABLE IF NOT EXISTS shops (
     og_description TEXT,
     locality VARCHAR(255),
     category VARCHAR(255),
+    type ENUM('privilege', 'classic', 'free_listing') DEFAULT 'free_listing',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -35,6 +41,7 @@ CREATE TABLE IF NOT EXISTS products (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
+    discount_entry VARCHAR(255),
     image VARCHAR(255),
     video VARCHAR(255),
     is_featured TINYINT(1) DEFAULT 0,
@@ -95,6 +102,8 @@ CREATE TABLE IF NOT EXISTS offers (
 
 -- Seed Initial Data
 INSERT IGNORE INTO users (username, password, email, role) VALUES ('admin', '$2y$10$V9h4PcIocyO/Q5xl1FX//u/ka7bxSHo1SpKlF3RjOG4oVmp4z6gXC', 'admin@example.com', 'admin');
+
+INSERT IGNORE INTO shop_categories (name) VALUES ('Electronics'), ('Fashion'), ('Home'), ('Beauty'), ('Sports'), ('Grocery'), ('Automobile');
 
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('entry_fee', '3000.00');
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('level_commission', '100.00');

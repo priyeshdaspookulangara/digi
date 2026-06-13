@@ -26,17 +26,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $logo_path = $_POST['existing_logo'] ?? '';
     if (isset($_FILES['shop_logo']) && $_FILES['shop_logo']['error'] === UPLOAD_ERR_OK) {
-        $filename = uniqid('logo_') . '_' . $_FILES['shop_logo']['name'];
-        if (move_uploaded_file($_FILES['shop_logo']['tmp_name'], $upload_dir . $filename)) {
-            $logo_path = $upload_dir . $filename;
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($_FILES['shop_logo']['tmp_name']);
+        $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+        if (in_array($mime, $allowed)) {
+            $ext = ($mime === 'image/jpeg') ? 'jpg' : (($mime === 'image/png') ? 'png' : 'webp');
+            $filename = uniqid('logo_') . '.' . $ext;
+            if (move_uploaded_file($_FILES['shop_logo']['tmp_name'], $upload_dir . $filename)) {
+                $logo_path = $upload_dir . $filename;
+            }
         }
     }
 
     $wallpaper_path = $_POST['existing_wallpaper'] ?? '';
     if (isset($_FILES['shop_wallpaper']) && $_FILES['shop_wallpaper']['error'] === UPLOAD_ERR_OK) {
-        $filename = uniqid('wp_') . '_' . $_FILES['shop_wallpaper']['name'];
-        if (move_uploaded_file($_FILES['shop_wallpaper']['tmp_name'], $upload_dir . $filename)) {
-            $wallpaper_path = $upload_dir . $filename;
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($_FILES['shop_wallpaper']['tmp_name']);
+        $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+        if (in_array($mime, $allowed)) {
+            $ext = ($mime === 'image/jpeg') ? 'jpg' : (($mime === 'image/png') ? 'png' : 'webp');
+            $filename = uniqid('wp_') . '.' . $ext;
+            if (move_uploaded_file($_FILES['shop_wallpaper']['tmp_name'], $upload_dir . $filename)) {
+                $wallpaper_path = $upload_dir . $filename;
+            }
         }
     }
 

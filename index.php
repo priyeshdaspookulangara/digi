@@ -7,7 +7,7 @@ $search = $_GET['search'] ?? '';
 $locality = $_GET['locality'] ?? '';
 $category_filter = $_GET['category'] ?? '';
 
-$query = "SELECT p.*, s.locality, s.category FROM products p JOIN shops s ON p.shop_id = s.id WHERE 1=1";
+$query = "SELECT p.*, s.locality, s.category, s.type as shop_type FROM products p JOIN shops s ON p.shop_id = s.id WHERE 1=1";
 $params = [];
 
 if ($search) {
@@ -64,6 +64,37 @@ if (empty($products)) {
 ?>
 
 <main class="container mt-4">
+    <!-- Feature Boxes -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100 text-center feature-box" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#locationModal">
+                <div class="mb-3">
+                    <i class="fas fa-map-marked-alt fa-3x neon-cyan"></i>
+                </div>
+                <h3 class="h5 neon-text">Local Shops & Stores</h3>
+                <p class="small opacity-75">Find the best deals in your neighborhood.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100 text-center feature-box">
+                <div class="mb-3">
+                    <i class="fas fa-bolt fa-3x neon-purple"></i>
+                </div>
+                <h3 class="h5 neon-text">Flash Sales</h3>
+                <p class="small opacity-75">Exclusive limited-time tech offers.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100 text-center feature-box">
+                <div class="mb-3">
+                    <i class="fas fa-user-shield fa-3x neon-cyan"></i>
+                </div>
+                <h3 class="h5 neon-text">Verified Vendors</h3>
+                <p class="small opacity-75">Secure shopping with trusted partners.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section / Dynamic Slider -->
     <section class="hero-banner mb-4">
         <?php if (!empty($banners)): ?>
@@ -184,7 +215,12 @@ if (empty($products)) {
                             <h5 class="product-title"><?php echo e($product['name']); ?></h5>
                         </a>
                         <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="product-price">₹<?php echo number_format($product['price'], 2); ?></span>
+                            <div>
+                                <span class="product-price">₹<?php echo number_format($product['price'], 2); ?></span>
+                                <?php if($product['shop_type'] === 'privilege' && $product['discount_entry']): ?>
+                                    <div class="small neon-cyan fw-bold" style="font-size: 0.7rem;"><?php echo e($product['discount_entry']); ?></div>
+                                <?php endif; ?>
+                            </div>
                             <button class="btn btn-sm btn-outline-info rounded-circle add-to-cart-btn" data-id="<?php echo $product['id']; ?>"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
@@ -223,5 +259,33 @@ if (empty($products)) {
         </div>
     </section>
 </main>
+
+<!-- Location Selection Modal -->
+<div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-info">
+            <div class="modal-header border-0">
+                <h5 class="modal-title neon-text">Choose your locality</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?php
+                $localities = $pdo->query("SELECT DISTINCT locality FROM shops WHERE locality IS NOT NULL AND locality != '' ORDER BY locality ASC")->fetchAll(PDO::FETCH_COLUMN);
+                if (empty($localities)) {
+                    $localities = ['Mumbai', 'Delhi', 'Bangalore', 'Pune', 'Chennai'];
+                }
+                ?>
+                <div class="list-group list-group-flush bg-transparent">
+                    <?php foreach($localities as $loc): ?>
+                        <a href="local-shops.php?place=<?php echo urlencode($loc); ?>" class="list-group-item list-group-item-action bg-transparent text-white border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">
+                            <?php echo e($loc); ?>
+                            <i class="fas fa-chevron-right small opacity-50"></i>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php require_once 'includes/footer.php'; ?>
