@@ -32,13 +32,13 @@ require_once __DIR__ . '/seo_helper.php';
     <!-- Top Utility Bar -->
     <div class="top-bar py-2 d-none d-lg-block">
         <div class="container d-flex justify-content-between align-items-center">
-            <div class="location-selector glass-card py-1 px-3">
-                <i class="fas fa-map-marker-alt me-2 neon-cyan"></i>
-                <span>Deliver to: <strong>Mumbai, MH</strong></span>
+            <div class="location-selector glass-card py-1 px-3" style="border-radius: 50px;">
+                <i class="fas fa-map-marker-alt me-2 neon-mint"></i>
+                <span>Deliver to: <strong>Thrissur, KL</strong></span>
             </div>
             <div class="top-links d-flex gap-4">
-                <a href="#"><i class="fas fa-headset me-1"></i> Support</a>
-                <a href="#"><i class="fas fa-truck me-1"></i> Track Order</a>
+                <a href="#"><i class="fas fa-headset me-1 neon-mint"></i> Support</a>
+                <a href="#"><i class="fas fa-truck me-1 neon-lime"></i> Track Order</a>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@ require_once __DIR__ . '/seo_helper.php';
 
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>/index.php"><i class="fas fa-store me-1"></i> Shop</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/index.php"><i class="fas fa-store me-1 opacity-50"></i> Shop</a>
                     </li>
                     <?php if (is_logged_in()): ?>
                         <li class="nav-item">
@@ -89,8 +89,8 @@ require_once __DIR__ . '/seo_helper.php';
                     <?php endif; ?>
                     <li class="nav-item ms-lg-3">
                         <a class="nav-link cart-icon position-relative" href="#">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                            <i class="fas fa-shopping-cart opacity-75"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
                         </a>
                     </li>
                 </ul>

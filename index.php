@@ -69,7 +69,7 @@ if (empty($products)) {
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 text-center feature-box" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#locationModal">
                 <div class="mb-3">
-                    <i class="fas fa-map-marked-alt fa-3x neon-cyan"></i>
+                    <i class="fas fa-map-marked-alt fa-3x neon-mint"></i>
                 </div>
                 <h3 class="h5 neon-text">Local Shops & Stores</h3>
                 <p class="small opacity-75">Find the best deals in your neighborhood.</p>
@@ -78,7 +78,7 @@ if (empty($products)) {
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 text-center feature-box">
                 <div class="mb-3">
-                    <i class="fas fa-bolt fa-3x neon-purple"></i>
+                    <i class="fas fa-bolt fa-3x neon-lime"></i>
                 </div>
                 <h3 class="h5 neon-text">Flash Sales</h3>
                 <p class="small opacity-75">Exclusive limited-time tech offers.</p>
@@ -112,7 +112,7 @@ if (empty($products)) {
                             <div class="carousel-caption d-none d-md-block text-start" style="left: 10%; bottom: 20%;">
                                 <h1 class="display-3 fw-bold neon-text mb-3"><?php echo e($b['title']); ?></h1>
                                 <p class="h4 mb-4 fw-light opacity-75"><?php echo e($b['description']); ?></p>
-                                <span class="btn btn-lg neon-button px-5">SHOP NOW</span>
+                                <span class="btn btn-lg neon-button px-5" style="border-radius: 50px;">SHOP NOW</span>
                             </div>
                         </a>
                     </div>
@@ -130,9 +130,9 @@ if (empty($products)) {
                 <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" alt="Hero" class="w-100 h-100 object-fit-cover">
                 <div class="position-absolute top-0 start-0 w-100 h-100 hero-overlay d-flex align-items-center">
                     <div class="container px-5">
-                        <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-cyan">50% OFF</span></h1>
+                        <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-mint">50% OFF</span></h1>
                         <p class="h3 mb-4 fw-light opacity-75">On Next-Gen Hardware & Peripherals</p>
-                        <a href="#" class="btn btn-lg neon-button px-5">SHOP NOW</a>
+                        <a href="#" class="btn btn-lg neon-button px-5" style="border-radius: 50px;">SHOP NOW</a>
                     </div>
                 </div>
             </div>
@@ -218,10 +218,10 @@ if (empty($products)) {
                             <div>
                                 <span class="product-price">₹<?php echo number_format($product['price'], 2); ?></span>
                                 <?php if($product['shop_type'] === 'privilege' && $product['discount_entry']): ?>
-                                    <div class="small neon-cyan fw-bold" style="font-size: 0.7rem;"><?php echo e($product['discount_entry']); ?></div>
+                                    <div class="small neon-mint fw-bold" style="font-size: 0.7rem;"><?php echo e($product['discount_entry']); ?></div>
                                 <?php endif; ?>
                             </div>
-                            <button class="btn btn-sm btn-outline-info rounded-circle add-to-cart-btn" data-id="<?php echo $product['id']; ?>"><i class="fas fa-plus"></i></button>
+                            <button class="btn btn-sm btn-outline-info rounded-circle add-to-cart-btn" data-id="<?php echo $product['id']; ?>" style="border-color: var(--neon-mint); color: var(--neon-mint);"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                 </div>
@@ -232,30 +232,30 @@ if (empty($products)) {
 
     <!-- MLM Benefits Promo -->
     <section class="mlm-promo mt-5 py-5">
-        <div class="glass-card p-5 text-center border-info">
+        <div class="glass-card p-5 text-center" style="border-color: rgba(0, 209, 178, 0.2);">
             <h2 class="neon-text mb-4">EARN WHILE YOU SHOP</h2>
-            <p class="lead mb-4 mx-auto" style="max-width: 800px;">Join our 10-level referral ecosystem and unlock massive commissions. Transform your marketplace experience into a wealth-building journey.</p>
+            <p class="lead mb-4 mx-auto" style="max-width: 800px; opacity: 0.8;">Join our 10-level referral ecosystem and unlock massive commissions. Transform your marketplace experience into a wealth-building journey.</p>
             <div class="row g-4 mt-2">
                 <div class="col-md-4">
                     <div class="p-3 border-end border-secondary border-opacity-25">
-                        <h1 class="neon-cyan">10</h1>
-                        <p class="text-uppercase small fw-bold">Benefit Levels</p>
+                        <h1 class="neon-mint">10</h1>
+                        <p class="text-uppercase small fw-bold opacity-50">Benefit Levels</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="p-3 border-end border-secondary border-opacity-25">
-                        <h1 class="neon-cyan">₹3,000</h1>
-                        <p class="text-uppercase small fw-bold">One-Time Activation</p>
+                        <h1 class="neon-lime">₹3,000</h1>
+                        <p class="text-uppercase small fw-bold opacity-50">One-Time Activation</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="p-3">
                         <h1 class="neon-cyan">∞</h1>
-                        <p class="text-uppercase small fw-bold">Rebirth Potential</p>
+                        <p class="text-uppercase small fw-bold opacity-50">Rebirth Potential</p>
                     </div>
                 </div>
             </div>
-            <a href="register.php" class="btn btn-primary btn-lg rounded-pill px-5 mt-5">GET STARTED NOW</a>
+            <a href="register.php" class="btn btn-lg neon-button px-5 mt-5">GET STARTED NOW</a>
         </div>
     </section>
 </main>
