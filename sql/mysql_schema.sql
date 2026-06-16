@@ -105,6 +105,28 @@ INSERT IGNORE INTO users (username, password, email, role) VALUES ('admin', '$2y
 
 INSERT IGNORE INTO shop_categories (name) VALUES ('Electronics'), ('Fashion'), ('Home'), ('Beauty'), ('Sports'), ('Grocery'), ('Automobile');
 
+CREATE TABLE IF NOT EXISTS localities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8)
+) ENGINE=InnoDB;
+
+INSERT IGNORE INTO localities (name, latitude, longitude) VALUES
+('Thrissur City', 10.52, 76.21), ('Chalakudy', 10.31, 76.33), ('Chavakkad', 10.58, 76.02),
+('Guruvayur', 10.59, 76.04), ('Irinjalakuda', 10.35, 76.21), ('Kodungallur', 10.23, 76.20),
+('Kunnamkulam', 10.65, 76.07), ('Wadakkanchery', 10.65, 76.24), ('Kaipamangalam', 10.33, 76.14),
+('Nattika', 10.43, 76.09), ('Triprayar', 10.41, 76.13), ('Eriyad', 10.22, 76.16),
+('Azhikode', 11.92, 75.34), ('Perinjanam', 10.31, 76.15), ('Mathilakam', 10.29, 76.16),
+('Thalikulam', 10.46, 76.08), ('Mullassery', 10.54, 76.09), ('Ayyanthole', 10.52, 76.19),
+('Punkunnam', 10.54, 76.20), ('Ollur', 10.48, 76.24), ('Mannuthy', 10.54, 76.27),
+('Patturaikkal', 10.53, 76.21), ('Amalanagar', 10.56, 76.17), ('Kolazhy', 10.58, 76.22),
+('Nadathara', 10.51, 76.27), ('Puzhakkal', 10.55, 76.18), ('Kuriachira', 10.50, 76.23),
+('Thiruvilwamala', 10.68, 76.33), ('Cheruthuruthy', 10.74, 76.28), ('Chelakkara', 10.69, 76.35),
+('Puthukkad', 10.42, 76.28), ('Mala', 10.24, 76.26), ('Puthenchira', 10.28, 76.28),
+('Peechi', 10.53, 76.36), ('Koratty', 10.26, 76.35), ('Pattikad', 10.55, 76.34),
+('Alagappa Nagar', 10.43, 76.27), ('Adat', 10.55, 76.15), ('Vadakkumkara', 10.50, 76.20);
+
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('entry_fee', '3000.00');
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('level_commission', '100.00');
 INSERT IGNORE INTO site_settings (key_name, key_value) VALUES ('rebirth_milestone', '10');

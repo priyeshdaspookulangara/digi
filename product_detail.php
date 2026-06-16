@@ -45,10 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
 }
 ?>
 
-<!-- Structured Data -->
-<?php echo renderProductJSONLD($product, ['name' => $product['shop_name']]); ?>
-
 <main class="container mt-5">
+    <!-- Structured Data -->
+    <?php echo renderProductJSONLD($product, ['name' => $product['shop_name']]); ?>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="index.php" class="text-info">Home</a></li>

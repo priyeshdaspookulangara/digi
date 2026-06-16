@@ -39,9 +39,6 @@ $offers = $stmt->fetchAll();
 
 $csrf_token = get_csrf_token();
 ?>
-<!-- Structured Data -->
-<?php echo renderShopJSONLD($shop); ?>
-
 <?php
 $pageTitle = "Shop Portal | " . htmlspecialchars($shop['name']);
 $seoTags = [
@@ -53,6 +50,9 @@ $seoTags = [
 ];
 include 'includes/header.php';
 ?>
+
+<!-- Structured Data -->
+<?php echo renderShopJSONLD($shop); ?>
 
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -88,7 +88,13 @@ include 'includes/header.php';
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small opacity-75">Locality</label>
-                                <input type="text" name="locality" class="glass-input" value="<?php echo e($shop['locality']); ?>" placeholder="City, State">
+                                <select name="locality" class="glass-input">
+                                    <?php
+                                    $localities = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
+                                    foreach($localities as $loc): ?>
+                                        <option value="<?php echo e($loc); ?>" <?php echo $shop['locality'] === $loc ? 'selected' : ''; ?>><?php echo e($loc); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             <div class="col-md-<?php echo $shop['type'] === 'free_listing' ? '12' : '6'; ?>">
                                 <label class="form-label small opacity-75">Shop Logo</label>

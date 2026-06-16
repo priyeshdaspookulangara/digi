@@ -34,8 +34,13 @@ function distributeEntryFee($pdo, $user_id) {
     // Now distribute the 'Level' bucket across 10 levels
     distributeLevelCommissions($pdo, $user_id, $level_comm);
 
-    // Check for milestones/rebirth
-    checkMilestones($pdo, $user_id);
+    // Check for milestones/rebirth for the referrer (they earned a new downline)
+    $stmt = $pdo->prepare("SELECT referrer_id FROM users WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $ref_id = $stmt->fetchColumn();
+    if ($ref_id) {
+        checkMilestones($pdo, $ref_id);
+    }
 }
 
 /**

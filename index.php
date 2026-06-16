@@ -269,19 +269,29 @@ if (empty($products)) {
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <?php
-                $localities = $pdo->query("SELECT DISTINCT locality FROM shops WHERE locality IS NOT NULL AND locality != '' ORDER BY locality ASC")->fetchAll(PDO::FETCH_COLUMN);
-                if (empty($localities)) {
-                    $localities = ['Mumbai', 'Delhi', 'Bangalore', 'Pune', 'Chennai'];
-                }
-                ?>
-                <div class="list-group list-group-flush bg-transparent">
-                    <?php foreach($localities as $loc): ?>
-                        <a href="local-shops.php?place=<?php echo urlencode($loc); ?>" class="list-group-item list-group-item-action bg-transparent text-white border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">
-                            <?php echo e($loc); ?>
-                            <i class="fas fa-chevron-right small opacity-50"></i>
-                        </a>
-                    <?php endforeach; ?>
+                <!-- Geolocation Button -->
+                <button id="detectLocationBtn" class="btn neon-button-sm w-100 mb-4 py-3">
+                    <i class="fas fa-crosshairs me-2"></i> DETECT MY LOCATION
+                </button>
+
+                <div id="locationLoader" class="text-center d-none mb-3">
+                    <div class="spinner-border text-info" role="status"></div>
+                    <p class="small mt-2 opacity-50">Finding nearest center...</p>
+                </div>
+
+                <div class="locality-list-wrapper" style="max-height: 400px; overflow-y: auto;">
+                    <?php
+                    // Fetch from the new localities table
+                    $localities_db = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
+                    ?>
+                    <div class="list-group list-group-flush bg-transparent">
+                        <?php foreach($localities_db as $loc): ?>
+                            <a href="local-shops.php?place=<?php echo urlencode($loc); ?>" class="list-group-item list-group-item-action bg-transparent text-white border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">
+                                <?php echo e($loc); ?>
+                                <i class="fas fa-chevron-right small opacity-50"></i>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
         </div>

@@ -53,8 +53,8 @@ require_once __DIR__ . '/seo_helper.php';
             </button>
 
             <div class="collapse navbar-collapse" id="mainNavbar">
-                <form class="mx-auto d-flex search-container my-2 my-lg-0">
-                    <input class="form-control search-input" type="search" placeholder="Search for products, brands and more" aria-label="Search">
+                <form class="mx-auto d-flex search-container my-2 my-lg-0" action="<?php echo BASE_URL; ?>/index.php" method="GET">
+                    <input class="form-control search-input" type="search" name="search" placeholder="Search for products, brands and more" aria-label="Search" value="<?php echo e($_GET['search'] ?? ''); ?>">
                     <button class="btn search-btn" type="submit"><i class="fas fa-search"></i></button>
                 </form>
 
