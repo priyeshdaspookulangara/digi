@@ -5,7 +5,7 @@
  * Rename this file to includes/config.php to activate.
  */
 
-define('BASE_URL', 'http://localhost:8000');
+define('BASE_URL', 'https://dealmybiz.in');
 define('CSRF_SECRET', 'a_very_secret_token_12345');
 
 // DB Credentials
