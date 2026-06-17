@@ -67,30 +67,30 @@ if (empty($products)) {
     <!-- Feature Boxes -->
     <div class="row g-4 mb-5">
         <div class="col-md-4">
-            <div class="glass-card p-4 h-100 text-center feature-box" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#locationModal">
+            <div class="glass-card p-4 h-100 feature-box" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#locationModal">
                 <div class="mb-3">
-                    <i class="fas fa-map-marked-alt fa-3x neon-mint"></i>
+                    <i class="fas fa-map-marked-alt"></i>
                 </div>
-                <h3 class="h5 neon-text">Local Shops & Stores</h3>
-                <p class="small opacity-75">Find the best deals in your neighborhood.</p>
+                <h3 class="h5">Local Shops</h3>
+                <p class="small text-muted">Find the best deals in your neighborhood.</p>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="glass-card p-4 h-100 text-center feature-box">
+            <div class="glass-card p-4 h-100 feature-box">
                 <div class="mb-3">
-                    <i class="fas fa-bolt fa-3x neon-lime"></i>
+                    <i class="fas fa-bolt"></i>
                 </div>
-                <h3 class="h5 neon-text">Flash Sales</h3>
-                <p class="small opacity-75">Exclusive limited-time tech offers.</p>
+                <h3 class="h5">Flash Sales</h3>
+                <p class="small text-muted">Exclusive limited-time offers.</p>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="glass-card p-4 h-100 text-center feature-box">
+            <div class="glass-card p-4 h-100 feature-box">
                 <div class="mb-3">
-                    <i class="fas fa-user-shield fa-3x neon-cyan"></i>
+                    <i class="fas fa-user-shield"></i>
                 </div>
-                <h3 class="h5 neon-text">Verified Vendors</h3>
-                <p class="small opacity-75">Secure shopping with trusted partners.</p>
+                <h3 class="h5">Verified Vendors</h3>
+                <p class="small text-muted">Secure shopping with trusted partners.</p>
             </div>
         </div>
     </div>
@@ -104,15 +104,15 @@ if (empty($products)) {
                         <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<?php echo $index; ?>" class="<?php echo $index === 0 ? 'active' : ''; ?>"></button>
                     <?php endforeach; ?>
                 </div>
-                <div class="carousel-inner glass-card p-0 overflow-hidden" style="height: 450px; border-radius: 20px;">
+                <div class="carousel-inner glass-card p-0 overflow-hidden" style="height: 450px;">
                     <?php foreach($banners as $index => $b): ?>
                     <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?> h-100">
                         <a href="track.php?type=banner&id=<?php echo $b['id']; ?>">
                             <img src="<?php echo BASE_URL . '/' . $b['image_url']; ?>" class="d-block w-100 h-100 object-fit-cover" alt="<?php echo e($b['title']); ?>">
                             <div class="carousel-caption d-none d-md-block text-start" style="left: 10%; bottom: 20%;">
-                                <h1 class="display-3 fw-bold neon-text mb-3"><?php echo e($b['title']); ?></h1>
-                                <p class="h4 mb-4 fw-light opacity-75"><?php echo e($b['description']); ?></p>
-                                <span class="btn btn-lg neon-button px-5" style="border-radius: 50px;">SHOP NOW</span>
+                                <h1 class="display-3 fw-bold mb-3"><?php echo e($b['title']); ?></h1>
+                                <p class="h4 mb-4 fw-light text-muted"><?php echo e($b['description']); ?></p>
+                                <span class="btn btn-lg neon-button px-5">SHOP NOW</span>
                             </div>
                         </a>
                     </div>
@@ -129,10 +129,10 @@ if (empty($products)) {
             <div class="glass-card p-0 overflow-hidden position-relative" style="height: 450px;">
                 <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" alt="Hero" class="w-100 h-100 object-fit-cover">
                 <div class="position-absolute top-0 start-0 w-100 h-100 hero-overlay d-flex align-items-center">
-                    <div class="container px-5">
-                        <h1 class="display-3 fw-bold neon-text mb-3">UP TO <span class="neon-mint">50% OFF</span></h1>
-                        <p class="h3 mb-4 fw-light opacity-75">On Next-Gen Hardware & Peripherals</p>
-                        <a href="#" class="btn btn-lg neon-button px-5" style="border-radius: 50px;">SHOP NOW</a>
+                    <div class="container px-5 hero-content">
+                        <h1 class="display-3 fw-bold mb-3">UP TO <span class="text-primary">50% OFF</span></h1>
+                        <p class="h3 mb-4 fw-light text-muted">On Premium High-Tech Selection</p>
+                        <a href="#" class="btn btn-lg neon-button px-5">SHOP NOW</a>
                     </div>
                 </div>
             </div>
@@ -187,8 +187,8 @@ if (empty($products)) {
     <!-- Filter & Search Summary (Mobile/Active Filters) -->
     <?php if ($search || $category_filter || $locality): ?>
     <div class="d-flex gap-2 mb-4">
-        <?php if($search): ?><span class="badge rounded-pill glass-card border-info">Search: <?php echo e($search); ?> <a href="index.php" class="text-white ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
-        <?php if($category_filter): ?><span class="badge rounded-pill glass-card border-info">Category: <?php echo e($category_filter); ?> <a href="index.php" class="text-white ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
+        <?php if($search): ?><span class="badge rounded-pill glass-card text-dark border-light">Search: <?php echo e($search); ?> <a href="index.php" class="text-primary ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
+        <?php if($category_filter): ?><span class="badge rounded-pill glass-card text-dark border-light">Category: <?php echo e($category_filter); ?> <a href="index.php" class="text-primary ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
     </div>
     <?php endif; ?>
 
@@ -196,7 +196,7 @@ if (empty($products)) {
     <section class="products-section">
         <div class="d-flex justify-content-between align-items-end mb-4">
             <h4 class="section-title mb-0">Deals of the Day</h4>
-            <a href="#" class="text-info text-decoration-none small">View All <i class="fas fa-chevron-right ms-1"></i></a>
+            <a href="#" class="text-primary text-decoration-none small">View All <i class="fas fa-chevron-right ms-1"></i></a>
         </div>
 
         <div class="row g-4">
@@ -205,23 +205,23 @@ if (empty($products)) {
                 <div class="glass-card product-card p-3">
                     <div class="product-img-wrapper">
                         <?php if($product['is_featured']): ?>
-                            <span class="badge bg-info position-absolute top-0 start-0 m-2 z-3 shadow">FEATURED</span>
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2 z-3 shadow">FEATURED</span>
                         <?php endif; ?>
                         <button class="wishlist-btn" data-id="<?php echo $product['id']; ?>"><i class="far fa-heart"></i></button>
                         <img src="<?php echo e($product['image']); ?>" alt="<?php echo e($product['name']); ?>">
                     </div>
                     <div class="product-info mt-2">
-                        <a href="product_detail.php?id=<?php echo $product['id']; ?>" class="text-white text-decoration-none">
+                        <a href="product_detail.php?id=<?php echo $product['id']; ?>" class="text-dark text-decoration-none">
                             <h5 class="product-title"><?php echo e($product['name']); ?></h5>
                         </a>
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <div>
                                 <span class="product-price">₹<?php echo number_format($product['price'], 2); ?></span>
                                 <?php if($product['shop_type'] === 'privilege' && $product['discount_entry']): ?>
-                                    <div class="small neon-mint fw-bold" style="font-size: 0.7rem;"><?php echo e($product['discount_entry']); ?></div>
+                                    <div class="small text-primary fw-bold" style="font-size: 0.7rem;"><?php echo e($product['discount_entry']); ?></div>
                                 <?php endif; ?>
                             </div>
-                            <button class="btn btn-sm btn-outline-info rounded-circle add-to-cart-btn" data-id="<?php echo $product['id']; ?>" style="border-color: var(--neon-mint); color: var(--neon-mint);"><i class="fas fa-plus"></i></button>
+                            <button class="btn btn-sm btn-outline-primary rounded-circle add-to-cart-btn" data-id="<?php echo $product['id']; ?>"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                 </div>
@@ -232,26 +232,26 @@ if (empty($products)) {
 
     <!-- MLM Benefits Promo -->
     <section class="mlm-promo mt-5 py-5">
-        <div class="glass-card p-5 text-center" style="border-color: rgba(0, 209, 178, 0.2);">
-            <h2 class="neon-text mb-4">EARN WHILE YOU SHOP</h2>
-            <p class="lead mb-4 mx-auto" style="max-width: 800px; opacity: 0.8;">Join our 10-level referral ecosystem and unlock massive commissions. Transform your marketplace experience into a wealth-building journey.</p>
+        <div class="glass-card p-5 text-center">
+            <h2 class="text-primary mb-4">EARN WHILE YOU SHOP</h2>
+            <p class="lead mb-4 mx-auto text-muted" style="max-width: 800px;">Join our 10-level referral ecosystem and unlock massive commissions. Transform your marketplace experience into a wealth-building journey.</p>
             <div class="row g-4 mt-2">
                 <div class="col-md-4">
-                    <div class="p-3 border-end border-secondary border-opacity-25">
-                        <h1 class="neon-mint">10</h1>
-                        <p class="text-uppercase small fw-bold opacity-50">Benefit Levels</p>
+                    <div class="p-3 border-end">
+                        <h1 class="text-primary">10</h1>
+                        <p class="text-uppercase small fw-bold text-muted">Benefit Levels</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="p-3 border-end border-secondary border-opacity-25">
-                        <h1 class="neon-lime">₹3,000</h1>
-                        <p class="text-uppercase small fw-bold opacity-50">One-Time Activation</p>
+                    <div class="p-3 border-end">
+                        <h1 class="text-primary">₹3,000</h1>
+                        <p class="text-uppercase small fw-bold text-muted">One-Time Activation</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="p-3">
-                        <h1 class="neon-cyan">∞</h1>
-                        <p class="text-uppercase small fw-bold opacity-50">Rebirth Potential</p>
+                        <h1 class="text-primary">∞</h1>
+                        <p class="text-uppercase small fw-bold text-muted">Rebirth Potential</p>
                     </div>
                 </div>
             </div>
@@ -263,10 +263,10 @@ if (empty($products)) {
 <!-- Location Selection Modal -->
 <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content glass-card border-info">
+        <div class="modal-content glass-card">
             <div class="modal-header border-0">
-                <h5 class="modal-title neon-text">Choose your locality</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-primary">Choose your locality</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- Geolocation Button -->
@@ -275,8 +275,8 @@ if (empty($products)) {
                 </button>
 
                 <div id="locationLoader" class="text-center d-none mb-3">
-                    <div class="spinner-border text-info" role="status"></div>
-                    <p class="small mt-2 opacity-50">Finding nearest center...</p>
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="small mt-2 text-muted">Finding nearest center...</p>
                 </div>
 
                 <div class="locality-list-wrapper" style="max-height: 400px; overflow-y: auto;">
@@ -286,9 +286,9 @@ if (empty($products)) {
                     ?>
                     <div class="list-group list-group-flush bg-transparent">
                         <?php foreach($localities_db as $loc): ?>
-                            <a href="local-shops.php?place=<?php echo urlencode($loc); ?>" class="list-group-item list-group-item-action bg-transparent text-white border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">
+                            <a href="local-shops.php?place=<?php echo urlencode($loc); ?>" class="list-group-item list-group-item-action bg-transparent text-dark border-light py-3 d-flex justify-content-between align-items-center">
                                 <?php echo e($loc); ?>
-                                <i class="fas fa-chevron-right small opacity-50"></i>
+                                <i class="fas fa-chevron-right small text-muted"></i>
                             </a>
                         <?php endforeach; ?>
                     </div>

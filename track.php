@@ -18,7 +18,12 @@ if ($type && $id) {
         $stmt->execute([$id]);
 
         // Redirect
-        header("Location: " . $item['target_url']);
+        $url = $item['target_url'];
+        // Basic check to ensure internal/trusted redirects
+        if (strpos($url, 'http') !== 0) {
+            $url = BASE_URL . '/' . ltrim($url, '/');
+        }
+        header("Location: $url");
         exit;
     }
 }

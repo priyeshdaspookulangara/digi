@@ -32,13 +32,13 @@ require_once __DIR__ . '/seo_helper.php';
     <!-- Top Utility Bar -->
     <div class="top-bar py-2 d-none d-lg-block">
         <div class="container d-flex justify-content-between align-items-center">
-            <div class="location-selector glass-card py-1 px-3" style="border-radius: 50px;">
-                <i class="fas fa-map-marker-alt me-2 neon-mint"></i>
-                <span>Deliver to: <strong>Thrissur, KL</strong></span>
+            <div class="location-selector py-1 px-3" style="font-size: 0.85rem; color: var(--text-muted);">
+                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                <span>Deliver to: <strong class="text-dark">Thrissur, KL</strong></span>
             </div>
             <div class="top-links d-flex gap-4">
-                <a href="#"><i class="fas fa-headset me-1 neon-mint"></i> Support</a>
-                <a href="#"><i class="fas fa-truck me-1 neon-lime"></i> Track Order</a>
+                <a href="#"><i class="fas fa-headset me-1 text-primary"></i> Support</a>
+                <a href="#"><i class="fas fa-truck me-1 text-primary"></i> Track Order</a>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@ require_once __DIR__ . '/seo_helper.php';
     <!-- Main Navigation -->
     <nav class="navbar navbar-expand-lg sticky-top main-nav">
         <div class="container">
-            <a class="navbar-brand neon-text" href="<?php echo BASE_URL; ?>/index.php">NEXGEN</a>
+            <a class="navbar-brand" href="<?php echo BASE_URL; ?>/index.php">NEXGEN</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
                 <span class="navbar-toggler-icon"></span>

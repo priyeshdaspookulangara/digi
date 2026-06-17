@@ -1,14 +1,14 @@
-    <footer class="mt-5 py-5 glass-card rounded-0 border-start-0 border-end-0 border-bottom-0">
+    <footer class="mt-5 py-5 border-top" style="background: #ffffff;">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
-                    <h3 class="neon-text mb-4">NEXGEN</h3>
-                    <p class="opacity-75">Revolutionizing the marketplace through integrated MLM ecosystems. Quality meets opportunity in our tech-driven platform.</p>
+                    <h3 class="mb-4 text-primary">NEXGEN</h3>
+                    <p class="text-muted">Revolutionizing the marketplace through integrated MLM ecosystems. Quality meets opportunity in our tech-driven platform.</p>
                     <div class="social-links d-flex gap-3 mt-4">
-                        <a href="#" class="glass-btn-circle"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="glass-btn-circle"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="glass-btn-circle"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="glass-btn-circle"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -31,15 +31,15 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h5 class="mb-4 fw-bold">Newsletter</h5>
-                    <p class="small opacity-75">Stay updated with the latest products and MLM milestones.</p>
-                    <div class="input-group mb-3 glass-input-group">
-                        <input type="email" class="form-control" placeholder="Email Address">
-                        <button class="btn neon-button-sm" type="button">Subscribe</button>
+                    <p class="small text-muted">Stay updated with the latest products and MLM milestones.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email Address" style="border-radius: 8px 0 0 8px;">
+                        <button class="btn btn-primary" type="button" style="border-radius: 0 8px 8px 0;">Subscribe</button>
                     </div>
                 </div>
             </div>
-            <hr class="neon-line my-5">
-            <div class="text-center opacity-50 small">
+            <hr class="my-5">
+            <div class="text-center text-muted small">
                 <p>&copy; <?php echo date('Y'); ?> NexGen Integrated Marketplace & MLM. All Rights Reserved.</p>
             </div>
         </div>
