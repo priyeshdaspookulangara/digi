@@ -52,8 +52,10 @@
 
     <script>
     $(document).ready(function() {
+        const csrfToken = '<?php echo get_csrf_token(); ?>';
+
         // Load initial cart count
-        $.post('<?php echo BASE_URL; ?>/cart_handler.php', {action: 'get_count'}, function(response) {
+        $.post('<?php echo BASE_URL; ?>/cart_handler.php', {action: 'get_count', csrf_token: csrfToken}, function(response) {
             if (response.success) {
                 $('.cart-icon .badge').text(response.total);
             }
@@ -63,7 +65,7 @@
         $(document).on('click', '.add-to-cart-btn', function(e) {
             e.preventDefault();
             const productId = $(this).data('id');
-            $.post('<?php echo BASE_URL; ?>/cart_handler.php', {action: 'add', product_id: productId, quantity: 1}, function(response) {
+            $.post('<?php echo BASE_URL; ?>/cart_handler.php', {action: 'add', product_id: productId, quantity: 1, csrf_token: csrfToken}, function(response) {
                 if (response.success) {
                     $('.cart-icon .badge').text(response.total);
                     alert('Product added to cart!');
@@ -78,7 +80,7 @@
             e.preventDefault();
             const productId = $(this).data('id');
             const btn = $(this);
-            $.post('<?php echo BASE_URL; ?>/wishlist_handler.php', {action: 'toggle', product_id: productId}, function(response) {
+            $.post('<?php echo BASE_URL; ?>/wishlist_handler.php', {action: 'toggle', product_id: productId, csrf_token: csrfToken}, function(response) {
                 if (response.success) {
                     if (response.status === 'added') {
                         btn.find('i').removeClass('far').addClass('fas text-danger');

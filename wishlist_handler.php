@@ -8,6 +8,11 @@ if (!is_logged_in()) {
     exit;
 }
 
+if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+    echo json_encode(['success' => false, 'message' => 'Invalid security token.']);
+    exit;
+}
+
 $action = $_POST['action'] ?? '';
 $user_id = $_SESSION['user_id'];
 $product_id = $_POST['product_id'] ?? 0;
