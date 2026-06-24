@@ -1,0 +1,40 @@
+[Wed Jun 24 14:27:11 2026] PHP 8.3.6 Development Server (http://localhost:8000) started
+[Wed Jun 24 14:28:01 2026] [::1]:52070 Accepted
+[Wed Jun 24 14:28:01 2026] [::1]:52070 [200]: HEAD /index.php
+[Wed Jun 24 14:28:01 2026] [::1]:52070 Closing
+[Wed Jun 24 14:30:16 2026] [::1]:34660 Accepted
+[Wed Jun 24 14:30:16 2026] [::1]:34660 [200]: GET /login.php
+[Wed Jun 24 14:30:16 2026] [::1]:34660 Closing
+[Wed Jun 24 14:30:19 2026] [::1]:34676 Accepted
+[Wed Jun 24 14:30:19 2026] [::1]:34676 [302]: GET /admin/index.php
+[Wed Jun 24 14:30:19 2026] [::1]:34676 Closing
+[Wed Jun 24 14:30:21 2026] [::1]:34688 Accepted
+[Wed Jun 24 14:30:21 2026] [::1]:34688 [302]: GET /shop_portal.php
+[Wed Jun 24 14:30:21 2026] [::1]:34688 Closing
+[Wed Jun 24 14:39:12 2026] [::1]:33224 Accepted
+[Wed Jun 24 14:39:12 2026] [::1]:33224 [200]: GET /login.php
+[Wed Jun 24 14:39:12 2026] [::1]:33224 Closing
+[Wed Jun 24 14:39:15 2026] [::1]:40592 Accepted
+[Wed Jun 24 14:39:15 2026] [::1]:40592 [302]: GET /admin/index.php
+[Wed Jun 24 14:39:15 2026] [::1]:40592 Closing
+[Wed Jun 24 14:39:16 2026] [::1]:40606 Accepted
+[Wed Jun 24 14:39:16 2026] [::1]:40606 [302]: GET /shop_portal.php
+[Wed Jun 24 14:39:16 2026] [::1]:40606 Closing
+[Wed Jun 24 14:41:30 2026] [::1]:54254 Accepted
+[Wed Jun 24 14:41:30 2026] [::1]:54254 [200]: GET /login.php
+[Wed Jun 24 14:41:30 2026] [::1]:54254 Closing
+[Wed Jun 24 14:41:33 2026] [::1]:54262 Accepted
+[Wed Jun 24 14:41:33 2026] [::1]:54262 [302]: POST /login.php
+[Wed Jun 24 14:41:33 2026] [::1]:54262 Closing
+[Wed Jun 24 14:41:33 2026] [::1]:54270 Accepted
+[Wed Jun 24 14:41:33 2026] [::1]:54270 [200]: GET /admin/index.php
+[Wed Jun 24 14:41:33 2026] [::1]:54270 Closing
+[Wed Jun 24 14:41:35 2026] [::1]:37984 Accepted
+[Wed Jun 24 14:41:35 2026] [::1]:37984 [200]: GET /shop_portal.php
+[Wed Jun 24 14:41:35 2026] [::1]:37984 Closing
+[Wed Jun 24 14:41:35 2026] [::1]:37996 Accepted
+[Wed Jun 24 14:41:35 2026] [::1]:37996 [200]: GET /api.php?action=get_enquiry_dates&shop_id=3&start=2026-05-31T00%3A00%3A00Z&end=2026-07-12T00%3A00%3A00Z
+[Wed Jun 24 14:41:35 2026] [::1]:37996 Closing
+[Wed Jun 24 14:41:35 2026] [::1]:38012 Accepted
+[Wed Jun 24 14:41:35 2026] [::1]:38012 [200]: GET /api.php?action=get_enquiries_for_date&shop_id=3&date=2026-06-24
+[Wed Jun 24 14:41:35 2026] [::1]:38012 Closing

@@ -12,109 +12,105 @@ $recent_transactions = $pdo->query("SELECT t.*, u.username FROM transactions t J
 
 $entry_fee = getMlmSetting($pdo, 'entry_fee', 3000.00);
 $level_comm = getMlmSetting($pdo, 'level_commission', 100.00);
-?>
-<?php
+
 $pageTitle = "Admin Dashboard | NexGen Marketplace";
-include '../includes/header.php';
+require_once '../includes/admin_layout_header.php';
 ?>
 
-    <div class="container my-5">
-        <h1 class="neon-text mb-4">Central Admin Oversight</h1>
+<div class="page__heading d-flex align-items-center">
+    <div class="flex">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+        </nav>
+        <h1 class="m-0">Admin Dashboard</h1>
+    </div>
+</div>
 
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                <div class="glass-card p-4 text-center">
-                    <h3 class="h6 text-uppercase opacity-50">Total Users</h3>
-                    <p class="display-5 fw-bold neon-cyan mb-0"><?php echo $total_users; ?></p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="glass-card p-4 text-center">
-                    <h3 class="h6 text-uppercase opacity-50">Total Revenue</h3>
-                    <p class="display-6 fw-bold neon-purple mb-0">Rs. <?php echo number_format($total_revenue, 2); ?></p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="glass-card p-4 text-center">
-                    <h3 class="h6 text-uppercase opacity-50">Commissions Paid</h3>
-                    <p class="display-6 fw-bold neon-text mb-0">Rs. <?php echo number_format($total_commissions, 2); ?></p>
-                </div>
-            </div>
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card p-4 text-center border-0 shadow-sm" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: white;">
+            <h3 class="h6 text-uppercase opacity-75">Total Users</h3>
+            <p class="display-5 fw-bold mb-0"><?php echo $total_users; ?></p>
         </div>
-
-        <div class="row g-4 mb-5">
-            <div class="col-12">
-                <div class="glass-card p-4 d-flex justify-content-between align-items-center">
-                    <div>
-                        <h3 class="h5 m-0 neon-text">Marketing & Analytics</h3>
-                        <p class="small opacity-50 mb-0">Manage sliders, banners, and track campaign performance.</p>
-                    </div>
-                    <a href="marketing.php" class="neon-button">Manage Marketing</a>
-                </div>
-            </div>
-            <div class="col-12 mt-4">
-                <div class="glass-card p-4 d-flex justify-content-between align-items-center">
-                    <div>
-                        <h3 class="h5 m-0 neon-text">Shop & Category Control</h3>
-                        <p class="small opacity-50 mb-0">Define shop types (Privilege/Classic/Free) and manage marketplace categories.</p>
-                    </div>
-                    <a href="manage_shops.php" class="neon-button purple">Manage Shops</a>
-                </div>
-            </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 text-center border-0 shadow-sm" style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); color: white;">
+            <h3 class="h6 text-uppercase opacity-75">Total Revenue</h3>
+            <p class="display-6 fw-bold mb-0">₹<?php echo number_format($total_revenue, 2); ?></p>
         </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 text-center border-0 shadow-sm" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white;">
+            <h3 class="h6 text-uppercase opacity-75">Commissions Paid</h3>
+            <p class="display-6 fw-bold mb-0">₹<?php echo number_format($total_commissions, 2); ?></p>
+        </div>
+    </div>
+</div>
 
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <section class="glass-card p-4">
-                    <h2 class="h5 mb-4 border-bottom border-secondary pb-2">MLM Configuration</h2>
-                    <form action="update_config.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-                        <div class="mb-3">
-                            <label class="form-label small opacity-75">Entry Fee (Rs.)</label>
-                            <input type="number" name="entry_fee" value="<?php echo e($entry_fee); ?>" class="glass-input">
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label small opacity-75">Level Commission (Rs.)</label>
-                            <input type="number" name="level_commission" value="<?php echo e($level_comm); ?>" class="glass-input">
-                        </div>
-                        <button type="submit" class="neon-button w-100">Update Settings</button>
-                    </form>
-                </section>
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title m-0 fw-bold">MLM Configuration</h5>
             </div>
-
-            <div class="col-lg-8">
-                <section class="glass-card p-4">
-                    <h2 class="h5 mb-4 border-bottom border-secondary pb-2">Recent Transaction Logs</h2>
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover mb-0">
-                            <thead>
-                                <tr class="text-uppercase small opacity-50">
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody class="align-middle">
-                                <?php foreach($recent_transactions as $tx): ?>
-                                <tr>
-                                    <td><span class="badge bg-secondary">#<?php echo $tx['id']; ?></span></td>
-                                    <td><?php echo e($tx['username']); ?></td>
-                                    <td><span class="small text-info text-uppercase"><?php echo e($tx['type']); ?></span> <br><small class="opacity-50"><?php echo e($tx['bucket']); ?></small></td>
-                                    <td class="fw-bold">Rs. <?php echo number_format($tx['amount'], 2); ?></td>
-                                    <td><?php echo date('Y-m-d', strtotime($tx['created_at'])); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php if(empty($recent_transactions)): ?>
-                                <tr><td colspan="5" class="text-center py-5 opacity-50">No transactions found.</td></tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+            <div class="card-body">
+                <form action="update_config.php" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Entry Fee (₹)</label>
+                        <input type="number" name="entry_fee" value="<?php echo e($entry_fee); ?>" class="form-control" style="border-radius: 8px;">
                     </div>
-                </section>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">Level Commission (₹)</label>
+                        <input type="number" name="level_commission" value="<?php echo e($level_comm); ?>" class="form-control" style="border-radius: 8px;">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="border-radius: 8px; background-color: #6366f1; border: none;">Update Settings</button>
+                </form>
             </div>
         </div>
     </div>
 
-<?php include '../includes/footer.php'; ?>
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title m-0 fw-bold">Recent Transaction Logs</h5>
+                <a href="#" class="btn btn-sm btn-outline-secondary">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-light">
+                        <tr class="text-uppercase small text-muted">
+                            <th class="ps-4">ID</th>
+                            <th>User</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        <?php foreach($recent_transactions as $tx): ?>
+                        <tr>
+                            <td class="ps-4"><span class="badge bg-light text-dark border">#<?php echo $tx['id']; ?></span></td>
+                            <td class="fw-bold"><?php echo e($tx['username']); ?></td>
+                            <td>
+                                <span class="text-primary small fw-bold text-uppercase"><?php echo e($tx['type']); ?></span>
+                                <?php if($tx['bucket']): ?><br><small class="text-muted"><?php echo e($tx['bucket']); ?></small><?php endif; ?>
+                            </td>
+                            <td class="fw-bold text-success">₹<?php echo number_format($tx['amount'], 2); ?></td>
+                            <td class="text-muted small"><?php echo date('M d, Y', strtotime($tx['created_at'])); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php if(empty($recent_transactions)): ?>
+                        <tr><td colspan="5" class="text-center py-5 text-muted">No transactions found.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require_once '../includes/admin_layout_footer.php'; ?>

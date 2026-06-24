@@ -9,7 +9,6 @@ $stmt->execute([$_SESSION['user_id']]);
 $shop = $stmt->fetch();
 
 if (!$shop) {
-    // Create a default shop if none exists for the owner
     $stmt = $pdo->prepare("INSERT INTO shops (owner_id, name) VALUES (?, ?)");
     $stmt->execute([$_SESSION['user_id'], $_SESSION['username'] . "'s Shop"]);
     $shop_id = $pdo->lastInsertId();
@@ -27,233 +26,208 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_offer'])) {
     $stmt->execute([$shop['id'], $_POST['offer_title'], $_POST['offer_desc'], $_POST['discount']]);
 }
 
-// Fetch Enquiries
-$stmt = $pdo->prepare("SELECT e.*, p.name as product_name FROM enquiries e LEFT JOIN products p ON e.product_id = p.id WHERE e.shop_id = ? ORDER BY e.created_at DESC");
-$stmt->execute([$shop['id']]);
-$enquiries = $stmt->fetchAll();
-
-// Fetch Offers
-$stmt = $pdo->prepare("SELECT * FROM offers WHERE shop_id = ? ORDER BY created_at DESC");
-$stmt->execute([$shop['id']]);
-$offers = $stmt->fetchAll();
-
 $csrf_token = get_csrf_token();
-?>
-<?php
-$pageTitle = "Shop Portal | " . htmlspecialchars($shop['name']);
-$seoTags = [
-    'title' => $shop['og_title'] ?: $shop['name'] . " | NexGen Shop",
-    'description' => $shop['og_description'] ?: substr(strip_tags($shop['description']), 0, 160),
-    'image' => $shop['logo'],
-    'url' => BASE_URL . "/shop_portal.php", // Should ideally have an ID if public
-    'keywords' => $shop['meta_keywords']
-];
-include 'includes/header.php';
+$pageTitle = "Shop Portal | " . $shop['name'];
+require_once 'includes/admin_layout_header.php';
 ?>
 
-<!-- Structured Data -->
-<?php echo renderShopJSONLD($shop); ?>
+<div class="page__heading d-flex align-items-center">
+    <div class="flex">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Shop Management</li>
+            </ol>
+        </nav>
+        <h1 class="m-0"><?php echo e($shop['name']); ?> <small class="text-muted fw-light" style="font-size: 1rem;">(<?php echo e(ucfirst($shop['type'])); ?> Tier)</small></h1>
+    </div>
+</div>
 
-    <div class="container my-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="neon-text">Shop Management</h1>
-            <div class="badge bg-info text-dark p-2"><?php echo e($shop['name']); ?></div>
-        </div>
-
-        <div class="row g-4">
-        <div class="row g-4 mb-5">
-            <!-- Shop Configuration -->
-            <div class="col-12">
-                <div class="glass-card p-4">
-                    <h2 class="h4 mb-4"><i class="fas fa-store me-2 neon-cyan"></i>Shop Identity & Branding</h2>
-                    <form action="process_shop.php" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                        <input type="hidden" name="existing_logo" value="<?php echo e($shop['logo']); ?>">
-                        <input type="hidden" name="existing_wallpaper" value="<?php echo e($shop['wallpaper']); ?>">
-
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label small opacity-75">Shop Name</label>
-                                <input type="text" name="name" class="glass-input" value="<?php echo e($shop['name']); ?>" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label small opacity-75">Category</label>
-                                <select name="category" class="glass-input">
-                                    <?php
-                                    $all_categories = $pdo->query("SELECT name FROM shop_categories ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
-                                    foreach($all_categories as $cat): ?>
-                                        <option value="<?php echo e($cat); ?>" <?php echo $shop['category'] === $cat ? 'selected' : ''; ?>><?php echo e($cat); ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label small opacity-75">Locality</label>
-                                <select name="locality" class="glass-input">
-                                    <?php
-                                    $localities = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
-                                    foreach($localities as $loc): ?>
-                                        <option value="<?php echo e($loc); ?>" <?php echo $shop['locality'] === $loc ? 'selected' : ''; ?>><?php echo e($loc); ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-md-<?php echo $shop['type'] === 'free_listing' ? '12' : '6'; ?>">
-                                <label class="form-label small opacity-75">Shop Logo</label>
-                                <input type="file" name="shop_logo" class="glass-input">
-                            </div>
-                            <?php if($shop['type'] !== 'free_listing'): ?>
-                            <div class="col-md-6">
-                                <label class="form-label small opacity-75">Shop Wallpaper/Cover</label>
-                                <input type="file" name="shop_wallpaper" class="glass-input">
-                            </div>
-                            <?php endif; ?>
-                            <div class="col-12">
-                                <label class="form-label small opacity-75">Shop Description</label>
-                                <textarea name="description" class="glass-input" rows="2"><?php echo e($shop['description']); ?></textarea>
-                            </div>
-
-                            <?php if($shop['type'] !== 'free_listing'): ?>
-                            <div class="col-12">
-                                <h3 class="h6 mt-3 neon-text small text-uppercase fw-bold">Shop SEO & Social Preview</h3>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <input type="text" name="meta_keywords" placeholder="Keywords" class="glass-input" value="<?php echo e($shop['meta_keywords']); ?>">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" name="og_title" placeholder="OG Title" class="glass-input" value="<?php echo e($shop['og_title']); ?>">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" name="og_description" placeholder="OG Description" class="glass-input" value="<?php echo e($shop['og_description']); ?>">
-                                    </div>
-                                </div>
-                            </div>
-                            <?php endif; ?>
-                        </div>
-                        <button type="submit" class="neon-button mt-4">Update Shop Settings</button>
-                    </form>
-                </div>
+<div class="row g-4">
+    <!-- Left Column: Settings & Products -->
+    <div class="col-lg-8">
+        <!-- Shop Configuration Card -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title m-0 fw-bold"><i class="material-icons align-middle me-2 text-primary">store</i>Identity & Branding</h5>
             </div>
-        </div>
+            <div class="card-body">
+                <form action="process_shop.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <input type="hidden" name="existing_logo" value="<?php echo e($shop['logo']); ?>">
+                    <input type="hidden" name="existing_wallpaper" value="<?php echo e($shop['wallpaper']); ?>">
 
-        <div class="row g-4">
-            <!-- Product Management -->
-            <div class="col-lg-8">
-                <div class="glass-card p-4">
-                    <h2 class="h4 mb-4"><i class="fas fa-plus-circle me-2 neon-cyan"></i>Add New Product</h2>
-                    <form action="process_product.php" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-8">
-                                <label class="form-label opacity-75 small">Product Name</label>
-                                <input type="text" name="name" class="glass-input" placeholder="e.g. CyberPulse Smartwatch" required>
-                            </div>
-                            <div class="col-md-<?php echo $shop['type'] === 'privilege' ? '2' : '4'; ?>">
-                                <label class="form-label opacity-75 small">Price (Rs.)</label>
-                                <input type="number" name="price" class="glass-input" placeholder="0.00" required>
-                            </div>
-                            <?php if($shop['type'] === 'privilege'): ?>
-                            <div class="col-md-2">
-                                <label class="form-label opacity-75 small">Discount (Rs/%)</label>
-                                <input type="text" name="discount_entry" class="glass-input" placeholder="e.g. 10% OFF">
-                            </div>
-                            <?php endif; ?>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Shop Name</label>
+                            <input type="text" name="name" class="form-control" value="<?php echo e($shop['name']); ?>" required>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label opacity-75 small">Description</label>
-                            <textarea name="description" class="glass-input" rows="3" placeholder="Describe your product highlights..." required></textarea>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Category</label>
+                            <select name="category" class="form-select">
+                                <?php
+                                $all_categories = $pdo->query("SELECT name FROM shop_categories ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
+                                foreach($all_categories as $cat): ?>
+                                    <option value="<?php echo e($cat); ?>" <?php echo $shop['category'] === $cat ? 'selected' : ''; ?>><?php echo e($cat); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-
-                        <div class="mb-4">
-                            <h3 class="h5 mb-3 neon-text small text-uppercase fw-bold">SEO & Social Marketing</h3>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <input type="text" name="meta_keywords" placeholder="Keywords (comma separated)" class="glass-input">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" name="og_title" placeholder="OG Title (Social Preview)" class="glass-input">
-                                </div>
-                                <div class="col-md-6">
-                                    <textarea name="og_description" placeholder="OG Description" class="glass-input" rows="1"></textarea>
-                                </div>
-                            </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Locality</label>
+                            <select name="locality" class="form-select">
+                                <?php
+                                $localities = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
+                                foreach($localities as $loc): ?>
+                                    <option value="<?php echo e($loc); ?>" <?php echo $shop['locality'] === $loc ? 'selected' : ''; ?>><?php echo e($loc); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-
+                        <div class="col-md-<?php echo $shop['type'] === 'free_listing' ? '12' : '6'; ?>">
+                            <label class="form-label small fw-bold">Shop Logo</label>
+                            <input type="file" name="shop_logo" class="form-control">
+                        </div>
                         <?php if($shop['type'] !== 'free_listing'): ?>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label opacity-75 small">Product Image</label>
-                                <input type="file" name="product_image" class="glass-input">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label opacity-75 small">Product Video</label>
-                                <input type="file" name="product_video" class="glass-input">
-                            </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Wallpaper / Cover</label>
+                            <input type="file" name="shop_wallpaper" class="form-control">
                         </div>
                         <?php endif; ?>
-
-                        <div class="mb-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="is_featured" id="featuredSwitch">
-                                <label class="form-check-label" for="featuredSwitch">Mark as Featured Product</label>
-                            </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Description</label>
+                            <textarea name="description" class="form-control" rows="2"><?php echo e($shop['description']); ?></textarea>
                         </div>
-
-                        <button type="submit" class="neon-button w-100">SAVE PRODUCT</button>
-                    </form>
-                </div>
+                    </div>
+                    <div class="mt-4 border-top pt-3 text-end">
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Update Branding</button>
+                    </div>
+                </form>
             </div>
+        </div>
 
-            <div class="col-lg-4">
-                <!-- Offer Management -->
-                <div class="glass-card p-4 mb-4">
-                    <h2 class="h4 mb-4"><i class="fas fa-tag me-2 neon-purple"></i>Manage Offers</h2>
-                    <form method="POST">
-                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                        <input type="hidden" name="add_offer" value="1">
-                        <div class="mb-3">
-                            <input type="text" name="offer_title" placeholder="Offer Title" class="glass-input" required>
+        <!-- Product Addition Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title m-0 fw-bold"><i class="material-icons align-middle me-2 text-primary">add_circle</i>Quick Add Product</h5>
+            </div>
+            <div class="card-body">
+                <form action="process_product.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label class="form-label small fw-bold">Product Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="e.g. CyberPulse Smartwatch" required>
                         </div>
-                        <div class="mb-3">
-                            <textarea name="offer_desc" placeholder="Offer Description" class="glass-input" rows="2"></textarea>
+                        <div class="col-md-<?php echo $shop['type'] === 'privilege' ? '2' : '4'; ?>">
+                            <label class="form-label small fw-bold">Price (₹)</label>
+                            <input type="number" name="price" class="form-control" placeholder="0.00" required>
                         </div>
-                        <div class="mb-3">
-                            <input type="number" name="discount" placeholder="Discount %" class="glass-input">
+                        <?php if($shop['type'] === 'privilege'): ?>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-bold">Discount Tag</label>
+                            <input type="text" name="discount_entry" class="form-control" placeholder="10% OFF">
                         </div>
-                        <button type="submit" class="neon-button w-100 py-2">CREATE OFFER</button>
-                    </form>
-
-                    <div class="mt-4 pt-3 border-top border-secondary">
-                        <h4 class="small text-uppercase opacity-50 mb-3">Active Offers</h4>
-                        <?php foreach($offers as $offer): ?>
-                        <div class="glass-card p-2 mb-2 small border-0 bg-white-10">
-                            <div class="d-flex justify-content-between">
-                                <strong><?php echo e($offer['title']); ?></strong>
-                                <span class="badge bg-success"><?php echo e($offer['discount_percent']); ?>% OFF</span>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-
-                <!-- Enquiry System -->
-                <div class="glass-card p-4">
-                    <h2 class="h4 mb-4"><i class="fas fa-envelope me-2 neon-cyan"></i>Customer Enquiries</h2>
-                    <div class="enquiry-list" style="max-height: 400px; overflow-y: auto;">
-                        <?php if(empty($enquiries)): ?>
-                            <p class="text-center opacity-50 my-5">No enquiries yet.</p>
                         <?php endif; ?>
-                        <?php foreach($enquiries as $enq): ?>
-                        <div class="enquiry-item p-3 mb-3 glass-card border-0 bg-white-10">
-                            <p class="mb-1 small"><strong>From:</strong> <?php echo e($enq['customer_name']); ?></p>
-                            <p class="mb-2 small"><strong>Product:</strong> <span class="neon-cyan"><?php echo e($enq['product_name'] ?? 'General'); ?></span></p>
-                            <p class="mb-3 small italic">"<?php echo e($enq['message']); ?>"</p>
-                            <button class="btn btn-sm neon-button-sm w-100">Reply</button>
-                        </div>
-                        <?php endforeach; ?>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Product Description</label>
+                        <textarea name="description" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <?php if($shop['type'] !== 'free_listing'): ?>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Product Image</label>
+                            <input type="file" name="product_image" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Product Video</label>
+                            <input type="file" name="product_video" class="form-control">
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <div class="mt-4 border-top pt-3 text-end">
+                        <button type="submit" class="btn btn-indigo px-5 fw-bold" style="background-color: #6366f1; color: white;">SAVE PRODUCT</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-<?php include 'includes/footer.php'; ?>
+    <!-- Right Column: Calendar & Enquiries -->
+    <div class="col-lg-4">
+        <!-- Calendar Card -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title m-0 fw-bold"><i class="material-icons align-middle me-2 text-primary">event_note</i>Enquiry Calendar</h5>
+            </div>
+            <div class="card-body p-2">
+                <div id="calendar" style="font-size: 0.8rem;"></div>
+            </div>
+        </div>
+
+        <!-- Appointment/Enquiry List -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title m-0 fw-bold" id="appointment-list-title">Daily Enquiries</h5>
+            </div>
+            <div class="list-group list-group-flush" id="appointment-list-container">
+                <div class="list-group-item text-center py-4 text-muted small">Select a date to view enquiries.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const listContainer = document.getElementById('appointment-list-container');
+    const listTitle = document.getElementById('appointment-list-title');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        headerToolbar: {
+            left: 'prev,next',
+            center: 'title',
+            right: ''
+        },
+        dateClick: function(info) {
+            fetchEnquiries(info.dateStr);
+        },
+        events: 'api.php?action=get_enquiry_dates&shop_id=<?php echo $shop['id']; ?>'
+    });
+    calendar.render();
+
+    function fetchEnquiries(dateStr) {
+        listTitle.innerText = `Enquiries for ${dateStr}`;
+        listContainer.innerHTML = '<div class="list-group-item text-center py-3">Loading...</div>';
+
+        fetch(`api.php?action=get_enquiries_for_date&shop_id=<?php echo $shop['id']; ?>&date=${dateStr}`)
+            .then(res => res.json())
+            .then(data => {
+                listContainer.innerHTML = '';
+                if (data.length > 0) {
+                    data.forEach(enq => {
+                        listContainer.innerHTML += `
+                            <div class="list-group-item border-0 border-bottom">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <strong class="text-dark small">${enq.customer_name}</strong>
+                                    <span class="badge bg-light text-primary border" style="font-size: 0.6rem;">${enq.product_name || 'General'}</span>
+                                </div>
+                                <p class="mb-1 text-muted" style="font-size: 0.75rem;">"${enq.message}"</p>
+                                <div class="text-end">
+                                    <button class="btn btn-sm btn-link p-0 text-primary fw-bold" style="font-size: 0.7rem;">REPLY</button>
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    listContainer.innerHTML = '<div class="list-group-item text-center py-4 text-muted small">No enquiries on this day.</div>';
+                }
+            });
+    }
+
+    // Load today by default
+    fetchEnquiries(new Date().toISOString().split('T')[0]);
+});
+</script>
+
+<?php require_once 'includes/admin_layout_footer.php'; ?>
