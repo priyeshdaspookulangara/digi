@@ -38,6 +38,10 @@ if ($method === 'GET') {
 
     $name = $input['name'] ?? '';
     $owner_id = $input['owner_id'] ?? null;
+
+    // Support creating owner on the fly
+    $owner_data = $input['owner'] ?? null;
+
     $description = $input['description'] ?? '';
     $locality = $input['locality'] ?? '';
     $type = $input['type'] ?? 'standard';
@@ -46,6 +50,22 @@ if ($method === 'GET') {
 
     try {
         $pdo->beginTransaction();
+
+        if ($owner_data) {
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password, mobile, customer_id, role) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $owner_data['username'],
+                $owner_data['email'],
+                password_hash($owner_data['password'], PASSWORD_DEFAULT),
+                $owner_data['mobile'] ?? '',
+                $owner_data['customer_id'] ?? null,
+                'shop_owner'
+            ]);
+            $owner_id = $pdo->lastInsertId();
+        }
+
+        if (!$owner_id) throw new Exception("Owner ID or Owner Data required.");
+
         $stmt = $pdo->prepare("INSERT INTO shops (name, owner_id, description, locality, type) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$name, $owner_id, $description, $locality, $type]);
         $shop_id = $pdo->lastInsertId();

@@ -13,14 +13,14 @@ I have a web application for an integrated MLM-based marketplace. The backend is
 
 ## Core Features to Implement
 1. **Authentication:**
-   - Login screen with Email/Password.
-   - Session persistence (cookie-based or token-based as per API).
+   - Login screen supporting Email, Mobile, or Customer ID as the identifier.
+   - Session persistence.
    - Role-based UI (Admin vs Shop Owner).
 
-2. **Shop Management (Admin):**
-   - Dashboard showing overview of shops.
-   - "Add Shop" form: Name, Owner selection, Description, Locality (dropdown), Categories (multi-select chip), Tags (multi-select chip).
-   - Upload Logo and Wallpaper art.
+2. **Admin Features:**
+   - **Shop Registration:** Integrated form to create a new User (Shop Owner) and their Shop in one go. Fields: Owner Username, Email, Password, Mobile, Customer ID, and Shop Name, Description, Locality.
+   - **Taxonomy Management:** CRUD screens for Categories (hierarchical) and Tags.
+   - **User Management:** List and view all users, filtered by role.
 
 3. **Product Management (Shop Owner/Admin):**
    - List products for a selected shop.

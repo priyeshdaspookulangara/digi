@@ -8,7 +8,8 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 
 ### Login
 **POST** `/api/auth.php`
-- **Request:** `{"email": "...", "password": "..."}`
+- **Request:** `{"identifier": "...", "password": "..."}`
+  - `identifier` can be Email, Mobile, Customer ID, or Username.
 - **Response:** `{"message": "Login successful", "user": {"id": 1, "username": "admin", "role": "admin", "shop_id": 1}, "session_id": "..."}`
 
 ### Check Status
@@ -26,7 +27,24 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 
 ### Create Shop (Admin Only)
 **POST** `/api/shops.php`
-- **Request:** `{"name": "...", "owner_id": 1, "description": "...", "locality": "...", "categories": [1,2], "tags": [3,4]}`
+- **Request (Existing Owner):** `{"name": "...", "owner_id": 1, "description": "...", "locality": "...", "categories": [1,2], "tags": [3,4]}`
+- **Request (New Owner):**
+  ```json
+  {
+    "name": "Shop Name",
+    "owner": {
+      "username": "...",
+      "email": "...",
+      "password": "...",
+      "mobile": "...",
+      "customer_id": "..."
+    },
+    "description": "...",
+    "locality": "...",
+    "categories": [],
+    "tags": []
+  }
+  ```
 
 ### Update Shop Settings
 **POST** `/api/shop_settings.php`
@@ -63,6 +81,26 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
   - `type`: `product`, `product_gallery`, `logo`, or `wallpaper`
   - `id`: `product_id` (for product/gallery) or `shop_id` (for logo/wallpaper)
 - **Response:** `{"message": "Upload successful", "url": "uploads/..."}`
+
+---
+
+## User Management (Admin Only)
+
+### List/Create Users
+**GET/POST** `/api/users.php`
+- Support role filtering via `?role=shop_owner`.
+
+---
+
+## Taxonomy Management (Admin Only)
+
+### Categories
+**POST** `/api/categories.php`
+- CRUD for shop categories (supports `parent_id`).
+
+### Tags
+**POST** `/api/tags.php`
+- CRUD for shop tags.
 
 ---
 

@@ -7,15 +7,15 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method === 'POST') {
     // Handle Login
     $input = json_decode(file_get_contents('php://input'), true);
-    $email = $input['email'] ?? '';
+    $identifier = $input['identifier'] ?? $input['email'] ?? ''; // Can be email, mobile, or customer_id
     $password = $input['password'] ?? '';
 
-    if (empty($email) || empty($password)) {
-        send_error("Email and password are required.");
+    if (empty($identifier) || empty($password)) {
+        send_error("Identifier and password are required.");
     }
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? OR mobile = ? OR customer_id = ? OR username = ?");
+    $stmt->execute([$identifier, $identifier, $identifier, $identifier]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
