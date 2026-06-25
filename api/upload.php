@@ -43,6 +43,9 @@ if (move_uploaded_file($file['tmp_name'], $target_path)) {
         if ($type === 'product') {
             $stmt = $pdo->prepare("UPDATE products SET image = ? WHERE id = ? AND shop_id = ?");
             $stmt->execute([$web_path, $id, $_SESSION['shop_id']]);
+        } elseif ($type === 'product_gallery') {
+            $stmt = $pdo->prepare("INSERT INTO product_images (product_id, image_path) VALUES (?, ?)");
+            $stmt->execute([$id, $web_path]);
         } elseif ($type === 'logo') {
             $stmt = $pdo->prepare("UPDATE shops SET logo = ? WHERE id = ?");
             $stmt->execute([$web_path, $_SESSION['shop_id']]);

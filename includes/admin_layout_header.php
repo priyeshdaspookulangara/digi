@@ -192,6 +192,18 @@ require_once __DIR__ . '/config.php';
                     <span>Shops Control</span>
                 </a>
             </li>
+            <li class="sidebar-menu-item <?php echo strpos($_SERVER['PHP_SELF'], 'admin/manage_categories.php') !== false ? 'active' : ''; ?>">
+                <a class="sidebar-menu-button" href="<?php echo BASE_URL; ?>/admin/manage_categories.php">
+                    <i class="sidebar-menu-icon material-icons">category</i>
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item <?php echo strpos($_SERVER['PHP_SELF'], 'admin/manage_tags.php') !== false ? 'active' : ''; ?>">
+                <a class="sidebar-menu-button" href="<?php echo BASE_URL; ?>/admin/manage_tags.php">
+                    <i class="sidebar-menu-icon material-icons">sell</i>
+                    <span>Tags/Attributes</span>
+                </a>
+            </li>
             <li class="sidebar-menu-item <?php echo strpos($_SERVER['PHP_SELF'], 'admin/marketing.php') !== false ? 'active' : ''; ?>">
                 <a class="sidebar-menu-button" href="<?php echo BASE_URL; ?>/admin/marketing.php">
                     <i class="sidebar-menu-icon material-icons">campaign</i>

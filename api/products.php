@@ -3,7 +3,9 @@
 require_once __DIR__ . '/api_helper.php';
 
 api_require_role('shop_owner');
-$shop_id = $_SESSION['shop_id'];
+$shop_id = ($_SESSION['role'] === 'admin' && isset($_GET['shop_id'])) ? $_GET['shop_id'] : ($_SESSION['shop_id'] ?? null);
+
+if (!$shop_id && $method !== 'GET') send_error("Shop ID context missing", 400);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -13,7 +15,13 @@ switch ($method) {
             $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ? AND shop_id = ?");
             $stmt->execute([$_GET['id'], $shop_id]);
             $product = $stmt->fetch();
-            if ($product) send_json($product);
+            if ($product) {
+                // Fetch Gallery
+                $g_stmt = $pdo->prepare("SELECT image_path FROM product_images WHERE product_id = ?");
+                $g_stmt->execute([$product['id']]);
+                $product['gallery'] = $g_stmt->fetchAll(PDO::FETCH_COLUMN);
+                send_json($product);
+            }
             else send_error("Product not found", 404);
         } else {
             $stmt = $pdo->prepare("SELECT * FROM products WHERE shop_id = ? ORDER BY id DESC");

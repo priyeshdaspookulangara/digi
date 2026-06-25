@@ -11,8 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $shop_id = $_SESSION['shop_id'];
     $name = $_POST['name'] ?? '';
     $description = $_POST['description'] ?? '';
-    $category = $_POST['category'] ?? '';
     $locality = $_POST['locality'] ?? '';
+
+    $selected_categories = $_POST['categories'] ?? [];
+    $selected_tags = $_POST['tags'] ?? [];
+
+    // For backward compatibility, set 'category' to the first selected category name
+    $category = "";
+    if (!empty($selected_categories)) {
+        $stmt = $pdo->prepare("SELECT name FROM shop_categories WHERE id = ?");
+        $stmt->execute([$selected_categories[0]]);
+        $category = $stmt->fetchColumn() ?: "";
+    }
 
     // SEO
     $keywords = $_POST['meta_keywords'] ?? '';
@@ -53,10 +63,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
+        $pdo->beginTransaction();
+
         $stmt = $pdo->prepare("UPDATE shops SET name = ?, description = ?, category = ?, locality = ?, logo = ?, wallpaper = ?, meta_keywords = ?, og_title = ?, og_description = ? WHERE id = ?");
         $stmt->execute([$name, $description, $category, $locality, $logo_path, $wallpaper_path, $keywords, $og_title, $og_description, $shop_id]);
+
+        // Update Categories Map
+        $pdo->prepare("DELETE FROM shop_category_map WHERE shop_id = ?")->execute([$shop_id]);
+        if (!empty($selected_categories)) {
+            $stmt = $pdo->prepare("INSERT INTO shop_category_map (shop_id, category_id) VALUES (?, ?)");
+            foreach ($selected_categories as $cat_id) {
+                $stmt->execute([$shop_id, $cat_id]);
+            }
+        }
+
+        // Update Tags Map
+        $pdo->prepare("DELETE FROM shop_tag_map WHERE shop_id = ?")->execute([$shop_id]);
+        if (!empty($selected_tags)) {
+            $stmt = $pdo->prepare("INSERT INTO shop_tag_map (shop_id, tag_id) VALUES (?, ?)");
+            foreach ($selected_tags as $tag_id) {
+                $stmt->execute([$shop_id, $tag_id]);
+            }
+        }
+
+        $pdo->commit();
         header("Location: shop_portal.php?success=shop_updated");
     } catch (PDOException $e) {
+        $pdo->rollBack();
         die("Database error: " . $e->getMessage());
     }
     exit;

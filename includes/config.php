@@ -1,6 +1,9 @@
 <?php
 // Configuration settings
-define('BASE_URL', 'https://dealmybiz.in');
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'] ?? 'dealmybiz.in';
+define('BASE_URL', $protocol . $host);
+
 define('CSRF_SECRET', 'a_very_secret_token_12345');
 define('DB_PATH', __DIR__ . '/../db/database.sqlite');
 

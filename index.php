@@ -5,35 +5,48 @@ require_once 'includes/header.php';
 // Search and Filter Logic
 $search = $_GET['search'] ?? '';
 $locality = $_GET['locality'] ?? '';
-$category_filter = $_GET['category'] ?? '';
+$category_id = $_GET['cat_id'] ?? '';
+$tag_id = $_GET['tag_id'] ?? '';
 
-$query = "SELECT p.*, s.locality, s.category, s.type as shop_type FROM products p JOIN shops s ON p.shop_id = s.id WHERE 1=1";
+$query = "SELECT DISTINCT p.*, s.locality, s.category, s.type as shop_type FROM products p JOIN shops s ON p.shop_id = s.id";
 $params = [];
+$where_clauses = ["1=1"];
 
 if ($search) {
-    $query .= " AND (p.name LIKE ? OR p.description LIKE ?)";
+    $where_clauses[] = "(p.name LIKE ? OR p.description LIKE ?)";
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
 if ($locality) {
-    $query .= " AND s.locality = ?";
+    $where_clauses[] = "s.locality = ?";
     $params[] = $locality;
 }
-if ($category_filter) {
-    $query .= " AND s.category = ?";
-    $params[] = $category_filter;
+if ($category_id) {
+    // Support hierarchical search: find category and all its children
+    $child_ids = [$category_id];
+    $stmt = $pdo->prepare("SELECT id FROM shop_categories WHERE parent_id = ?");
+    $stmt->execute([$category_id]);
+    $child_ids = array_merge($child_ids, $stmt->fetchAll(PDO::FETCH_COLUMN));
+
+    $placeholders = implode(',', array_fill(0, count($child_ids), '?'));
+    $query .= " JOIN shop_category_map scm ON s.id = scm.shop_id";
+    $where_clauses[] = "scm.category_id IN ($placeholders)";
+    $params = array_merge($params, $child_ids);
+}
+if ($tag_id) {
+    $query .= " JOIN shop_tag_map stm ON s.id = stm.shop_id";
+    $where_clauses[] = "stm.tag_id = ?";
+    $params[] = $tag_id;
 }
 
+$query .= " WHERE " . implode(" AND ", $where_clauses);
 $query .= " ORDER BY p.is_featured DESC, p.created_at DESC LIMIT 20";
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $products = $stmt->fetchAll();
 
-// Get unique categories for the circle icons
-$categories = $pdo->query("SELECT DISTINCT category FROM shops WHERE category IS NOT NULL AND category != ''")->fetchAll(PDO::FETCH_COLUMN);
-if (empty($categories)) {
-    $categories = ['Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys'];
-}
+// Get top-level categories for the circle icons
+$categories_data = $pdo->query("SELECT id, name FROM shop_categories WHERE parent_id IS NULL ORDER BY name ASC")->fetchAll();
 
 // Fetch Banners
 $banners = $pdo->query("SELECT * FROM banners WHERE is_active = 1 ORDER BY display_order ASC")->fetchAll();
@@ -55,10 +68,10 @@ foreach ($ads as $a) {
 // Mock fallback for products
 if (empty($products)) {
     $products = [
-        ['id' => 1, 'name' => 'CyberPulse Smartwatch', 'price' => 12500, 'image' => 'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=600', 'is_featured' => 1, 'description' => 'AI health tracking.'],
-        ['id' => 2, 'name' => 'Neon Drift Headphones', 'price' => 8900, 'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600', 'is_featured' => 0, 'description' => 'Cyberpunk aesthetics.'],
-        ['id' => 3, 'name' => 'Quantum VR Headset', 'price' => 45000, 'image' => 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600', 'is_featured' => 1, 'description' => 'Next-gen immersion.'],
-        ['id' => 4, 'name' => 'AeroDrone X Pro', 'price' => 72000, 'image' => 'https://images.unsplash.com/photo-1473968512647-3e44a224fe8f?w=600', 'is_featured' => 0, 'description' => '4K stability.']
+        ['id' => 1, 'shop_id' => 1, 'locality' => 'Thrissur', 'name' => 'CyberPulse Smartwatch', 'price' => 12500, 'image' => 'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=600', 'is_featured' => 1, 'description' => 'AI health tracking.', 'shop_type' => 'privilege', 'discount_entry' => '10% OFF'],
+        ['id' => 2, 'shop_id' => 1, 'locality' => 'Thrissur', 'name' => 'Neon Drift Headphones', 'price' => 8900, 'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600', 'is_featured' => 0, 'description' => 'Cyberpunk aesthetics.', 'shop_type' => 'standard', 'discount_entry' => ''],
+        ['id' => 3, 'shop_id' => 1, 'locality' => 'Kochi', 'name' => 'Quantum VR Headset', 'price' => 45000, 'image' => 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600', 'is_featured' => 1, 'description' => 'Next-gen immersion.', 'shop_type' => 'privilege', 'discount_entry' => '5% OFF'],
+        ['id' => 4, 'shop_id' => 1, 'locality' => 'Kochi', 'name' => 'AeroDrone X Pro', 'price' => 72000, 'image' => 'https://images.unsplash.com/photo-1473968512647-3e44a224fe8f?w=600', 'is_featured' => 0, 'description' => '4K stability.', 'shop_type' => 'standard', 'discount_entry' => '']
     ];
 }
 ?>
@@ -171,37 +184,106 @@ if (empty($products)) {
         <div class="category-scroll d-flex flex-wrap">
             <?php
             $icons = ['Electronics' => 'fas fa-plug', 'Fashion' => 'fas fa-tshirt', 'Home' => 'fas fa-home', 'Beauty' => 'fas fa-magic', 'Sports' => 'fas fa-running', 'Toys' => 'fas fa-gamepad'];
-            foreach ($categories as $cat):
-                $icon = $icons[$cat] ?? 'fas fa-th-large';
+            foreach ($categories_data as $cat):
+                $icon = $icons[$cat['name']] ?? 'fas fa-th-large';
             ?>
-            <div class="category-item text-center" style="width: 120px;" onclick="window.location.href='index.php?category=<?php echo urlencode($cat); ?>'">
+            <div class="category-item text-center" style="width: 120px;" onclick="window.location.href='index.php?cat_id=<?php echo $cat['id']; ?>'">
                 <div class="category-circle">
                     <i class="<?php echo $icon; ?>"></i>
                 </div>
-                <div class="category-name"><?php echo e($cat); ?></div>
+                <div class="category-name"><?php echo e($cat['name']); ?></div>
             </div>
             <?php endforeach; ?>
         </div>
     </section>
 
     <!-- Filter & Search Summary (Mobile/Active Filters) -->
-    <?php if ($search || $category_filter || $locality): ?>
+    <?php if ($search || $category_id || $tag_id || $locality): ?>
     <div class="d-flex gap-2 mb-4">
         <?php if($search): ?><span class="badge rounded-pill glass-card text-dark border-light">Search: <?php echo e($search); ?> <a href="index.php" class="text-primary ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
-        <?php if($category_filter): ?><span class="badge rounded-pill glass-card text-dark border-light">Category: <?php echo e($category_filter); ?> <a href="index.php" class="text-primary ms-1 text-decoration-none">&times;</a></span><?php endif; ?>
+        <?php if($category_id): ?>
+            <?php $cname = $pdo->query("SELECT name FROM shop_categories WHERE id = ".intval($category_id))->fetchColumn(); ?>
+            <span class="badge rounded-pill glass-card text-dark border-light">Category: <?php echo e($cname); ?> <a href="index.php" class="text-primary ms-1 text-decoration-none">&times;</a></span>
+        <?php endif; ?>
+        <?php if($tag_id): ?>
+            <?php $tname = $pdo->query("SELECT name FROM shop_tags WHERE id = ".intval($tag_id))->fetchColumn(); ?>
+            <span class="badge rounded-pill glass-card text-dark border-light">Tag: <?php echo e($tname); ?> <a href="index.php" class="text-primary ms-1 text-decoration-none">&times;</a></span>
+        <?php endif; ?>
     </div>
     <?php endif; ?>
 
     <!-- Product Showcase -->
     <section class="products-section">
-        <div class="d-flex justify-content-between align-items-end mb-4">
-            <h4 class="section-title mb-0">Deals of the Day</h4>
-            <a href="#" class="text-primary text-decoration-none small">View All <i class="fas fa-chevron-right ms-1"></i></a>
-        </div>
-
         <div class="row g-4">
+            <!-- Sidebar Filters (Desktop Only) -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="glass-card p-4 sticky-top" style="top: 100px;">
+                    <h5 class="fw-bold mb-4">Filters</h5>
+
+                    <!-- Hierarchical Categories -->
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-3">Shop Categories</label>
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <?php
+                            $parents = $pdo->query("SELECT * FROM shop_categories WHERE parent_id IS NULL ORDER BY name ASC")->fetchAll();
+                            foreach($parents as $p):
+                                $children = $pdo->prepare("SELECT * FROM shop_categories WHERE parent_id = ? ORDER BY name ASC");
+                                $children->execute([$p['id']]);
+                                $child_list = $children->fetchAll();
+                            ?>
+                                <div class="mb-2">
+                                    <a href="index.php?cat_id=<?php echo $p['id']; ?>" class="text-decoration-none text-dark fw-bold small <?php echo $category_id == $p['id'] ? 'text-primary' : ''; ?>">
+                                        <?php echo e($p['name']); ?>
+                                    </a>
+                                    <?php if(!empty($child_list)): ?>
+                                        <div class="ms-3 mt-1">
+                                            <?php foreach($child_list as $c): ?>
+                                                <a href="index.php?cat_id=<?php echo $c['id']; ?>" class="d-block text-decoration-none text-muted small mb-1 <?php echo $category_id == $c['id'] ? 'text-primary fw-bold' : ''; ?>">
+                                                    - <?php echo e($c['name']); ?>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <!-- Attribute Tags -->
+                    <div class="mb-4 pt-3 border-top">
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-3">Amenities / Tags</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <?php
+                            $tags = $pdo->query("SELECT * FROM shop_tags ORDER BY name ASC")->fetchAll();
+                            foreach($tags as $t):
+                            ?>
+                                <a href="index.php?tag_id=<?php echo $t['id']; ?>" class="badge rounded-pill border text-decoration-none px-3 py-2 <?php echo $tag_id == $t['id'] ? 'bg-primary text-white border-primary' : 'bg-white text-muted'; ?>">
+                                    <?php echo e($t['name']); ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <a href="index.php" class="btn btn-sm btn-link text-primary p-0 text-decoration-none small">Clear All Filters</a>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <h4 class="section-title mb-0">
+                        <?php
+                        if($category_id) echo "Category Search";
+                        elseif($tag_id) echo "Tagged Shops";
+                        elseif($search) echo "Search Results";
+                        else echo "Deals of the Day";
+                        ?>
+                    </h4>
+                    <span class="text-muted small"><?php echo count($products); ?> items found</span>
+                </div>
+
+                <div class="row g-4">
             <?php foreach ($products as $product): ?>
-            <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="glass-card product-card p-3">
                     <div class="product-img-wrapper">
                         <?php if($product['is_featured']): ?>
@@ -223,10 +305,24 @@ if (empty($products)) {
                             </div>
                             <button class="btn btn-sm btn-outline-primary rounded-circle add-to-cart-btn" data-id="<?php echo $product['id']; ?>"><i class="fas fa-plus"></i></button>
                         </div>
+                        <!-- Shop Tags Display -->
+                        <div class="mt-2 pt-2 border-top d-flex flex-wrap gap-1">
+                            <?php
+                            $stags = $pdo->prepare("SELECT t.name FROM shop_tags t JOIN shop_tag_map m ON t.id = m.tag_id WHERE m.shop_id = ? LIMIT 3");
+                            $stags->execute([$product['shop_id']]);
+                            $tag_names = $stags->fetchAll(PDO::FETCH_COLUMN);
+                            foreach($tag_names as $tn):
+                            ?>
+                                <span class="badge bg-light text-muted fw-normal border" style="font-size: 0.6rem;"><?php echo e($tn); ?></span>
+                            <?php endforeach; ?>
+                            <span class="ms-auto text-muted" style="font-size: 0.65rem;"><i class="fas fa-map-marker-alt me-1"></i><?php echo e($product['locality']); ?></span>
+                        </div>
                     </div>
                 </div>
             </div>
             <?php endforeach; ?>
+                </div>
+            </div>
         </div>
     </section>
 
