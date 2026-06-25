@@ -100,7 +100,7 @@ require_once 'includes/admin_layout_header.php';
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold">Locality</label>
+                            <label class="form-label small fw-bold">Locality / Area</label>
                             <select name="locality" class="form-select">
                                 <?php
                                 $localities = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
@@ -108,6 +108,22 @@ require_once 'includes/admin_layout_header.php';
                                     <option value="<?php echo e($loc); ?>" <?php echo $shop['locality'] === $loc ? 'selected' : ''; ?>><?php echo e($loc); ?></option>
                                 <?php endforeach; ?>
                             </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">City</label>
+                            <input type="text" name="city" class="form-control" value="<?php echo e($shop['city']); ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">District</label>
+                            <input type="text" name="district" class="form-control" value="<?php echo e($shop['district']); ?>">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-bold">Pincode</label>
+                            <input type="text" name="pincode" class="form-control" value="<?php echo e($shop['pincode']); ?>">
+                        </div>
+                        <div class="col-md-10">
+                            <label class="form-label small fw-bold">Street Address</label>
+                            <input type="text" name="address" class="form-control" value="<?php echo e($shop['address']); ?>" placeholder="e.g. 123 Main St, Near Central Bank">
                         </div>
                         <div class="col-md-<?php echo $shop['type'] === 'free_listing' ? '12' : '6'; ?>">
                             <label class="form-label small fw-bold">Shop Logo</label>

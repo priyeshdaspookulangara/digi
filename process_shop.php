@@ -12,6 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
     $description = $_POST['description'] ?? '';
     $locality = $_POST['locality'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $city = $_POST['city'] ?? '';
+    $district = $_POST['district'] ?? '';
+    $pincode = $_POST['pincode'] ?? '';
 
     $selected_categories = $_POST['categories'] ?? [];
     $selected_tags = $_POST['tags'] ?? [];
@@ -78,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
-        $stmt = $pdo->prepare("UPDATE shops SET name = ?, description = ?, category = ?, locality = ?, logo = ?, wallpaper = ?, meta_keywords = ?, og_title = ?, og_description = ? WHERE id = ?");
-        $stmt->execute([$name, $description, $category, $locality, $logo_path, $wallpaper_path, $keywords, $og_title, $og_description, $shop_id]);
+        $stmt = $pdo->prepare("UPDATE shops SET name = ?, description = ?, category = ?, locality = ?, address = ?, city = ?, district = ?, pincode = ?, logo = ?, wallpaper = ?, meta_keywords = ?, og_title = ?, og_description = ? WHERE id = ?");
+        $stmt->execute([$name, $description, $category, $locality, $address, $city, $district, $pincode, $logo_path, $wallpaper_path, $keywords, $og_title, $og_description, $shop_id]);
 
         // Update Categories Map
         $pdo->prepare("DELETE FROM shop_category_map WHERE shop_id = ?")->execute([$shop_id]);

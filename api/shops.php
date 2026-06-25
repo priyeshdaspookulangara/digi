@@ -44,6 +44,10 @@ if ($method === 'GET') {
 
     $description = $input['description'] ?? '';
     $locality = $input['locality'] ?? '';
+    $address = $input['address'] ?? '';
+    $city = $input['city'] ?? '';
+    $district = $input['district'] ?? '';
+    $pincode = $input['pincode'] ?? '';
     $type = $input['type'] ?? 'standard';
 
     if (empty($name)) send_error("Shop name is required.");
@@ -66,8 +70,8 @@ if ($method === 'GET') {
 
         if (!$owner_id) throw new Exception("Owner ID or Owner Data required.");
 
-        $stmt = $pdo->prepare("INSERT INTO shops (name, owner_id, description, locality, type) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$name, $owner_id, $description, $locality, $type]);
+        $stmt = $pdo->prepare("INSERT INTO shops (name, owner_id, description, locality, address, city, district, pincode, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $owner_id, $description, $locality, $address, $city, $district, $pincode, $type]);
         $shop_id = $pdo->lastInsertId();
 
         // Optional taxonomy

@@ -27,7 +27,7 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 
 ### Create Shop (Admin Only)
 **POST** `/api/shops.php`
-- **Request (Existing Owner):** `{"name": "...", "owner_id": 1, "description": "...", "locality": "...", "categories": [1,2], "tags": [3,4]}`
+- **Request (Existing Owner):** `{"name": "...", "owner_id": 1, "description": "...", "locality": "...", "address": "...", "city": "...", "district": "...", "pincode": "...", "categories": [1,2], "tags": [3,4]}`
 - **Request (New Owner):**
   ```json
   {
@@ -41,6 +41,10 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
     },
     "description": "...",
     "locality": "...",
+    "address": "...",
+    "city": "...",
+    "district": "...",
+    "pincode": "...",
     "categories": [],
     "tags": []
   }
@@ -49,7 +53,7 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 ### Update Shop Settings
 **POST** `/api/shop_settings.php`
 - **Params:** `shop_id` (Required for Admin to act on a shop)
-- **Request:** `{"name": "...", "description": "...", "locality": "...", "categories": [...], "tags": [...]}`
+- **Request:** `{"name": "...", "description": "...", "locality": "...", "address": "...", "city": "...", "district": "...", "pincode": "...", "categories": [...], "tags": [...]}`
 
 ---
 

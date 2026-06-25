@@ -38,6 +38,10 @@ if ($method === 'GET') {
     $og_description = $input['og_description'] ?? '';
     $social_links = $input['social_links'] ?? '';
     $locality = $input['locality'] ?? '';
+    $address = $input['address'] ?? '';
+    $city = $input['city'] ?? '';
+    $district = $input['district'] ?? '';
+    $pincode = $input['pincode'] ?? '';
     $categories = $input['categories'] ?? []; // Array of IDs
     $tags = $input['tags'] ?? []; // Array of IDs
 
@@ -56,8 +60,8 @@ if ($method === 'GET') {
     try {
         $pdo->beginTransaction();
 
-        $stmt = $pdo->prepare("UPDATE shops SET name=?, description=?, meta_keywords=?, og_title=?, og_description=?, social_links=?, locality=? WHERE id=?");
-        $stmt->execute([$name, $description, $meta_keywords, $og_title, $og_description, $social_links, $locality, $shop_id]);
+        $stmt = $pdo->prepare("UPDATE shops SET name=?, description=?, meta_keywords=?, og_title=?, og_description=?, social_links=?, locality=?, address=?, city=?, district=?, pincode=? WHERE id=?");
+        $stmt->execute([$name, $description, $meta_keywords, $og_title, $og_description, $social_links, $locality, $address, $city, $district, $pincode, $shop_id]);
 
         // Update Taxonomy
         if (!empty($categories)) {

@@ -46,7 +46,10 @@ function renderShopJSONLD($shop) {
         "url" => BASE_URL . "/shop_portal.php?id=" . $shop['id'],
         "address" => [
             "@type" => "PostalAddress",
-            "addressLocality" => $shop['locality']
+            "streetAddress" => $shop['address'],
+            "addressLocality" => $shop['locality'],
+            "addressRegion" => $shop['city'],
+            "postalCode" => $shop['pincode']
         ]
     ];
 

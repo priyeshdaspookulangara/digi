@@ -18,7 +18,7 @@ I have a web application for an integrated MLM-based marketplace. The backend is
    - Role-based UI (Admin vs Shop Owner).
 
 2. **Admin Features:**
-   - **Shop Registration:** Integrated form to create a new User (Shop Owner) and their Shop in one go. Fields: Owner Username, Email, Password, Mobile, Customer ID, and Shop Name, Description, Locality, Type (`free_listing`, `paid`, `privilege`).
+   - **Shop Registration:** Integrated form to create a new User (Shop Owner) and their Shop in one go. Fields: Owner Username, Email, Password, Mobile, Customer ID, and Shop Name, Description, Locality, Address, City, District, Pincode, Type (`free_listing`, `paid`, `privilege`).
    - **Taxonomy Management:** CRUD screens for Categories (hierarchical) and Tags.
    - **User Management:** List and view all users, filtered by role.
 

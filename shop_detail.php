@@ -50,9 +50,9 @@ include 'includes/header.php';
             </div>
             <div class="ms-4 mb-2">
                 <h1 class="display-5 fw-bold neon-text m-0"><?php echo e($shop['name']); ?></h1>
-                <div class="d-flex gap-2 mt-2">
+                <div class="d-flex flex-wrap gap-2 mt-2">
                     <span class="badge bg-info"><?php echo e($shop['category']); ?></span>
-                    <span class="badge bg-secondary opacity-75"><?php echo e($shop['locality']); ?></span>
+                    <span class="badge bg-secondary opacity-75"><i class="fas fa-location-dot me-1"></i> <?php echo e($shop['locality']); ?>, <?php echo e($shop['city']); ?></span>
                 </div>
             </div>
         </div>
@@ -103,6 +103,15 @@ include 'includes/header.php';
                 <p class="opacity-75 small mb-4">
                     <?php echo e($shop['description'] ?: 'This shop provides high-quality products and services to its customers.'); ?>
                 </p>
+
+                <?php if($shop['address']): ?>
+                <div class="mb-4 pt-3 border-top border-secondary border-opacity-10">
+                    <h6 class="small fw-bold text-uppercase opacity-50 mb-2">Location</h6>
+                    <p class="small opacity-75 mb-1"><i class="fas fa-map-marker-alt me-2 text-info"></i><?php echo e($shop['address']); ?></p>
+                    <p class="small opacity-75 mb-1 ms-4"><?php echo e($shop['locality']); ?>, <?php echo e($shop['city']); ?></p>
+                    <p class="small opacity-75 mb-0 ms-4"><?php echo e($shop['district']); ?> - <?php echo e($shop['pincode']); ?></p>
+                </div>
+                <?php endif; ?>
 
                 <?php if($shop['type'] !== 'free_listing'): ?>
                 <h4 class="h5 mb-3 neon-text small text-uppercase">Connect</h4>
