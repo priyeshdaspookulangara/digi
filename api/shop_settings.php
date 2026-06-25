@@ -43,6 +43,16 @@ if ($method === 'GET') {
 
     if (empty($name)) send_error("Shop name is required.");
 
+    $stmt = $pdo->prepare("SELECT type FROM shops WHERE id = ?");
+    $stmt->execute([$shop_id]);
+    $shop_type = $stmt->fetchColumn();
+
+    if ($shop_type === 'free_listing') {
+        if (count($selected_categories) > 2) $selected_categories = array_slice($selected_categories, 0, 2);
+        $selected_tags = [];
+        $meta_keywords = $og_title = $og_description = $social_links = '';
+    }
+
     try {
         $pdo->beginTransaction();
 

@@ -40,7 +40,7 @@ if ($tag_id) {
 }
 
 $query .= " WHERE " . implode(" AND ", $where_clauses);
-$query .= " ORDER BY p.is_featured DESC, p.created_at DESC LIMIT 20";
+$query .= " ORDER BY (s.type = 'privilege' OR s.type = 'classic' OR s.type = 'paid') DESC, p.is_featured DESC, p.created_at DESC LIMIT 20";
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $products = $stmt->fetchAll();

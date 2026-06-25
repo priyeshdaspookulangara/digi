@@ -18,7 +18,7 @@ I have a web application for an integrated MLM-based marketplace. The backend is
    - Role-based UI (Admin vs Shop Owner).
 
 2. **Admin Features:**
-   - **Shop Registration:** Integrated form to create a new User (Shop Owner) and their Shop in one go. Fields: Owner Username, Email, Password, Mobile, Customer ID, and Shop Name, Description, Locality.
+   - **Shop Registration:** Integrated form to create a new User (Shop Owner) and their Shop in one go. Fields: Owner Username, Email, Password, Mobile, Customer ID, and Shop Name, Description, Locality, Type (`free_listing`, `paid`, `privilege`).
    - **Taxonomy Management:** CRUD screens for Categories (hierarchical) and Tags.
    - **User Management:** List and view all users, filtered by role.
 
@@ -30,6 +30,14 @@ I have a web application for an integrated MLM-based marketplace. The backend is
 4. **Search & Filter:**
    - Search shops/products by keywords.
    - Filter by Locality, Category, and Tags using a BottomSheet or Sidebar.
+
+## Business Rules to Enforce
+- **Free Listing Restrictions:**
+  - Max 2 categories per shop.
+  - No Tags allowed.
+  - No SEO fields (Keywords, Social Links).
+  - No Gallery/Wallpaper uploads (Disable these UI components if shop type is `free_listing`).
+- **Prioritization:** Search results should reflect the priority order returned by the API (Paid shops first).
 
 ## Design Guidelines
 - Modern, clean aesthetic (consistent with the web app's professional light theme).

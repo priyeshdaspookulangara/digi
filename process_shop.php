@@ -16,6 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selected_categories = $_POST['categories'] ?? [];
     $selected_tags = $_POST['tags'] ?? [];
 
+    $stmt = $pdo->prepare("SELECT type FROM shops WHERE id = ?");
+    $stmt->execute([$shop_id]);
+    $shop_type = $stmt->fetchColumn();
+
+    // Business Rules
+    if ($shop_type === 'free_listing') {
+        if (count($selected_categories) > 2) {
+            $selected_categories = array_slice($selected_categories, 0, 2);
+        }
+        $selected_tags = []; // No tags for free listing
+        $keywords = $og_title = $og_description = ''; // No SEO for free listing
+    }
+
     // For backward compatibility, set 'category' to the first selected category name
     $category = "";
     if (!empty($selected_categories)) {

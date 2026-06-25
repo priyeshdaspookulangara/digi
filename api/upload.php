@@ -13,8 +13,16 @@ if (!isset($_FILES['image'])) {
 }
 
 $file = $_FILES['image'];
-$type = $_POST['type'] ?? 'product'; // 'product', 'logo', 'wallpaper'
+$type = $_POST['type'] ?? 'product'; // 'product', 'product_gallery', 'logo', 'wallpaper'
 $id = $_POST['id'] ?? null; // product_id or shop_id
+
+$stmt = $pdo->prepare("SELECT type FROM shops WHERE id = ?");
+$stmt->execute([$_SESSION['shop_id']]);
+$shop_type = $stmt->fetchColumn();
+
+if ($shop_type === 'free_listing' && in_array($type, ['product_gallery', 'wallpaper'])) {
+    send_error("Upgrade your shop to unlock gallery and wallpaper features.", 403);
+}
 
 $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
 $finfo = new finfo(FILEINFO_MIME_TYPE);

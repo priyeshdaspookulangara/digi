@@ -5,6 +5,7 @@ require_once 'config.php';
  * Generates JSON-LD structured data for a product.
  */
 function renderProductJSONLD($product, $shop) {
+    if ($shop['type'] === 'free_listing') return "";
     $data = [
         "@context" => "https://schema.org/",
         "@type" => "Product",
@@ -35,6 +36,7 @@ function renderProductJSONLD($product, $shop) {
  * Generates JSON-LD structured data for a shop (LocalBusiness).
  */
 function renderShopJSONLD($shop) {
+    if ($shop['type'] === 'free_listing') return "";
     $data = [
         "@context" => "https://schema.org",
         "@type" => "LocalBusiness",

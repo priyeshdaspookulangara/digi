@@ -62,12 +62,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
                 <div class="main-img-container rounded-4 overflow-hidden shadow-lg">
                     <img src="<?php echo e($product['image']); ?>" alt="<?php echo e($product['name']); ?>" class="w-100 img-fluid">
                 </div>
-                <div class="row g-2 mt-2">
-                    <div class="col-3"><img src="<?php echo e($product['image']); ?>" class="img-fluid rounded border border-info border-opacity-50"></div>
-                    <!-- Placeholders for multiple images -->
-                    <div class="col-3"><div class="ratio ratio-1x1 bg-dark bg-opacity-25 rounded border border-secondary border-opacity-25"></div></div>
-                    <div class="col-3"><div class="ratio ratio-1x1 bg-dark bg-opacity-25 rounded border border-secondary border-opacity-25"></div></div>
-                </div>
+                <?php if($product['shop_type'] !== 'free_listing'): ?>
+                    <?php
+                    $gallery = $pdo->prepare("SELECT image_path FROM product_images WHERE product_id = ?");
+                    $gallery->execute([$product['id']]);
+                    $images = $gallery->fetchAll(PDO::FETCH_COLUMN);
+                    ?>
+                    <div class="row g-2 mt-2">
+                        <div class="col-3"><img src="<?php echo e($product['image']); ?>" class="img-fluid rounded border border-info border-opacity-50"></div>
+                        <?php foreach($images as $img): ?>
+                            <div class="col-3"><img src="<?php echo e($img); ?>" class="img-fluid rounded border border-secondary border-opacity-25"></div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 

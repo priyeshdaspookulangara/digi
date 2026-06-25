@@ -63,7 +63,7 @@ require_once 'includes/admin_layout_header.php';
                             <input type="text" name="name" class="form-control" value="<?php echo e($shop['name']); ?>" required>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold">Categories (Multi-select)</label>
+                            <label class="form-label small fw-bold">Categories <?php echo $shop['type'] === 'free_listing' ? '(Max 2)' : '(Multi-select)'; ?></label>
                             <div class="border p-2 rounded" style="max-height: 150px; overflow-y: auto; background: #fff;">
                                 <?php
                                 $current_cats = $pdo->prepare("SELECT category_id FROM shop_category_map WHERE shop_id = ?");
@@ -73,7 +73,7 @@ require_once 'includes/admin_layout_header.php';
                                 $all_categories = $pdo->query("SELECT id, name FROM shop_categories ORDER BY name ASC")->fetchAll();
                                 foreach($all_categories as $cat): ?>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="categories[]" value="<?php echo $cat['id']; ?>" id="cat_<?php echo $cat['id']; ?>" <?php echo in_array($cat['id'], $selected_cats) ? 'checked' : ''; ?>>
+                                        <input class="form-check-input category-checkbox" type="checkbox" name="categories[]" value="<?php echo $cat['id']; ?>" id="cat_<?php echo $cat['id']; ?>" <?php echo in_array($cat['id'], $selected_cats) ? 'checked' : ''; ?>>
                                         <label class="form-check-label small" for="cat_<?php echo $cat['id']; ?>"><?php echo e($cat['name']); ?></label>
                                     </div>
                                 <?php endforeach; ?>
@@ -81,19 +81,22 @@ require_once 'includes/admin_layout_header.php';
                         </div>
                         <div class="col-md-4">
                             <label class="form-label small fw-bold">Attributes / Tags</label>
-                            <div class="border p-2 rounded" style="max-height: 150px; overflow-y: auto; background: #fff;">
-                                <?php
-                                $current_tags = $pdo->prepare("SELECT tag_id FROM shop_tag_map WHERE shop_id = ?");
-                                $current_tags->execute([$shop['id']]);
-                                $selected_tags = $current_tags->fetchAll(PDO::FETCH_COLUMN);
+                            <div class="border p-2 rounded <?php echo $shop['type'] === 'free_listing' ? 'bg-light opacity-50' : ''; ?>" style="max-height: 150px; overflow-y: auto; background: #fff;">
+                                <?php if($shop['type'] === 'free_listing'): ?>
+                                    <div class="p-3 text-center small text-muted">Upgrade to unlock tags.</div>
+                                <?php else:
+                                    $current_tags = $pdo->prepare("SELECT tag_id FROM shop_tag_map WHERE shop_id = ?");
+                                    $current_tags->execute([$shop['id']]);
+                                    $selected_tags = $current_tags->fetchAll(PDO::FETCH_COLUMN);
 
-                                $all_tags = $pdo->query("SELECT id, name FROM shop_tags ORDER BY name ASC")->fetchAll();
-                                foreach($all_tags as $tag): ?>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="tags[]" value="<?php echo $tag['id']; ?>" id="tag_<?php echo $tag['id']; ?>" <?php echo in_array($tag['id'], $selected_tags) ? 'checked' : ''; ?>>
-                                        <label class="form-check-label small" for="tag_<?php echo $tag['id']; ?>"><?php echo e($tag['name']); ?></label>
-                                    </div>
-                                <?php endforeach; ?>
+                                    $all_tags = $pdo->query("SELECT id, name FROM shop_tags ORDER BY name ASC")->fetchAll();
+                                    foreach($all_tags as $tag): ?>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="tags[]" value="<?php echo $tag['id']; ?>" id="tag_<?php echo $tag['id']; ?>" <?php echo in_array($tag['id'], $selected_tags) ? 'checked' : ''; ?>>
+                                            <label class="form-check-label small" for="tag_<?php echo $tag['id']; ?>"><?php echo e($tag['name']); ?></label>
+                                        </div>
+                                    <?php endforeach;
+                                endif; ?>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -123,8 +126,11 @@ require_once 'includes/admin_layout_header.php';
                     </div>
 
                     <!-- SEO & Marketing Section -->
-                    <div class="mt-4 pt-3 border-top">
-                        <h6 class="fw-bold mb-3"><i class="material-icons align-middle me-1 text-secondary">search</i>SEO & Social Marketing</h6>
+                    <div class="mt-4 pt-3 border-top <?php echo $shop['type'] === 'free_listing' ? 'opacity-25' : ''; ?>" style="<?php echo $shop['type'] === 'free_listing' ? 'pointer-events: none;' : ''; ?>">
+                        <h6 class="fw-bold mb-3">
+                            <i class="material-icons align-middle me-1 text-secondary">search</i>SEO & Social Marketing
+                            <?php if($shop['type'] === 'free_listing'): ?> <span class="badge bg-soft-secondary text-muted ms-2" style="font-size: 0.6rem;">PAID FEATURE</span> <?php endif; ?>
+                        </h6>
                         <div class="row g-3">
                             <div class="col-md-12">
                                 <label class="form-label small fw-bold">Keywords (Comma separated)</label>
@@ -137,6 +143,10 @@ require_once 'includes/admin_layout_header.php';
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">OG Description</label>
                                 <input type="text" name="og_description" class="form-control form-control-sm" value="<?php echo e($shop['og_description']); ?>">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label small fw-bold">Social Links (JSON or comma-separated)</label>
+                                <input type="text" name="social_links" class="form-control form-control-sm" value="<?php echo e($shop['social_links']); ?>" placeholder="Facebook, Instagram, WhatsApp...">
                             </div>
                         </div>
                     </div>
@@ -239,8 +249,8 @@ require_once 'includes/admin_layout_header.php';
                     </div>
 
                     <!-- Product SEO -->
-                    <div class="p-3 bg-light rounded mb-3">
-                        <h6 class="small fw-bold mb-2 text-muted uppercase">SEO & Social Meta (Optional)</h6>
+                    <div class="p-3 bg-light rounded mb-3 <?php echo $shop['type'] === 'free_listing' ? 'opacity-50' : ''; ?>" style="<?php echo $shop['type'] === 'free_listing' ? 'pointer-events: none;' : ''; ?>">
+                        <h6 class="small fw-bold mb-2 text-muted uppercase">SEO & Social Meta <?php echo $shop['type'] === 'free_listing' ? '(Upgrade to unlock)' : '(Optional)'; ?></h6>
                         <div class="row g-2">
                             <div class="col-md-4">
                                 <input type="text" name="meta_keywords" class="form-control form-control-sm" placeholder="Keywords">
@@ -410,5 +420,22 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if($shop['type'] === 'free_listing'): ?>
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+    categoryCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            const checkedCount = document.querySelectorAll('.category-checkbox:checked').length;
+            if (checkedCount > 2) {
+                this.checked = false;
+                alert('Free listings are limited to 2 categories.');
+            }
+        });
+    });
+    <?php endif; ?>
+});
+</script>
 
 <?php require_once 'includes/admin_layout_footer.php'; ?>

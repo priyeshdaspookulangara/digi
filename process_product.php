@@ -18,6 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
     $discount_entry = $_POST['discount_entry'] ?? null;
 
+    $stmt = $pdo->prepare("SELECT type FROM shops WHERE id = ?");
+    $stmt->execute([$shop_id]);
+    $shop_type = $stmt->fetchColumn();
+
+    if ($shop_type === 'free_listing') {
+        $keywords = $og_title = $og_description = '';
+    }
+
     // File handling
     $upload_dir = 'uploads/products/';
     if (!is_dir($upload_dir)) {

@@ -68,6 +68,7 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 **POST** `/api/products.php`
 - **Params:** `shop_id` (Required)
 - **Request:** `{"id": 1, "name": "...", "price": 999, "description": "...", "is_featured": 1}` (Include `id` for update)
+- **Note:** SEO fields (`meta_keywords`, etc.) are ignored for `free_listing` shops.
 
 ---
 
@@ -79,6 +80,7 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 - **Fields:**
   - `image`: File
   - `type`: `product`, `product_gallery`, `logo`, or `wallpaper`
+    - `product_gallery` and `wallpaper` are forbidden for `free_listing` shops.
   - `id`: `product_id` (for product/gallery) or `shop_id` (for logo/wallpaper)
 - **Response:** `{"message": "Upload successful", "url": "uploads/..."}`
 
@@ -112,6 +114,7 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 
 ### Search
 **GET** `/api/search.php`
+- **Note:** Results are prioritized by shop type (Paid/Privilege first).
 - **Params:**
   - `q`: Search query
   - `locality`: Area name

@@ -7,7 +7,7 @@ if (!$place) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT * FROM shops WHERE locality = ? ORDER BY type = 'privilege' DESC, type = 'classic' DESC, name ASC");
+$stmt = $pdo->prepare("SELECT * FROM shops WHERE locality = ? ORDER BY (type = 'privilege' OR type = 'classic' OR type = 'paid') DESC, name ASC");
 $stmt->execute([$place]);
 $shops = $stmt->fetchAll();
 

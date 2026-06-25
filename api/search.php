@@ -59,6 +59,13 @@ if ($method === 'GET') {
     }
 
     $query .= " WHERE " . implode(" AND ", $where);
+
+    if ($type === 'shops') {
+        $query .= " ORDER BY (s.type = 'privilege' OR s.type = 'classic' OR s.type = 'paid') DESC, s.name ASC";
+    } else {
+        $query .= " ORDER BY (s.type = 'privilege' OR s.type = 'classic' OR s.type = 'paid') DESC, p.is_featured DESC, p.id DESC";
+    }
+
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     send_json($stmt->fetchAll());
