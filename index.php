@@ -121,7 +121,7 @@ if (empty($products)) {
                     <?php foreach($banners as $index => $b): ?>
                     <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?> h-100">
                         <a href="track.php?type=banner&id=<?php echo $b['id']; ?>">
-                            <img src="<?php echo BASE_URL . '/' . $b['image_url']; ?>" class="d-block w-100 h-100 object-fit-cover" alt="<?php echo e($b['title']); ?>">
+                            <img src="<?php echo get_image_url($b['image_url']); ?>" class="d-block w-100 h-100 object-fit-cover" alt="<?php echo e($b['title']); ?>">
                             <div class="carousel-caption d-none d-md-block text-start" style="left: 10%; bottom: 20%;">
                                 <h1 class="display-3 fw-bold mb-3"><?php echo e($b['title']); ?></h1>
                                 <p class="h4 mb-4 fw-light text-muted"><?php echo e($b['description']); ?></p>
@@ -157,7 +157,7 @@ if (empty($products)) {
         <div class="col-md-6">
             <?php if(isset($ads_by_pos['below_hero_left'])): ?>
                 <a href="track.php?type=ad&id=<?php echo $ads_by_pos['below_hero_left']['id']; ?>" class="d-block glass-card p-0 overflow-hidden" style="height: 180px;">
-                    <img src="<?php echo BASE_URL . '/' . $ads_by_pos['below_hero_left']['image_url']; ?>" class="w-100 h-100 object-fit-cover ad-hover-effect">
+                    <img src="<?php echo get_image_url($ads_by_pos['below_hero_left']['image_url']); ?>" class="w-100 h-100 object-fit-cover ad-hover-effect">
                 </a>
             <?php else: ?>
                 <div class="glass-card d-flex align-items-center justify-content-center opacity-25" style="height: 180px; border-style: dashed;">
@@ -168,7 +168,7 @@ if (empty($products)) {
         <div class="col-md-6">
             <?php if(isset($ads_by_pos['below_hero_right'])): ?>
                 <a href="track.php?type=ad&id=<?php echo $ads_by_pos['below_hero_right']['id']; ?>" class="d-block glass-card p-0 overflow-hidden" style="height: 180px;">
-                    <img src="<?php echo BASE_URL . '/' . $ads_by_pos['below_hero_right']['image_url']; ?>" class="w-100 h-100 object-fit-cover ad-hover-effect">
+                    <img src="<?php echo get_image_url($ads_by_pos['below_hero_right']['image_url']); ?>" class="w-100 h-100 object-fit-cover ad-hover-effect">
                 </a>
             <?php else: ?>
                 <div class="glass-card d-flex align-items-center justify-content-center opacity-25" style="height: 180px; border-style: dashed;">

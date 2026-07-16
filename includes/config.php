@@ -61,4 +61,13 @@ function require_role($role) {
 function e($text) {
     return htmlspecialchars($text ?? '', ENT_QUOTES, 'UTF-8');
 }
+
+// Helper to get image URL (handles external/local URLs)
+function get_image_url($url) {
+    if (!$url) return '';
+    if (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) {
+        return $url;
+    }
+    return BASE_URL . '/' . ltrim($url, '/');
+}
 ?>
