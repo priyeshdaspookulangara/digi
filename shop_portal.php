@@ -101,11 +101,17 @@ require_once 'includes/admin_layout_header.php';
                         </div>
                         <div class="col-md-4">
                             <label class="form-label small fw-bold">Locality / Area</label>
-                            <select name="locality" class="form-select">
+                            <select name="locality" id="localitySelect" class="form-select">
+                                <option value="">-- Select Locality --</option>
                                 <?php
-                                $localities = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
-                                foreach($localities as $loc): ?>
-                                    <option value="<?php echo e($loc); ?>" <?php echo $shop['locality'] === $loc ? 'selected' : ''; ?>><?php echo e($loc); ?></option>
+                                $localities_db = $pdo->query("SELECT district, name FROM localities ORDER BY district ASC, name ASC")->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+                                foreach($localities_db as $district => $locs): ?>
+                                    <optgroup label="<?php echo e($district); ?> District">
+                                        <?php foreach($locs as $loc_row):
+                                            $loc = $loc_row['name']; ?>
+                                            <option value="<?php echo e($loc); ?>" data-district="<?php echo e($district); ?>" <?php echo $shop['locality'] === $loc ? 'selected' : ''; ?>><?php echo e($loc); ?></option>
+                                        <?php endforeach; ?>
+                                    </optgroup>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -115,7 +121,7 @@ require_once 'includes/admin_layout_header.php';
                         </div>
                         <div class="col-md-4">
                             <label class="form-label small fw-bold">District</label>
-                            <input type="text" name="district" class="form-control" value="<?php echo e($shop['district']); ?>">
+                            <input type="text" name="district" id="districtInput" class="form-control" value="<?php echo e($shop['district']); ?>">
                         </div>
                         <div class="col-md-2">
                             <label class="form-label small fw-bold">Pincode</label>
@@ -451,6 +457,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     <?php endif; ?>
+
+    // Auto-update district on locality selection
+    const localitySelect = document.getElementById('localitySelect');
+    const districtInput = document.getElementById('districtInput');
+    if (localitySelect && districtInput) {
+        localitySelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const district = selectedOption.getAttribute('data-district');
+            if (district) {
+                districtInput.value = district;
+            }
+        });
+    }
 });
 </script>
 

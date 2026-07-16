@@ -377,17 +377,23 @@ if (empty($products)) {
 
                 <div class="locality-list-wrapper" style="max-height: 400px; overflow-y: auto;">
                     <?php
-                    // Fetch from the new localities table
-                    $localities_db = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
+                    // Fetch from the new localities table grouped by district
+                    $localities_db = $pdo->query("SELECT district, name FROM localities ORDER BY district ASC, name ASC")->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
                     ?>
-                    <div class="list-group list-group-flush bg-transparent">
-                        <?php foreach($localities_db as $loc): ?>
-                            <a href="local-shops.php?place=<?php echo urlencode($loc); ?>" class="list-group-item list-group-item-action bg-transparent text-dark border-light py-3 d-flex justify-content-between align-items-center">
-                                <?php echo e($loc); ?>
-                                <i class="fas fa-chevron-right small text-muted"></i>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
+                    <?php foreach($localities_db as $district => $locs): ?>
+                        <div class="bg-light px-3 py-2 fw-bold text-uppercase text-secondary small sticky-top border-bottom border-light">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i><?php echo e($district); ?> District
+                        </div>
+                        <div class="list-group list-group-flush bg-transparent mb-3">
+                            <?php foreach($locs as $loc_row):
+                                $loc = $loc_row['name']; ?>
+                                <a href="local-shops.php?place=<?php echo urlencode($loc); ?>" class="list-group-item list-group-item-action bg-transparent text-dark border-light py-2 ps-4 pe-3 d-flex justify-content-between align-items-center">
+                                    <span class="text-secondary"><?php echo e($loc); ?></span>
+                                    <i class="fas fa-chevron-right small text-muted"></i>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
