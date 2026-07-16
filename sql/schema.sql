@@ -129,7 +129,8 @@ CREATE TABLE IF NOT EXISTS localities (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
     latitude REAL,
-    longitude REAL
+    longitude REAL,
+    district TEXT DEFAULT 'Thrissur'
 );
 
 INSERT OR IGNORE INTO localities (name, latitude, longitude) VALUES
@@ -146,6 +147,41 @@ INSERT OR IGNORE INTO localities (name, latitude, longitude) VALUES
 ('Puthukkad', 10.42, 76.28), ('Mala', 10.24, 76.26), ('Puthenchira', 10.28, 76.28),
 ('Peechi', 10.53, 76.36), ('Koratty', 10.26, 76.35), ('Pattikad', 10.55, 76.34),
 ('Alagappa Nagar', 10.43, 76.27), ('Adat', 10.55, 76.15), ('Vadakkumkara', 10.50, 76.20);
+
+INSERT OR IGNORE INTO localities (name, latitude, longitude, district) VALUES
+('Aluva', 10.1075, 76.3457, 'Ernakulam'),
+('Angamaly', 10.1915, 76.3820, 'Ernakulam'),
+('Cherai', 10.1416, 76.1783, 'Ernakulam'),
+('Edappally', 10.0261, 76.3088, 'Ernakulam'),
+('Eloor', 10.0632, 76.2974, 'Ernakulam'),
+('Ernakulam', 9.9816, 76.2999, 'Ernakulam'),
+('Fort Kochi', 9.9648, 76.2421, 'Ernakulam'),
+('Kadavanthra', 9.9675, 76.2991, 'Ernakulam'),
+('Kakkanad', 10.0159, 76.3419, 'Ernakulam'),
+('Kalamassery', 10.0542, 76.3120, 'Ernakulam'),
+('Kaloor', 10.0031, 76.2997, 'Ernakulam'),
+('Koothattukulam', 9.8732, 76.5599, 'Ernakulam'),
+('Kothamangalam', 10.0617, 76.6214, 'Ernakulam'),
+('Maradu', 9.9472, 76.3149, 'Ernakulam'),
+('Mattancherry', 9.9591, 76.2573, 'Ernakulam'),
+('Mulanthuruthy', 9.9022, 76.3888, 'Ernakulam'),
+('Muvattupuzha', 9.9874, 76.5816, 'Ernakulam'),
+('Nedumbassery', 10.1518, 76.3908, 'Ernakulam'),
+('North Paravur', 10.1436, 76.2250, 'Ernakulam'),
+('Palarivattom', 10.0076, 76.3115, 'Ernakulam'),
+('Perumbavoor', 10.1143, 76.4829, 'Ernakulam'),
+('Piravom', 9.8752, 76.4913, 'Ernakulam'),
+('Thrikkakara', 10.0292, 76.3283, 'Ernakulam'),
+('Thrippunithura', 9.9482, 76.3458, 'Ernakulam'),
+('Vypin', 9.9788, 76.2236, 'Ernakulam'),
+('Vyttila', 9.9671, 76.3218, 'Ernakulam'),
+('Peruvaram', 10.1464, 76.2163, 'Ernakulam'),
+('Moothakunnam', 10.1916, 76.1950, 'Ernakulam'),
+('Munambam', 10.1873, 76.1821, 'Ernakulam'),
+('Munambam Junction', 10.1812, 76.1855, 'Ernakulam'),
+('Pattanam', 10.1554, 76.2154, 'Ernakulam'),
+('Chittattukara', 10.1433, 76.2082, 'Ernakulam'),
+('Pooyappilly', 10.1264, 76.2110, 'Ernakulam');
 
 INSERT OR IGNORE INTO site_settings (key_name, key_value) VALUES ('entry_fee', '3000.00');
 INSERT OR IGNORE INTO site_settings (key_name, key_value) VALUES ('level_commission', '100.00');
