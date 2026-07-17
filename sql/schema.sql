@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    role TEXT CHECK(role IN ('admin', 'shop_owner', 'member')) DEFAULT 'member',
+    role TEXT CHECK(role IN ('admin', 'shop_owner', 'member', 'agent')) DEFAULT 'member',
     referrer_id INTEGER,
     level INTEGER DEFAULT 1,
     rebirth_count INTEGER DEFAULT 0,

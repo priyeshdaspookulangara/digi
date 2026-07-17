@@ -90,6 +90,7 @@ include 'includes/header.php';
                         <select name="role" class="glass-input">
                             <option value="member">Member</option>
                             <option value="shop_owner">Shop Owner</option>
+                            <option value="agent">Agent</option>
                         </select>
                     </div>
                     <div class="col-md-6">

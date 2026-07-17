@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    role ENUM('admin', 'shop_owner', 'member') DEFAULT 'member',
+    role ENUM('admin', 'shop_owner', 'member', 'agent') DEFAULT 'member',
     referrer_id INT,
     level INT DEFAULT 1,
     rebirth_count INT DEFAULT 0,

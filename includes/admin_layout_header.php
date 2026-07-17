@@ -210,6 +210,13 @@ require_once __DIR__ . '/config.php';
                     <span>Marketing</span>
                 </a>
             </li>
+            <?php elseif(($_SESSION['role'] ?? '') === 'agent'): ?>
+            <li class="sidebar-menu-item <?php echo strpos($_SERVER['PHP_SELF'], 'agent_portal.php') !== false ? 'active' : ''; ?>">
+                <a class="sidebar-menu-button" href="<?php echo BASE_URL; ?>/agent_portal.php">
+                    <i class="sidebar-menu-icon material-icons">dashboard</i>
+                    <span>Agent Portal</span>
+                </a>
+            </li>
             <?php else: ?>
             <li class="sidebar-menu-item <?php echo strpos($_SERVER['PHP_SELF'], 'shop_portal.php') !== false ? 'active' : ''; ?>">
                 <a class="sidebar-menu-button" href="<?php echo BASE_URL; ?>/shop_portal.php">
