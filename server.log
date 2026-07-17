@@ -47,3 +47,15 @@
 [Fri Jul 17 00:59:30 2026] [::1]:57948 Accepted
 [Fri Jul 17 00:59:30 2026] [::1]:57948 [200]: POST /agent_portal.php
 [Fri Jul 17 00:59:30 2026] [::1]:57948 Closing
+[Fri Jul 17 01:21:45 2026] [::1]:50496 Accepted
+[Fri Jul 17 01:21:45 2026] [::1]:50496 [200]: POST /register.php
+[Fri Jul 17 01:21:45 2026] [::1]:50496 Closing
+[Fri Jul 17 01:21:45 2026] [::1]:50512 Accepted
+[Fri Jul 17 01:21:45 2026] [::1]:50512 [200]: POST /api/auth.php
+[Fri Jul 17 01:21:45 2026] [::1]:50512 Closing
+[Fri Jul 17 01:21:45 2026] [::1]:50522 Accepted
+[Fri Jul 17 01:21:45 2026] [::1]:50522 [200]: POST /api/bulk_shops.php
+[Fri Jul 17 01:21:45 2026] [::1]:50522 Closing
+[Fri Jul 17 01:21:45 2026] [::1]:50530 Accepted
+[Fri Jul 17 01:21:45 2026] [::1]:50530 [200]: POST /api/bulk_shops.php
+[Fri Jul 17 01:21:45 2026] [::1]:50530 Closing
