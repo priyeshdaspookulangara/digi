@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: admin/index.php");
         } elseif ($user['role'] === 'shop_owner') {
             header("Location: shop_portal.php");
+        } elseif ($user['role'] === 'agent') {
+            header("Location: agent_portal.php");
         } else {
             header("Location: index.php");
         }

@@ -54,5 +54,47 @@ The app should interact with the following endpoints (Base URL: `https://dealmyb
 - `taxonomy.php` & `localities.php`: Fetching metadata.
 - `search.php`: Querying data.
 
+## New Feature: Mobile Bulk Update Offline/Local Shops (Agent & Admin Only)
+We have added a RESTful JSON endpoint in the web backend: `POST /api/bulk_shops.php` (requires role `agent` or `admin`). This endpoint allows agents/admins to upsert shops in bulk. If a shop with the same `shop_name` and `owner_username` already exists, it updates the existing shop; otherwise, it registers a new merchant user account (including MLM hierarchy nodes) and inserts the new shop cleanly.
+
+### Task for Mobile AI Agent:
+Please implement a "Bulk Update" side menu/feature in the Android Kotlin App:
+1. **Local Offline Shop Storage:**
+   - Create a local SQLite database table using Room called `local_draft_shops`.
+   - Fields should capture: `shop_name`, `owner_username`, `description`, `locality`, `address`, `city`, `district`, `pincode`, `type` (`free_listing`, `classic`, `privilege`), `owner_email` (optional), `owner_password` (optional), `owner_mobile` (optional), and `category`.
+   - Provide an offline screen to enter/add multiple shops locally as draft rows.
+
+2. **Bulk Upload Service (Sync):**
+   - Implement a side menu option called **"Bulk Update"** in the navigation drawer.
+   - When clicked, this screen lists all local draft shops that haven't been synchronized yet.
+   - Provide a **"Sync with Server"** button.
+   - When clicked, serializes the draft shops into a JSON array matching the payload format expected by `api/bulk_shops.php`:
+     ```json
+     [
+       {
+         "shop_name": "API Bulk Tech Shop",
+         "owner_username": "apimerchant1",
+         "description": "Tech description",
+         "locality": "Chalakudy",
+         "address": "123 Main St",
+         "city": "Chalakudy",
+         "district": "Thrissur",
+         "pincode": "680307",
+         "type": "privilege",
+         "owner_email": "apimerchant1@example.com",
+         "owner_password": "secretPass123!",
+         "owner_mobile": "9999999991",
+         "category": "Electronics"
+       }
+     ]
+     ```
+   - Sends a **POST** request to `/api/bulk_shops.php` using Retrofit.
+   - On success:
+     - Read the response indicating `created_count` and `updated_count`.
+     - Display a Toast or Success Dialog: `"Bulk Sync successful! Created: X, Updated: Y"`.
+     - Clear the successfully synced shops from the local draft database.
+   - On failure:
+     - Show appropriate network/error feedback without clearing the local drafts, so the user can retry later.
+
 ## Instruction
 Please generate the initial project structure, data models, API interface, and the main ViewModels/Screens for Login and Shop Management.
