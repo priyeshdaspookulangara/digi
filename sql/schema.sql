@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    role TEXT CHECK(role IN ('admin', 'shop_owner', 'member')) DEFAULT 'member',
+    role TEXT CHECK(role IN ('admin', 'shop_owner', 'member', 'agent')) DEFAULT 'member',
     referrer_id INTEGER,
     level INTEGER DEFAULT 1,
     rebirth_count INTEGER DEFAULT 0,
@@ -122,6 +122,7 @@ CREATE TABLE IF NOT EXISTS wishlist (
 
 -- Seed Initial Data
 INSERT OR IGNORE INTO users (username, password, email, role) VALUES ('admin', '$2y$10$V9h4PcIocyO/Q5xl1FX//u/ka7bxSHo1SpKlF3RjOG4oVmp4z6gXC', 'admin@example.com', 'admin');
+INSERT OR IGNORE INTO users (username, password, email, role) VALUES ('agent', '$2y$10$Jf8dTAeg/Ebi/TmfhMQJ4ue50ODr2umHz8/3u/i93QtWXbUtPy6bW', 'agent@dealmybiz.in', 'agent');
 
 INSERT OR IGNORE INTO shop_categories (name) VALUES ('Electronics'), ('Fashion'), ('Home'), ('Beauty'), ('Sports'), ('Grocery'), ('Automobile');
 
@@ -163,6 +164,33 @@ CREATE TABLE IF NOT EXISTS banners (
     clicks INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS professional_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS portfolios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    professional_name TEXT NOT NULL,
+    category_id INTEGER,
+    description TEXT,
+    experience_years INTEGER,
+    skills TEXT,
+    services TEXT,
+    contact_email TEXT,
+    contact_phone TEXT,
+    locality TEXT,
+    image TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (category_id) REFERENCES professional_categories(id)
+);
+
+INSERT OR IGNORE INTO professional_categories (name) VALUES
+('Software Engineer'), ('Graphic Designer'), ('Photographer'), ('Plumber'), ('Electrician'), ('Tutor'), ('Accountant'), ('Makeup Artist'), ('Consultant');
 
 CREATE TABLE IF NOT EXISTS ads (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

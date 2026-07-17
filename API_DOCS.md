@@ -55,6 +55,41 @@ All protected endpoints require a session. Use the `auth.php` endpoint to log in
 - **Params:** `shop_id` (Required for Admin to act on a shop)
 - **Request:** `{"name": "...", "description": "...", "locality": "...", "address": "...", "city": "...", "district": "...", "pincode": "...", "categories": [...], "tags": [...]}`
 
+### Bulk Import / Upsert Shops (Agents & Admin)
+**POST** `/api/bulk_shops.php`
+- **Authentication:** Requires role `agent` or `admin`.
+- **Request (JSON Array of Shops):**
+  ```json
+  [
+    {
+      "shop_name": "My Bulk Shop 1",
+      "owner_username": "merchant123",
+      "description": "Details about shop 1",
+      "locality": "Chalakudy",
+      "address": "123 Main Street",
+      "city": "Chalakudy",
+      "district": "Thrissur",
+      "pincode": "680307",
+      "type": "privilege",
+      "owner_email": "merchant123@example.com",
+      "owner_password": "Pass123!",
+      "owner_mobile": "9876543210",
+      "category": "Electronics"
+    }
+  ]
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "created_count": 1,
+    "updated_count": 0,
+    "error_count": 0,
+    "messages": []
+  }
+  ```
+- **Note:** If a shop with the same `shop_name` and `owner_username` already exists, its properties will be updated instead of created (Idempotent Upsert behavior).
+
 ---
 
 ## Product Management

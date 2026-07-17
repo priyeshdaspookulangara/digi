@@ -62,18 +62,30 @@ require_once __DIR__ . '/seo_helper.php';
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>/index.php"><i class="fas fa-store me-1 opacity-50"></i> Shop</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/portfolios.php"><i class="fas fa-user-tie me-1 opacity-50"></i> Professionals</a>
+                    </li>
                     <?php if (is_logged_in()): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?>/shop_portal.php"><i class="fas fa-briefcase me-1"></i> Merchant</a>
-                        </li>
+                        <?php if ($_SESSION['role'] === 'agent'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo BASE_URL; ?>/agent_portal.php"><i class="fas fa-user-tie me-1"></i> Agent Portal</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo BASE_URL; ?>/shop_portal.php"><i class="fas fa-briefcase me-1"></i> Merchant</a>
+                            </li>
+                        <?php endif; ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-user-circle me-1"></i> <?php echo e($_SESSION['username']); ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end glass-card">
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/checkout.php">MLM Dashboard</a></li>
+                                <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/manage_portfolio.php">My Portfolio</a></li>
                                 <?php if($_SESSION['role'] === 'admin'): ?>
                                     <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/admin/index.php">Admin Panel</a></li>
+                                <?php elseif($_SESSION['role'] === 'agent'): ?>
+                                    <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/agent_portal.php">Agent Portal</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/logout.php">Logout</a></li>

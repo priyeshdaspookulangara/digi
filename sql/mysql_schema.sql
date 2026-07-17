@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    role ENUM('admin', 'shop_owner', 'member') DEFAULT 'member',
+    role ENUM('admin', 'shop_owner', 'member', 'agent') DEFAULT 'member',
     referrer_id INT,
     level INT DEFAULT 1,
     rebirth_count INT DEFAULT 0,
@@ -102,6 +102,7 @@ CREATE TABLE IF NOT EXISTS offers (
 
 -- Seed Initial Data
 INSERT IGNORE INTO users (username, password, email, role) VALUES ('admin', '$2y$10$V9h4PcIocyO/Q5xl1FX//u/ka7bxSHo1SpKlF3RjOG4oVmp4z6gXC', 'admin@example.com', 'admin');
+INSERT IGNORE INTO users (username, password, email, role) VALUES ('agent', '$2y$10$Jf8dTAeg/Ebi/TmfhMQJ4ue50ODr2umHz8/3u/i93QtWXbUtPy6bW', 'agent@dealmybiz.in', 'agent');
 
 INSERT IGNORE INTO shop_categories (name) VALUES ('Electronics'), ('Fashion'), ('Home'), ('Beauty'), ('Sports'), ('Grocery'), ('Automobile');
 
@@ -143,6 +144,33 @@ CREATE TABLE IF NOT EXISTS banners (
     clicks INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS professional_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS portfolios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    professional_name VARCHAR(255) NOT NULL,
+    category_id INT,
+    description TEXT,
+    experience_years INT,
+    skills TEXT,
+    services TEXT,
+    contact_email VARCHAR(255),
+    contact_phone VARCHAR(50),
+    locality VARCHAR(255),
+    image VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES professional_categories(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+INSERT IGNORE INTO professional_categories (name) VALUES
+('Software Engineer'), ('Graphic Designer'), ('Photographer'), ('Plumber'), ('Electrician'), ('Tutor'), ('Accountant'), ('Makeup Artist'), ('Consultant');
 
 CREATE TABLE IF NOT EXISTS cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
