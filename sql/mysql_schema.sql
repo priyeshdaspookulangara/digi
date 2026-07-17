@@ -144,6 +144,33 @@ CREATE TABLE IF NOT EXISTS banners (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS professional_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS portfolios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    professional_name VARCHAR(255) NOT NULL,
+    category_id INT,
+    description TEXT,
+    experience_years INT,
+    skills TEXT,
+    services TEXT,
+    contact_email VARCHAR(255),
+    contact_phone VARCHAR(50),
+    locality VARCHAR(255),
+    image VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES professional_categories(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+INSERT IGNORE INTO professional_categories (name) VALUES
+('Software Engineer'), ('Graphic Designer'), ('Photographer'), ('Plumber'), ('Electrician'), ('Tutor'), ('Accountant'), ('Makeup Artist'), ('Consultant');
+
 CREATE TABLE IF NOT EXISTS cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,

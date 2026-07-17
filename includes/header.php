@@ -62,6 +62,9 @@ require_once __DIR__ . '/seo_helper.php';
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>/index.php"><i class="fas fa-store me-1 opacity-50"></i> Shop</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/portfolios.php"><i class="fas fa-user-tie me-1 opacity-50"></i> Professionals</a>
+                    </li>
                     <?php if (is_logged_in()): ?>
                         <?php if ($_SESSION['role'] === 'agent'): ?>
                             <li class="nav-item">
@@ -78,6 +81,7 @@ require_once __DIR__ . '/seo_helper.php';
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end glass-card">
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/checkout.php">MLM Dashboard</a></li>
+                                <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/manage_portfolio.php">My Portfolio</a></li>
                                 <?php if($_SESSION['role'] === 'admin'): ?>
                                     <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/admin/index.php">Admin Panel</a></li>
                                 <?php elseif($_SESSION['role'] === 'agent'): ?>
