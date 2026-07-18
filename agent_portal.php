@@ -246,9 +246,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_single_shop'])) {
     }
 }
 
+// Handle Add Place / Locality
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_locality'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
+
+    $loc_name = trim($_POST['loc_name'] ?? '');
+    $latitude = !empty($_POST['latitude']) ? (float)$_POST['latitude'] : 0.0;
+    $longitude = !empty($_POST['longitude']) ? (float)$_POST['longitude'] : 0.0;
+
+    if (empty($loc_name)) {
+        $messages[] = ['type' => 'danger', 'text' => 'Locality name is required.'];
+    } else {
+        try {
+            // Check if locality name already exists
+            $stmt = $pdo->prepare("SELECT id FROM localities WHERE LOWER(name) = LOWER(?)");
+            $stmt->execute([$loc_name]);
+            if ($stmt->fetch()) {
+                $messages[] = ['type' => 'warning', 'text' => "Locality '{$loc_name}' already exists."];
+            } else {
+                $stmt = $pdo->prepare("INSERT INTO localities (name, latitude, longitude) VALUES (?, ?, ?)");
+                $stmt->execute([$loc_name, $latitude, $longitude]);
+                $messages[] = ['type' => 'success', 'text' => "Locality '{$loc_name}' has been added successfully!"];
+            }
+        } catch (PDOException $e) {
+            $messages[] = ['type' => 'danger', 'text' => "Database error: " . $e->getMessage()];
+        }
+    }
+}
+
 // Fetch all registered shops
 $shops = $pdo->query("SELECT s.*, u.username as owner_name FROM shops s JOIN users u ON s.owner_id = u.id ORDER BY s.created_at DESC")->fetchAll();
 $categories = $pdo->query("SELECT * FROM shop_categories ORDER BY name ASC")->fetchAll();
+$localities = $pdo->query("SELECT * FROM localities ORDER BY name ASC")->fetchAll();
 
 $csrf_token = get_csrf_token();
 $pageTitle = "Agent Portal | NexGen Marketplace";
@@ -353,10 +384,8 @@ require_once 'includes/admin_layout_header.php';
                                     <label class="form-label small fw-bold text-muted">Locality</label>
                                     <select name="locality" class="form-select">
                                         <option value="">-- Select Locality --</option>
-                                        <?php
-                                        $loc_names = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
-                                        foreach ($loc_names as $l_name): ?>
-                                            <option value="<?php echo e($l_name); ?>"><?php echo e($l_name); ?></option>
+                                        <?php foreach ($localities as $loc): ?>
+                                            <option value="<?php echo e($loc['name']); ?>"><?php echo e($loc['name']); ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -524,14 +553,46 @@ require_once 'includes/admin_layout_header.php';
         </div>
     </div>
 
-    <!-- Active Shops Column -->
+    <!-- Right Side Column -->
     <div class="col-lg-5">
+        <!-- Add Locality Form -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title m-0 fw-bold text-dark"><i class="material-icons align-middle me-2 text-primary">add_location_alt</i>Add New Place / Locality</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Locality Name</label>
+                        <input type="text" name="loc_name" class="form-control" placeholder="e.g. Ernakulam Town" required>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">Latitude (Optional)</label>
+                            <input type="number" step="0.000001" name="latitude" class="form-control" placeholder="e.g. 10.52">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">Longitude (Optional)</label>
+                            <input type="number" step="0.000001" name="longitude" class="form-control" placeholder="e.g. 76.21">
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" name="add_locality" class="btn btn-outline-primary fw-bold w-100">
+                            <i class="material-icons align-middle me-1">add_location</i> ADD LOCALITY
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Live Registered Shops -->
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white py-3">
                 <h5 class="card-title m-0 fw-bold text-dark"><i class="material-icons align-middle me-2 text-primary">storefront</i>Live Registered Shops (<?php echo count($shops); ?>)</h5>
             </div>
             <div class="card-body p-0">
-                <div class="list-group list-group-flush" style="max-height: 650px; overflow-y: auto;">
+                <div class="list-group list-group-flush" style="max-height: 450px; overflow-y: auto;">
                     <?php if (empty($shops)): ?>
                         <div class="p-4 text-center text-muted small">No shops registered on the platform yet.</div>
                     <?php else: foreach ($shops as $s): ?>

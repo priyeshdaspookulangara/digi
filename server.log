@@ -170,3 +170,24 @@
 [Sat Jul 18 02:50:43 2026] [::1]:33796 Accepted
 [Sat Jul 18 02:50:43 2026] [::1]:33796 [200]: POST /agent_portal.php
 [Sat Jul 18 02:50:43 2026] [::1]:33796 Closing
+[Sat Jul 18 03:18:21 2026] [::1]:53432 Accepted
+[Sat Jul 18 03:18:21 2026] [::1]:53432 [200]: GET /login.php
+[Sat Jul 18 03:18:21 2026] [::1]:53432 Closing
+[Sat Jul 18 03:18:21 2026] [::1]:53442 Accepted
+[Sat Jul 18 03:18:21 2026] [::1]:53456 Accepted
+[Sat Jul 18 03:18:21 2026] [::1]:53442 [200]: GET /assets/css/style.css
+[Sat Jul 18 03:18:21 2026] [::1]:53456 [200]: GET /assets/js/main.js
+[Sat Jul 18 03:18:21 2026] [::1]:53442 Closing
+[Sat Jul 18 03:18:21 2026] [::1]:53456 Closing
+[Sat Jul 18 03:18:21 2026] [::1]:53458 Accepted
+[Sat Jul 18 03:18:21 2026] [::1]:53458 [200]: POST /cart_handler.php
+[Sat Jul 18 03:18:21 2026] [::1]:53458 Closing
+[Sat Jul 18 03:18:23 2026] [::1]:53470 Accepted
+[Sat Jul 18 03:18:24 2026] [::1]:53470 [302]: POST /login.php
+[Sat Jul 18 03:18:24 2026] [::1]:53470 Closing
+[Sat Jul 18 03:18:24 2026] [::1]:53482 Accepted
+[Sat Jul 18 03:18:24 2026] [::1]:53482 [200]: GET /agent_portal.php
+[Sat Jul 18 03:18:24 2026] [::1]:53482 Closing
+[Sat Jul 18 03:18:26 2026] [::1]:34756 Accepted
+[Sat Jul 18 03:18:26 2026] [::1]:34756 [200]: POST /agent_portal.php
+[Sat Jul 18 03:18:26 2026] [::1]:34756 Closing
