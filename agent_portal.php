@@ -6,6 +6,7 @@ $success_count = 0;
 $error_count = 0;
 $messages = [];
 
+// Handle Bulk Import
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_import'])) {
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         die("CSRF token validation failed.");
@@ -159,6 +160,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_import'])) {
     }
 }
 
+// Handle Single Shop Manual Creation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_single_shop'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
+
+    $shop_name = trim($_POST['shop_name'] ?? '');
+    $owner_username = trim($_POST['owner_username'] ?? '');
+    $owner_email = trim($_POST['owner_email'] ?? '');
+    $owner_password = trim($_POST['owner_password'] ?? '');
+    $owner_mobile = trim($_POST['owner_mobile'] ?? '');
+
+    $description = trim($_POST['description'] ?? '');
+    $locality = trim($_POST['locality'] ?? '');
+    $address = trim($_POST['address'] ?? '');
+    $city = trim($_POST['city'] ?? '');
+    $district = trim($_POST['district'] ?? '');
+    $pincode = trim($_POST['pincode'] ?? '');
+    $type = trim($_POST['type'] ?? 'free_listing');
+    $category_id = (int)($_POST['category_id'] ?? 0);
+
+    if (empty($shop_name) || empty($owner_username) || empty($owner_email) || empty($owner_password)) {
+        $messages[] = ['type' => 'danger', 'text' => 'Shop Name, Owner Username, Email, and Password are required.'];
+    } else {
+        try {
+            $db_in_transaction = $pdo->inTransaction();
+            if (!$db_in_transaction) {
+                $pdo->beginTransaction();
+            }
+
+            // 1. Find or create Owner User
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+            $stmt->execute([$owner_username]);
+            $owner_id = $stmt->fetchColumn();
+
+            if (!$owner_id) {
+                // Check email uniqueness
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+                $stmt->execute([$owner_email]);
+                if ($stmt->fetchColumn()) {
+                    throw new Exception("User creation failed: Email '{$owner_email}' already exists.");
+                }
+
+                // Create owner user
+                $hashed_pass = password_hash($owner_password, PASSWORD_DEFAULT);
+                $stmt = $pdo->prepare("INSERT INTO users (username, email, role, password, mobile) VALUES (?, ?, 'shop_owner', ?, ?)");
+                $stmt->execute([$owner_username, $owner_email, $hashed_pass, $owner_mobile]);
+                $owner_id = $pdo->lastInsertId();
+
+                // Add to MLM hierarchy
+                $stmt = $pdo->prepare("INSERT INTO mlm_hierarchy (user_id, parent_id, level_in_tree) VALUES (?, NULL, 1)");
+                $stmt->execute([$owner_id]);
+            }
+
+            // 2. Fetch category name
+            $category_name = "";
+            if ($category_id > 0) {
+                $stmt = $pdo->prepare("SELECT name FROM shop_categories WHERE id = ?");
+                $stmt->execute([$category_id]);
+                $category_name = $stmt->fetchColumn() ?: "";
+            }
+
+            // 3. Create Shop
+            $stmt = $pdo->prepare("INSERT INTO shops (owner_id, name, description, locality, address, city, district, pincode, type, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$owner_id, $shop_name, $description, $locality, $address, $city, $district, $pincode, $type, $category_name]);
+            $shop_id = $pdo->lastInsertId();
+
+            // 4. Map Category
+            if ($category_id > 0) {
+                $stmt = $pdo->prepare("INSERT INTO shop_category_map (shop_id, category_id) VALUES (?, ?)");
+                $stmt->execute([$shop_id, $category_id]);
+            }
+
+            if (!$db_in_transaction && $pdo->inTransaction()) {
+                $pdo->commit();
+            }
+            $messages[] = ['type' => 'success', 'text' => "Shop '{$shop_name}' has been created successfully for owner '{$owner_username}'!"];
+        } catch (Exception $e) {
+            if (!$db_in_transaction && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            $messages[] = ['type' => 'danger', 'text' => "Failed to add shop: " . $e->getMessage()];
+        }
+    }
+}
+
 // Fetch all registered shops
 $shops = $pdo->query("SELECT s.*, u.username as owner_name FROM shops s JOIN users u ON s.owner_id = u.id ORDER BY s.created_at DESC")->fetchAll();
 $categories = $pdo->query("SELECT * FROM shop_categories ORDER BY name ASC")->fetchAll();
@@ -176,7 +263,7 @@ require_once 'includes/admin_layout_header.php';
                 <li class="breadcrumb-item active" aria-current="page">Agent Portal</li>
             </ol>
         </nav>
-        <h1 class="m-0 text-dark">Agent Portal <small class="text-muted fw-light" style="font-size: 1rem;">(Bulk Shop Importer)</small></h1>
+        <h1 class="m-0 text-dark">Agent Portal <small class="text-muted fw-light" style="font-size: 1rem;">(Add & Manage Shops)</small></h1>
     </div>
 </div>
 
@@ -192,51 +279,151 @@ require_once 'includes/admin_layout_header.php';
     <div class="col-lg-7">
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white py-3">
-                <h5 class="card-title m-0 fw-bold text-dark"><i class="material-icons align-middle me-2 text-primary">post_add</i>Bulk Import Shops</h5>
+                <h5 class="card-title m-0 fw-bold text-dark"><i class="material-icons align-middle me-2 text-primary">add_business</i>Add or Import Shops</h5>
             </div>
             <div class="card-body">
-                <form method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <ul class="nav nav-tabs mb-4" id="importTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fw-bold text-secondary" id="single-tab" data-bs-toggle="tab" data-bs-target="#single-import" type="button" role="tab" aria-controls="single-import" aria-selected="true">
+                            <i class="material-icons align-middle me-1">add_business</i> Add Single Shop
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold text-secondary" id="file-tab" data-bs-toggle="tab" data-bs-target="#file-import" type="button" role="tab" aria-controls="file-import" aria-selected="false">
+                            <i class="material-icons align-middle me-1">upload_file</i> Upload CSV File
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold text-secondary" id="paste-tab" data-bs-toggle="tab" data-bs-target="#paste-import" type="button" role="tab" aria-controls="paste-import" aria-selected="false">
+                            <i class="material-icons align-middle me-1">content_paste</i> Paste CSV Text
+                        </button>
+                    </li>
+                </ul>
 
-                    <ul class="nav nav-tabs mb-4" id="importTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active fw-bold text-secondary" id="file-tab" data-bs-toggle="tab" data-bs-target="#file-import" type="button" role="tab" aria-controls="file-import" aria-selected="true">
-                                <i class="material-icons align-middle me-1">upload_file</i> Upload CSV File
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link fw-bold text-secondary" id="paste-tab" data-bs-toggle="tab" data-bs-target="#paste-import" type="button" role="tab" aria-controls="paste-import" aria-selected="false">
-                                <i class="material-icons align-middle me-1">content_paste</i> Paste CSV Text
-                            </button>
-                        </li>
-                    </ul>
+                <div class="tab-content" id="importTabContent">
+                    <!-- Add Single Shop Tab -->
+                    <div class="tab-pane fade show active" id="single-import" role="tabpanel" aria-labelledby="single-tab">
+                        <form method="POST">
+                            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                    <div class="tab-content" id="importTabContent">
-                        <!-- File Upload Tab -->
-                        <div class="tab-pane fade show active" id="file-import" role="tabpanel" aria-labelledby="file-tab">
+                            <h6 class="fw-bold mb-3 text-primary border-bottom pb-2">1. Shop Owner Credentials</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Owner Username</label>
+                                    <input type="text" name="owner_username" class="form-control" placeholder="e.g. johndoe" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Owner Email</label>
+                                    <input type="email" name="owner_email" class="form-control" placeholder="e.g. john@example.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Owner Password</label>
+                                    <input type="password" name="owner_password" class="form-control" placeholder="e.g. Pass123!" value="Pass123!" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Owner Mobile</label>
+                                    <input type="text" name="owner_mobile" class="form-control" placeholder="e.g. 9876543210">
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold mb-3 text-primary border-bottom pb-2">2. Shop Information</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Shop Name</label>
+                                    <input type="text" name="shop_name" class="form-control" placeholder="e.g. Cyber Tech Hub" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Shop Type</label>
+                                    <select name="type" class="form-select" required>
+                                        <option value="free_listing">Free Listing</option>
+                                        <option value="classic">Classic</option>
+                                        <option value="privilege">Privilege</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Primary Category</label>
+                                    <select name="category_id" class="form-select">
+                                        <option value="">-- Select Category --</option>
+                                        <?php foreach ($categories as $cat): ?>
+                                            <option value="<?php echo $cat['id']; ?>"><?php echo e($cat['name']); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted">Locality</label>
+                                    <select name="locality" class="form-select">
+                                        <option value="">-- Select Locality --</option>
+                                        <?php
+                                        $loc_names = $pdo->query("SELECT name FROM localities ORDER BY name ASC")->fetchAll(PDO::FETCH_COLUMN);
+                                        foreach ($loc_names as $l_name): ?>
+                                            <option value="<?php echo e($l_name); ?>"><?php echo e($l_name); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold text-muted">City</label>
+                                    <input type="text" name="city" class="form-control" placeholder="City">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold text-muted">District</label>
+                                    <input type="text" name="district" class="form-control" placeholder="District">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold text-muted">Pincode</label>
+                                    <input type="text" name="pincode" class="form-control" placeholder="Pincode">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted">Street Address</label>
+                                    <input type="text" name="address" class="form-control" placeholder="e.g. 123 Main St, Near Central Square">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted">Description</label>
+                                    <textarea name="description" class="form-control" rows="3" placeholder="A short description of the shop..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="text-end mt-4 border-top pt-3">
+                                <button type="submit" name="add_single_shop" class="btn btn-primary px-5 fw-bold" style="background-color: #6366f1; border-color: #6366f1;">
+                                    <i class="material-icons align-middle me-1">add_business</i> CREATE SINGLE SHOP
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- File Upload Tab -->
+                    <div class="tab-pane fade" id="file-import" role="tabpanel" aria-labelledby="file-tab">
+                        <form method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                             <div class="mb-4">
                                 <label for="csv_file" class="form-label small fw-bold text-muted">Select CSV File</label>
                                 <input type="file" class="form-control" id="csv_file" name="csv_file" accept=".csv">
                                 <small class="text-muted d-block mt-2">Upload a CSV file containing shop and owner information.</small>
                             </div>
-                        </div>
+                            <div class="text-end border-top pt-3 mt-4">
+                                <button type="submit" name="bulk_import" class="btn btn-primary px-5 fw-bold" style="background-color: #6366f1; border-color: #6366f1;">
+                                    <i class="material-icons align-middle me-1">sync_alt</i> PROCESS BULK IMPORT
+                                </button>
+                            </div>
+                        </form>
+                    </div>
 
-                        <!-- Paste CSV Tab -->
-                        <div class="tab-pane fade" id="paste-import" role="tabpanel" aria-labelledby="paste-tab">
+                    <!-- Paste CSV Tab -->
+                    <div class="tab-pane fade" id="paste-import" role="tabpanel" aria-labelledby="paste-tab">
+                        <form method="POST">
+                            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                             <div class="mb-4">
                                 <label for="csv_text" class="form-label small fw-bold text-muted">Paste CSV Data</label>
                                 <textarea class="form-control" id="csv_text" name="csv_text" rows="8" placeholder="shop_name,owner_username,description,locality,address,city,district,pincode,type,owner_email,owner_password,owner_mobile,category&#10;My Shop,johndoe,A great shop,Chalakudy,Main St,Chalakudy,Thrissur,680307,classic,john@example.com,pass123,9876543210,Electronics"></textarea>
                                 <small class="text-muted d-block mt-2">Paste comma-separated rows with column headers on the first line.</small>
                             </div>
-                        </div>
+                            <div class="text-end border-top pt-3 mt-4">
+                                <button type="submit" name="bulk_import" class="btn btn-primary px-5 fw-bold" style="background-color: #6366f1; border-color: #6366f1;">
+                                    <i class="material-icons align-middle me-1">sync_alt</i> PROCESS BULK IMPORT
+                                </button>
+                            </div>
+                        </form>
                     </div>
-
-                    <div class="text-end border-top pt-3 mt-4">
-                        <button type="submit" name="bulk_import" class="btn btn-primary px-5 fw-bold" style="background-color: #6366f1; border-color: #6366f1;">
-                            <i class="material-icons align-middle me-1">sync_alt</i> PROCESS BULK IMPORT
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
 

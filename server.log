@@ -149,3 +149,24 @@
 [Fri Jul 17 01:42:18 2026] [::1]:40622 Accepted
 [Fri Jul 17 01:42:18 2026] [::1]:40622 [200]: POST /cart_handler.php
 [Fri Jul 17 01:42:18 2026] [::1]:40622 Closing
+[Sat Jul 18 02:50:36 2026] [::1]:56842 Accepted
+[Sat Jul 18 02:50:36 2026] [::1]:56842 [200]: GET /login.php
+[Sat Jul 18 02:50:36 2026] [::1]:56842 Closing
+[Sat Jul 18 02:50:36 2026] [::1]:56844 Accepted
+[Sat Jul 18 02:50:36 2026] [::1]:56850 Accepted
+[Sat Jul 18 02:50:36 2026] [::1]:56844 [200]: GET /assets/css/style.css
+[Sat Jul 18 02:50:36 2026] [::1]:56850 [200]: GET /assets/js/main.js
+[Sat Jul 18 02:50:36 2026] [::1]:56844 Closing
+[Sat Jul 18 02:50:36 2026] [::1]:56850 Closing
+[Sat Jul 18 02:50:37 2026] [::1]:56856 Accepted
+[Sat Jul 18 02:50:37 2026] [::1]:56856 [200]: POST /cart_handler.php
+[Sat Jul 18 02:50:37 2026] [::1]:56856 Closing
+[Sat Jul 18 02:50:39 2026] [::1]:56872 Accepted
+[Sat Jul 18 02:50:39 2026] [::1]:56872 [302]: POST /login.php
+[Sat Jul 18 02:50:39 2026] [::1]:56872 Closing
+[Sat Jul 18 02:50:39 2026] [::1]:56878 Accepted
+[Sat Jul 18 02:50:39 2026] [::1]:56878 [200]: GET /agent_portal.php
+[Sat Jul 18 02:50:39 2026] [::1]:56878 Closing
+[Sat Jul 18 02:50:43 2026] [::1]:33796 Accepted
+[Sat Jul 18 02:50:43 2026] [::1]:33796 [200]: POST /agent_portal.php
+[Sat Jul 18 02:50:43 2026] [::1]:33796 Closing
