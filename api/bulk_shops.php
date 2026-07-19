@@ -108,14 +108,14 @@ try {
 
         if ($existing_shop_id) {
             // Update existing shop
-            $stmt = $pdo->prepare("UPDATE shops SET description = ?, locality = ?, address = ?, city = ?, district = ?, pincode = ?, type = ?, category = ? WHERE id = ?");
-            $stmt->execute([$description, $locality, $address, $city, $district, $pincode, $type, $category_name, $existing_shop_id]);
+            $stmt = $pdo->prepare("UPDATE shops SET description = ?, locality = ?, address = ?, city = ?, district = ?, pincode = ?, type = ?, category = ?, added_by_agent_id = ? WHERE id = ?");
+            $stmt->execute([$description, $locality, $address, $city, $district, $pincode, $type, $category_name, $_SESSION['user_id'], $existing_shop_id]);
             $shop_id = $existing_shop_id;
             $updated_count++;
         } else {
             // Create new shop
-            $stmt = $pdo->prepare("INSERT INTO shops (owner_id, name, description, locality, address, city, district, pincode, type, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$owner_id, $shop_name, $description, $locality, $address, $city, $district, $pincode, $type, $category_name]);
+            $stmt = $pdo->prepare("INSERT INTO shops (owner_id, name, description, locality, address, city, district, pincode, type, category, added_by_agent_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$owner_id, $shop_name, $description, $locality, $address, $city, $district, $pincode, $type, $category_name, $_SESSION['user_id']]);
             $shop_id = $pdo->lastInsertId();
             $created_count++;
         }

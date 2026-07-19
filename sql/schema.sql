@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS shops (
     category TEXT,
     type TEXT CHECK(type IN ('privilege', 'classic', 'free_listing')) DEFAULT 'free_listing',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(id)
+    added_by_agent_id INTEGER,
+    FOREIGN KEY (owner_id) REFERENCES users(id),
+    FOREIGN KEY (added_by_agent_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS products (
