@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS shops (
     category VARCHAR(255),
     type ENUM('privilege', 'classic', 'free_listing') DEFAULT 'free_listing',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+    added_by_agent_id INT,
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (added_by_agent_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS products (

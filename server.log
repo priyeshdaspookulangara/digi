@@ -1,151 +1,91 @@
-[Fri Jul 17 00:57:57 2026] PHP 8.3.6 Development Server (http://localhost:8000) started
-[Fri Jul 17 00:58:15 2026] [::1]:52288 Accepted
-[Fri Jul 17 00:58:15 2026] [::1]:52288 [200]: HEAD /login.php
-[Fri Jul 17 00:58:15 2026] [::1]:52288 Closing
-[Fri Jul 17 00:59:19 2026] [::1]:34008 Accepted
-[Fri Jul 17 00:59:19 2026] [::1]:34008 [200]: GET /register.php
-[Fri Jul 17 00:59:19 2026] [::1]:34008 Closing
-[Fri Jul 17 00:59:19 2026] [::1]:34010 Accepted
-[Fri Jul 17 00:59:19 2026] [::1]:34012 Accepted
-[Fri Jul 17 00:59:19 2026] [::1]:34010 [200]: GET /assets/css/style.css
-[Fri Jul 17 00:59:19 2026] [::1]:34012 [200]: GET /assets/js/main.js
-[Fri Jul 17 00:59:19 2026] [::1]:34010 Closing
-[Fri Jul 17 00:59:19 2026] [::1]:34012 Closing
-[Fri Jul 17 00:59:20 2026] [::1]:34024 Accepted
-[Fri Jul 17 00:59:20 2026] [::1]:34024 [200]: POST /cart_handler.php
-[Fri Jul 17 00:59:20 2026] [::1]:34024 Closing
-[Fri Jul 17 00:59:23 2026] [::1]:34030 Accepted
-[Fri Jul 17 00:59:23 2026] [::1]:34030 [200]: POST /register.php
-[Fri Jul 17 00:59:23 2026] [::1]:34030 Closing
-[Fri Jul 17 00:59:23 2026] [::1]:34044 Accepted
-[Fri Jul 17 00:59:23 2026] [::1]:34044 [200]: GET /assets/css/style.css
-[Fri Jul 17 00:59:23 2026] [::1]:34044 Closing
-[Fri Jul 17 00:59:23 2026] [::1]:34052 Accepted
-[Fri Jul 17 00:59:23 2026] [::1]:34052 [200]: GET /assets/js/main.js
-[Fri Jul 17 00:59:23 2026] [::1]:34052 Closing
-[Fri Jul 17 00:59:23 2026] [::1]:34054 Accepted
-[Fri Jul 17 00:59:23 2026] [::1]:34054 [200]: POST /cart_handler.php
-[Fri Jul 17 00:59:23 2026] [::1]:34054 Closing
-[Fri Jul 17 00:59:24 2026] [::1]:34060 Accepted
-[Fri Jul 17 00:59:24 2026] [::1]:34060 [200]: GET /login.php
-[Fri Jul 17 00:59:24 2026] [::1]:34060 Closing
-[Fri Jul 17 00:59:24 2026] [::1]:34070 Accepted
-[Fri Jul 17 00:59:24 2026] [::1]:34074 Accepted
-[Fri Jul 17 00:59:24 2026] [::1]:34070 [200]: GET /assets/css/style.css
-[Fri Jul 17 00:59:24 2026] [::1]:34074 [200]: GET /assets/js/main.js
-[Fri Jul 17 00:59:24 2026] [::1]:34070 Closing
-[Fri Jul 17 00:59:24 2026] [::1]:34074 Closing
-[Fri Jul 17 00:59:24 2026] [::1]:34090 Accepted
-[Fri Jul 17 00:59:24 2026] [::1]:34090 [200]: POST /cart_handler.php
-[Fri Jul 17 00:59:24 2026] [::1]:34090 Closing
-[Fri Jul 17 00:59:27 2026] [::1]:34094 Accepted
-[Fri Jul 17 00:59:27 2026] [::1]:34094 [302]: POST /login.php
-[Fri Jul 17 00:59:27 2026] [::1]:34094 Closing
-[Fri Jul 17 00:59:27 2026] [::1]:34096 Accepted
-[Fri Jul 17 00:59:27 2026] [::1]:34096 [200]: GET /agent_portal.php
-[Fri Jul 17 00:59:27 2026] [::1]:34096 Closing
-[Fri Jul 17 00:59:30 2026] [::1]:57948 Accepted
-[Fri Jul 17 00:59:30 2026] [::1]:57948 [200]: POST /agent_portal.php
-[Fri Jul 17 00:59:30 2026] [::1]:57948 Closing
-[Fri Jul 17 01:21:45 2026] [::1]:50496 Accepted
-[Fri Jul 17 01:21:45 2026] [::1]:50496 [200]: POST /register.php
-[Fri Jul 17 01:21:45 2026] [::1]:50496 Closing
-[Fri Jul 17 01:21:45 2026] [::1]:50512 Accepted
-[Fri Jul 17 01:21:45 2026] [::1]:50512 [200]: POST /api/auth.php
-[Fri Jul 17 01:21:45 2026] [::1]:50512 Closing
-[Fri Jul 17 01:21:45 2026] [::1]:50522 Accepted
-[Fri Jul 17 01:21:45 2026] [::1]:50522 [200]: POST /api/bulk_shops.php
-[Fri Jul 17 01:21:45 2026] [::1]:50522 Closing
-[Fri Jul 17 01:21:45 2026] [::1]:50530 Accepted
-[Fri Jul 17 01:21:45 2026] [::1]:50530 [200]: POST /api/bulk_shops.php
-[Fri Jul 17 01:21:45 2026] [::1]:50530 Closing
-[Fri Jul 17 01:42:05 2026] [::1]:45838 Accepted
-[Fri Jul 17 01:42:05 2026] [::1]:45838 [200]: GET /register.php
-[Fri Jul 17 01:42:05 2026] [::1]:45838 Closing
-[Fri Jul 17 01:42:05 2026] [::1]:45844 Accepted
-[Fri Jul 17 01:42:05 2026] [::1]:45848 Accepted
-[Fri Jul 17 01:42:05 2026] [::1]:45844 [200]: GET /assets/css/style.css
-[Fri Jul 17 01:42:05 2026] [::1]:45844 Closing
-[Fri Jul 17 01:42:05 2026] [::1]:45848 [200]: GET /assets/js/main.js
-[Fri Jul 17 01:42:05 2026] [::1]:45848 Closing
-[Fri Jul 17 01:42:06 2026] [::1]:45854 Accepted
-[Fri Jul 17 01:42:06 2026] [::1]:45854 [200]: POST /cart_handler.php
-[Fri Jul 17 01:42:06 2026] [::1]:45854 Closing
-[Fri Jul 17 01:42:08 2026] [::1]:45858 Accepted
-[Fri Jul 17 01:42:08 2026] [::1]:45858 [200]: POST /register.php
-[Fri Jul 17 01:42:08 2026] [::1]:45858 Closing
-[Fri Jul 17 01:42:08 2026] [::1]:45866 Accepted
-[Fri Jul 17 01:42:08 2026] [::1]:45878 Accepted
-[Fri Jul 17 01:42:08 2026] [::1]:45866 [200]: GET /assets/css/style.css
-[Fri Jul 17 01:42:08 2026] [::1]:45866 Closing
-[Fri Jul 17 01:42:08 2026] [::1]:45878 [200]: GET /assets/js/main.js
-[Fri Jul 17 01:42:08 2026] [::1]:45878 Closing
-[Fri Jul 17 01:42:08 2026] [::1]:45886 Accepted
-[Fri Jul 17 01:42:08 2026] [::1]:45886 [200]: POST /cart_handler.php
-[Fri Jul 17 01:42:08 2026] [::1]:45886 Closing
-[Fri Jul 17 01:42:10 2026] [::1]:45896 Accepted
-[Fri Jul 17 01:42:10 2026] [::1]:45896 [200]: GET /login.php
-[Fri Jul 17 01:42:10 2026] [::1]:45896 Closing
-[Fri Jul 17 01:42:10 2026] [::1]:45908 Accepted
-[Fri Jul 17 01:42:10 2026] [::1]:45908 [200]: GET /assets/css/style.css
-[Fri Jul 17 01:42:10 2026] [::1]:45908 Closing
-[Fri Jul 17 01:42:10 2026] [::1]:45914 Accepted
-[Fri Jul 17 01:42:10 2026] [::1]:45914 [200]: GET /assets/js/main.js
-[Fri Jul 17 01:42:10 2026] [::1]:45914 Closing
-[Fri Jul 17 01:42:10 2026] [::1]:45928 Accepted
-[Fri Jul 17 01:42:10 2026] [::1]:45928 [200]: POST /cart_handler.php
-[Fri Jul 17 01:42:10 2026] [::1]:45928 Closing
-[Fri Jul 17 01:42:12 2026] [::1]:40472 Accepted
-[Fri Jul 17 01:42:12 2026] [::1]:40472 [302]: POST /login.php
-[Fri Jul 17 01:42:12 2026] [::1]:40472 Closing
-[Fri Jul 17 01:42:12 2026] [::1]:40474 Accepted
-[Fri Jul 17 01:42:12 2026] [::1]:40474 [200]: GET /index.php
-[Fri Jul 17 01:42:12 2026] [::1]:40474 Closing
-[Fri Jul 17 01:42:12 2026] [::1]:40490 Accepted
-[Fri Jul 17 01:42:12 2026] [::1]:40494 Accepted
-[Fri Jul 17 01:42:12 2026] [::1]:40490 [200]: GET /assets/css/style.css
-[Fri Jul 17 01:42:12 2026] [::1]:40494 [404]: GET /https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200 - No such file or directory
-[Fri Jul 17 01:42:12 2026] [::1]:40494 Closing
-[Fri Jul 17 01:42:12 2026] [::1]:40490 Closing
-[Fri Jul 17 01:42:12 2026] [::1]:40500 Accepted
-[Fri Jul 17 01:42:12 2026] [::1]:40500 [200]: GET /assets/js/main.js
-[Fri Jul 17 01:42:12 2026] [::1]:40500 Closing
-[Fri Jul 17 01:42:12 2026] [::1]:40504 Accepted
-[Fri Jul 17 01:42:12 2026] [::1]:40504 [200]: POST /cart_handler.php
-[Fri Jul 17 01:42:12 2026] [::1]:40504 Closing
-[Fri Jul 17 01:42:13 2026] [::1]:40506 Accepted
-[Fri Jul 17 01:42:13 2026] [::1]:40506 [200]: GET /manage_portfolio.php
-[Fri Jul 17 01:42:13 2026] [::1]:40506 Closing
-[Fri Jul 17 01:42:13 2026] [::1]:40518 Accepted
-[Fri Jul 17 01:42:13 2026] [::1]:40524 Accepted
-[Fri Jul 17 01:42:13 2026] [::1]:40518 [200]: GET /assets/css/style.css
-[Fri Jul 17 01:42:13 2026] [::1]:40524 [200]: GET /assets/js/main.js
-[Fri Jul 17 01:42:13 2026] [::1]:40518 Closing
-[Fri Jul 17 01:42:13 2026] [::1]:40524 Closing
-[Fri Jul 17 01:42:13 2026] [::1]:40532 Accepted
-[Fri Jul 17 01:42:13 2026] [::1]:40532 [200]: POST /cart_handler.php
-[Fri Jul 17 01:42:13 2026] [::1]:40532 Closing
-[Fri Jul 17 01:42:16 2026] [::1]:40546 Accepted
-[Fri Jul 17 01:42:16 2026] [::1]:40546 [200]: POST /manage_portfolio.php
-[Fri Jul 17 01:42:16 2026] [::1]:40546 Closing
-[Fri Jul 17 01:42:16 2026] [::1]:40562 Accepted
-[Fri Jul 17 01:42:16 2026] [::1]:40564 Accepted
-[Fri Jul 17 01:42:16 2026] [::1]:40562 [200]: GET /assets/css/style.css
-[Fri Jul 17 01:42:16 2026] [::1]:40564 [200]: GET /assets/js/main.js
-[Fri Jul 17 01:42:16 2026] [::1]:40562 Closing
-[Fri Jul 17 01:42:16 2026] [::1]:40564 Closing
-[Fri Jul 17 01:42:16 2026] [::1]:40568 Accepted
-[Fri Jul 17 01:42:16 2026] [::1]:40568 [200]: POST /cart_handler.php
-[Fri Jul 17 01:42:16 2026] [::1]:40568 Closing
-[Fri Jul 17 01:42:18 2026] [::1]:40582 Accepted
-[Fri Jul 17 01:42:18 2026] [::1]:40582 [200]: GET /portfolios.php
-[Fri Jul 17 01:42:18 2026] [::1]:40582 Closing
-[Fri Jul 17 01:42:18 2026] [::1]:40594 Accepted
-[Fri Jul 17 01:42:18 2026] [::1]:40594 [200]: GET /assets/css/style.css
-[Fri Jul 17 01:42:18 2026] [::1]:40594 Closing
-[Fri Jul 17 01:42:18 2026] [::1]:40610 Accepted
-[Fri Jul 17 01:42:18 2026] [::1]:40610 [200]: GET /assets/js/main.js
-[Fri Jul 17 01:42:18 2026] [::1]:40610 Closing
-[Fri Jul 17 01:42:18 2026] [::1]:40622 Accepted
-[Fri Jul 17 01:42:18 2026] [::1]:40622 [200]: POST /cart_handler.php
-[Fri Jul 17 01:42:18 2026] [::1]:40622 Closing
+[Sun Jul 19 13:51:41 2026] PHP 8.3.6 Development Server (http://localhost:8000) started
+[Sun Jul 19 13:51:43 2026] [::1]:47532 Accepted
+[Sun Jul 19 13:51:43 2026] [::1]:47532 [200]: HEAD /
+[Sun Jul 19 13:51:43 2026] [::1]:47532 Closing
+[Sun Jul 19 13:53:12 2026] [::1]:50472 Accepted
+[Sun Jul 19 13:53:12 2026] [::1]:50472 [200]: GET /login.php
+[Sun Jul 19 13:53:12 2026] [::1]:50472 Closing
+[Sun Jul 19 13:53:12 2026] [::1]:50476 Accepted
+[Sun Jul 19 13:53:12 2026] [::1]:50486 Accepted
+[Sun Jul 19 13:53:12 2026] [::1]:50476 [200]: GET /assets/css/style.css
+[Sun Jul 19 13:53:12 2026] [::1]:50486 [200]: GET /assets/js/main.js
+[Sun Jul 19 13:53:12 2026] [::1]:50476 Closing
+[Sun Jul 19 13:53:12 2026] [::1]:50486 Closing
+[Sun Jul 19 13:53:12 2026] [::1]:50500 Accepted
+[Sun Jul 19 13:53:12 2026] [::1]:50500 [200]: POST /cart_handler.php
+[Sun Jul 19 13:53:12 2026] [::1]:50500 Closing
+[Sun Jul 19 13:53:13 2026] [::1]:50504 Accepted
+[Sun Jul 19 13:53:13 2026] [::1]:50504 [200]: GET /index.php?search=
+[Sun Jul 19 13:53:13 2026] [::1]:50504 Closing
+[Sun Jul 19 13:53:14 2026] [::1]:50520 Accepted
+[Sun Jul 19 13:53:14 2026] [::1]:50536 Accepted
+[Sun Jul 19 13:53:14 2026] [::1]:50520 [200]: GET /assets/css/style.css
+[Sun Jul 19 13:53:14 2026] [::1]:50536 [404]: GET /https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200 - No such file or directory
+[Sun Jul 19 13:53:14 2026] [::1]:50536 Closing
+[Sun Jul 19 13:53:14 2026] [::1]:50520 Closing
+[Sun Jul 19 13:53:14 2026] [::1]:37762 Accepted
+[Sun Jul 19 13:53:14 2026] [::1]:37762 [200]: GET /assets/js/main.js
+[Sun Jul 19 13:53:14 2026] [::1]:37762 Closing
+[Sun Jul 19 13:53:14 2026] [::1]:37766 Accepted
+[Sun Jul 19 13:53:14 2026] [::1]:37766 [200]: POST /cart_handler.php
+[Sun Jul 19 13:53:14 2026] [::1]:37766 Closing
+[Sun Jul 19 13:55:19 2026] [::1]:42436 Accepted
+[Sun Jul 19 13:55:19 2026] [::1]:42436 [200]: GET /login.php
+[Sun Jul 19 13:55:19 2026] [::1]:42436 Closing
+[Sun Jul 19 13:55:19 2026] [::1]:42450 Accepted
+[Sun Jul 19 13:55:19 2026] [::1]:42460 Accepted
+[Sun Jul 19 13:55:19 2026] [::1]:42450 [200]: GET /assets/css/style.css
+[Sun Jul 19 13:55:19 2026] [::1]:42460 [200]: GET /assets/js/main.js
+[Sun Jul 19 13:55:19 2026] [::1]:42450 Closing
+[Sun Jul 19 13:55:19 2026] [::1]:42460 Closing
+[Sun Jul 19 13:55:19 2026] [::1]:42464 Accepted
+[Sun Jul 19 13:55:19 2026] [::1]:42464 [200]: POST /cart_handler.php
+[Sun Jul 19 13:55:19 2026] [::1]:42464 Closing
+[Sun Jul 19 13:55:20 2026] [::1]:42468 Accepted
+[Sun Jul 19 13:55:20 2026] [::1]:42468 [302]: POST /login.php
+[Sun Jul 19 13:55:20 2026] [::1]:42468 Closing
+[Sun Jul 19 13:55:20 2026] [::1]:42484 Accepted
+[Sun Jul 19 13:55:20 2026] [::1]:42484 [200]: GET /agent_portal.php
+[Sun Jul 19 13:55:20 2026] [::1]:42484 Closing
+[Sun Jul 19 13:55:23 2026] [::1]:42488 Accepted
+[Sun Jul 19 13:55:23 2026] [::1]:42488 [200]: POST /agent_portal.php
+[Sun Jul 19 13:55:23 2026] [::1]:42488 Closing
+[Sun Jul 19 13:55:24 2026] [::1]:49004 Accepted
+[Sun Jul 19 13:55:24 2026] [::1]:49004 [302]: GET /logout.php
+[Sun Jul 19 13:55:24 2026] [::1]:49004 Closing
+[Sun Jul 19 13:55:24 2026] [::1]:49020 Accepted
+[Sun Jul 19 13:55:24 2026] [::1]:49020 [200]: GET /index.php
+[Sun Jul 19 13:55:24 2026] [::1]:49020 Closing
+[Sun Jul 19 13:55:24 2026] [::1]:49022 Accepted
+[Sun Jul 19 13:55:24 2026] [::1]:49034 Accepted
+[Sun Jul 19 13:55:24 2026] [::1]:49022 [200]: GET /assets/css/style.css
+[Sun Jul 19 13:55:24 2026] [::1]:49034 [404]: GET /https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200 - No such file or directory
+[Sun Jul 19 13:55:24 2026] [::1]:49034 Closing
+[Sun Jul 19 13:55:24 2026] [::1]:49022 Closing
+[Sun Jul 19 13:55:24 2026] [::1]:49046 Accepted
+[Sun Jul 19 13:55:24 2026] [::1]:49046 [200]: GET /assets/js/main.js
+[Sun Jul 19 13:55:24 2026] [::1]:49046 Closing
+[Sun Jul 19 13:55:24 2026] [::1]:49054 Accepted
+[Sun Jul 19 13:55:24 2026] [::1]:49054 [200]: POST /cart_handler.php
+[Sun Jul 19 13:55:24 2026] [::1]:49054 Closing
+[Sun Jul 19 13:55:26 2026] [::1]:49066 Accepted
+[Sun Jul 19 13:55:26 2026] [::1]:49066 [200]: GET /login.php
+[Sun Jul 19 13:55:26 2026] [::1]:49066 Closing
+[Sun Jul 19 13:55:26 2026] [::1]:49078 Accepted
+[Sun Jul 19 13:55:26 2026] [::1]:49084 Accepted
+[Sun Jul 19 13:55:26 2026] [::1]:49078 [200]: GET /assets/css/style.css
+[Sun Jul 19 13:55:26 2026] [::1]:49084 [200]: GET /assets/js/main.js
+[Sun Jul 19 13:55:26 2026] [::1]:49078 Closing
+[Sun Jul 19 13:55:26 2026] [::1]:49084 Closing
+[Sun Jul 19 13:55:26 2026] [::1]:49094 Accepted
+[Sun Jul 19 13:55:26 2026] [::1]:49094 [200]: POST /cart_handler.php
+[Sun Jul 19 13:55:26 2026] [::1]:49094 Closing
+[Sun Jul 19 13:55:26 2026] [::1]:49108 Accepted
+[Sun Jul 19 13:55:26 2026] [::1]:49108 [302]: POST /login.php
+[Sun Jul 19 13:55:26 2026] [::1]:49108 Closing
+[Sun Jul 19 13:55:26 2026] [::1]:49114 Accepted
+[Sun Jul 19 13:55:26 2026] [::1]:49114 [200]: GET /agent_portal.php
+[Sun Jul 19 13:55:26 2026] [::1]:49114 Closing
+[Sun Jul 19 13:55:28 2026] [::1]:49128 Accepted
+[Sun Jul 19 13:55:28 2026] [::1]:49128 [200]: POST /agent_portal.php
+[Sun Jul 19 13:55:28 2026] [::1]:49128 Closing
