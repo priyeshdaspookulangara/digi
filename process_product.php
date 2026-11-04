@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $og_title = $_POST['og_title'] ?? '';
     $og_description = $_POST['og_description'] ?? '';
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
+    $show_on_front = isset($_POST['show_on_front']) ? 1 : 0;
     $discount_entry = $_POST['discount_entry'] ?? null;
 
     $stmt = $pdo->prepare("SELECT type FROM shops WHERE id = ?");
@@ -67,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO products (shop_id, name, description, price, discount_entry, image, video, is_featured, meta_keywords, og_title, og_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$shop_id, $name, $description, $price, $discount_entry, $image_path, $video_path, $is_featured, $keywords, $og_title, $og_description]);
+        $stmt = $pdo->prepare("INSERT INTO products (shop_id, name, description, price, discount_entry, image, video, is_featured, show_on_front, meta_keywords, og_title, og_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$shop_id, $name, $description, $price, $discount_entry, $image_path, $video_path, $is_featured, $show_on_front, $keywords, $og_title, $og_description]);
         header("Location: shop_portal.php?success=1");
     } catch (PDOException $e) {
         die("Database error: " . $e->getMessage());
