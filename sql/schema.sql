@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS shops (
     locality TEXT,
     category TEXT,
     type TEXT CHECK(type IN ('privilege', 'classic', 'free_listing')) DEFAULT 'free_listing',
+    show_on_front INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     added_by_agent_id INTEGER,
     FOREIGN KEY (owner_id) REFERENCES users(id),
@@ -47,6 +48,7 @@ CREATE TABLE IF NOT EXISTS products (
     image TEXT,
     video TEXT,
     is_featured INTEGER DEFAULT 0,
+    show_on_front INTEGER DEFAULT 1,
     meta_keywords TEXT,
     og_title TEXT,
     og_description TEXT,
@@ -185,6 +187,7 @@ CREATE TABLE IF NOT EXISTS portfolios (
     contact_phone TEXT,
     locality TEXT,
     image TEXT,
+    show_on_front INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (category_id) REFERENCES professional_categories(id)

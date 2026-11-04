@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contact_email = trim($_POST['contact_email'] ?? '');
     $contact_phone = trim($_POST['contact_phone'] ?? '');
     $locality = trim($_POST['locality'] ?? '');
+    $show_on_front = isset($_POST['show_on_front']) ? 1 : 0;
 
     if (empty($title) || empty($professional_name) || !$category_id) {
         $error = "Title, Professional Name, and Category are required.";
@@ -60,26 +61,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         UPDATE portfolios
                         SET title = ?, professional_name = ?, category_id = ?, description = ?,
                             experience_years = ?, skills = ?, services = ?, contact_email = ?,
-                            contact_phone = ?, locality = ?, image = ?
+                            contact_phone = ?, locality = ?, image = ?, show_on_front = ?
                         WHERE user_id = ?
                     ");
                     $stmt->execute([
                         $title, $professional_name, $category_id, $description,
                         $experience_years, $skills, $services, $contact_email,
-                        $contact_phone, $locality, $image_path, $user_id
+                        $contact_phone, $locality, $image_path, $show_on_front, $user_id
                     ]);
                     $success = "Portfolio updated successfully!";
                 } else {
                     // Insert new portfolio
                     $stmt = $pdo->prepare("
                         INSERT INTO portfolios
-                        (user_id, title, professional_name, category_id, description, experience_years, skills, services, contact_email, contact_phone, locality, image)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        (user_id, title, professional_name, category_id, description, experience_years, skills, services, contact_email, contact_phone, locality, image, show_on_front)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
                         $user_id, $title, $professional_name, $category_id, $description,
                         $experience_years, $skills, $services, $contact_email,
-                        $contact_phone, $locality, $image_path
+                        $contact_phone, $locality, $image_path, $show_on_front
                     ]);
                     $success = "Portfolio created successfully!";
                 }
@@ -201,6 +202,16 @@ include 'includes/header.php';
                 <div class="col-12">
                     <label class="form-label small fw-bold text-muted">About Me / Bio</label>
                     <textarea name="description" class="form-control" rows="5" placeholder="Describe your experience, values, and outstanding projects..."><?php echo e($portfolio['description'] ?? ''); ?></textarea>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check form-switch p-3 bg-light rounded">
+                        <input class="form-check-input ms-0 me-3" type="checkbox" name="show_on_front" id="frontSwitch" value="1" <?php echo (!isset($portfolio['show_on_front']) || $portfolio['show_on_front']) ? 'checked' : ''; ?>>
+                        <label class="form-check-label fw-bold text-dark" for="frontSwitch">
+                            Feature this Service on Front Page Classifieds
+                        </label>
+                        <div class="small text-muted ms-5">Display your professional service in the front page Classifieds slider.</div>
+                    </div>
                 </div>
             </div>
 

@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS shops (
     locality VARCHAR(255),
     category VARCHAR(255),
     type ENUM('privilege', 'classic', 'free_listing') DEFAULT 'free_listing',
+    show_on_front TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     added_by_agent_id INT,
     FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -47,6 +48,7 @@ CREATE TABLE IF NOT EXISTS products (
     image VARCHAR(255),
     video VARCHAR(255),
     is_featured TINYINT(1) DEFAULT 0,
+    show_on_front TINYINT(1) DEFAULT 1,
     meta_keywords TEXT,
     og_title VARCHAR(255),
     og_description TEXT,
@@ -165,6 +167,7 @@ CREATE TABLE IF NOT EXISTS portfolios (
     contact_phone VARCHAR(50),
     locality VARCHAR(255),
     image VARCHAR(255),
+    show_on_front TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES professional_categories(id) ON DELETE SET NULL

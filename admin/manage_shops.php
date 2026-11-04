@@ -15,11 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     }
 }
 
-// Handle Shop Type/Category Update
+// Handle Shop Type/Category/Front Update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_shop'])) {
     if (!verify_csrf_token($_POST['csrf_token'])) die("CSRF failed");
-    $stmt = $pdo->prepare("UPDATE shops SET type = ?, category = ? WHERE id = ?");
-    $stmt->execute([$_POST['shop_type'], $_POST['shop_category'], $_POST['shop_id']]);
+    $show_on_front = isset($_POST['show_on_front']) ? 1 : 0;
+    $stmt = $pdo->prepare("UPDATE shops SET type = ?, category = ?, show_on_front = ? WHERE id = ?");
+    $stmt->execute([$_POST['shop_type'], $_POST['shop_category'], $show_on_front, $_POST['shop_id']]);
 }
 
 $shops = $pdo->query("SELECT s.*, u.username as owner_name FROM shops s JOIN users u ON s.owner_id = u.id ORDER BY s.created_at DESC")->fetchAll();
@@ -68,6 +69,7 @@ include '../includes/header.php';
                                 <th>Owner</th>
                                 <th>Type</th>
                                 <th>Category</th>
+                                <th>Front Page</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -92,6 +94,11 @@ include '../includes/header.php';
                                                 <option value="<?php echo e($cat['name']); ?>" <?php echo $s['category'] === $cat['name'] ? 'selected' : ''; ?>><?php echo e($cat['name']); ?></option>
                                             <?php endforeach; ?>
                                         </select>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" name="show_on_front" value="1" <?php echo (!isset($s['show_on_front']) || $s['show_on_front']) ? 'checked' : ''; ?>>
+                                        </div>
                                     </td>
                                     <td>
                                         <button type="submit" name="update_shop" class="btn btn-sm btn-outline-info">Save</button>

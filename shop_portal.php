@@ -139,6 +139,15 @@ require_once 'includes/admin_layout_header.php';
                             <label class="form-label small fw-bold">Description</label>
                             <textarea name="description" class="form-control" rows="2"><?php echo e($shop['description']); ?></textarea>
                         </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch p-3 bg-light rounded">
+                                <input class="form-check-input ms-0 me-3" type="checkbox" name="show_on_front" id="shopFrontSwitch" value="1" <?php echo (!isset($shop['show_on_front']) || $shop['show_on_front']) ? 'checked' : ''; ?>>
+                                <label class="form-check-label fw-bold text-dark" for="shopFrontSwitch">
+                                    Show Shop on Front Page
+                                </label>
+                                <div class="small text-muted ms-5">Display your shop on the dynamic front page directory / featured sections.</div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- SEO & Marketing Section -->
@@ -187,17 +196,27 @@ require_once 'includes/admin_layout_header.php';
                                 <th class="ps-4">Product</th>
                                 <th>Price</th>
                                 <th>Status</th>
+                                <th>Front Page</th>
                                 <th class="text-end pe-4">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
+                            // Handle toggle show_on_front
+                            if (isset($_GET['toggle_prod_front']) && verify_csrf_token($_GET['csrf'] ?? '')) {
+                                $pid = (int)$_GET['toggle_prod_front'];
+                                $stmt = $pdo->prepare("UPDATE products SET show_on_front = CASE WHEN show_on_front = 1 THEN 0 ELSE 1 END WHERE id = ? AND shop_id = ?");
+                                $stmt->execute([$pid, $shop['id']]);
+                                header("Location: shop_portal.php");
+                                exit;
+                            }
+
                             $products = $pdo->prepare("SELECT * FROM products WHERE shop_id = ? ORDER BY created_at DESC");
                             $products->execute([$shop['id']]);
                             $prod_list = $products->fetchAll();
                             if (empty($prod_list)):
                             ?>
-                                <tr><td colspan="4" class="text-center py-4 text-muted">No products added yet.</td></tr>
+                                <tr><td colspan="5" class="text-center py-4 text-muted">No products added yet.</td></tr>
                             <?php else: foreach($prod_list as $p): ?>
                                 <tr>
                                     <td class="ps-4">
@@ -216,6 +235,11 @@ require_once 'includes/admin_layout_header.php';
                                         <?php else: ?>
                                             <span class="badge bg-soft-secondary text-muted border" style="font-size: 0.65rem;">STANDARD</span>
                                         <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <a href="shop_portal.php?toggle_prod_front=<?php echo $p['id']; ?>&csrf=<?php echo $csrf_token; ?>" class="badge text-decoration-none <?php echo (!isset($p['show_on_front']) || $p['show_on_front']) ? 'bg-success text-white' : 'bg-secondary text-white'; ?>">
+                                            <?php echo (!isset($p['show_on_front']) || $p['show_on_front']) ? 'On Front' : 'Hidden'; ?>
+                                        </a>
                                     </td>
                                     <td class="text-end pe-4">
                                         <button class="btn btn-sm btn-outline-secondary border-0"><i class="material-icons" style="font-size: 1.2rem;">edit</i></button>
@@ -256,6 +280,12 @@ require_once 'includes/admin_layout_header.php';
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" name="is_featured" id="featProduct">
                                 <label class="form-check-label small fw-bold" for="featProduct">Featured</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end pb-1">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="show_on_front" id="frontProduct" checked>
+                                <label class="form-check-label small fw-bold text-primary" for="frontProduct">Show on Front Page</label>
                             </div>
                         </div>
                     </div>

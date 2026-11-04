@@ -204,6 +204,12 @@ require_once __DIR__ . '/config.php';
                     <span>Tags/Attributes</span>
                 </a>
             </li>
+            <li class="sidebar-menu-item <?php echo strpos($_SERVER['PHP_SELF'], 'admin/manage_front.php') !== false ? 'active' : ''; ?>">
+                <a class="sidebar-menu-button" href="<?php echo BASE_URL; ?>/admin/manage_front.php">
+                    <i class="sidebar-menu-icon material-icons">web</i>
+                    <span>Front Page Showcase</span>
+                </a>
+            </li>
             <li class="sidebar-menu-item <?php echo strpos($_SERVER['PHP_SELF'], 'admin/marketing.php') !== false ? 'active' : ''; ?>">
                 <a class="sidebar-menu-button" href="<?php echo BASE_URL; ?>/admin/marketing.php">
                     <i class="sidebar-menu-icon material-icons">campaign</i>
